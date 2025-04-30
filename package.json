@@ -3,14 +3,14 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "//": "Run dev server targeting frontend config",
+
     "dev": "vite --config frontend/vite.config.js",
-    "//": "Build the frontend project using its specific config",
+
     "build": "vite build --config frontend/vite.config.js",
-    "//": "Preview the built frontend project",
+
     "preview": "vite preview --config frontend/vite.config.js",
-    "//": "Linting and formatting commands likely need adjustment if run from root",
-    "//": "Example: Run eslint inside the frontend directory",
+ 
+
     "lint": "eslint frontend/src --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "format": "prettier --write \"frontend/**/*.{js,jsx,ts,tsx,css,md}\""
   },
