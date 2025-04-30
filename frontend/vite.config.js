@@ -5,7 +5,7 @@ import path from 'path';
 export default defineConfig({
   plugins: [react()],
   build: {
-    outDir: 'build', 
+    outDir: path.resolve(__dirname, '../build'),
     manifest: true,
     assetsInlineLimit: 0,
     cssCodeSplit: true,
