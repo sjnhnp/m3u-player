@@ -45,6 +45,10 @@ const styles = {
     fontSize: '16px',
     marginLeft: '10px',
     cursor: 'pointer',
+    backgroundColor: '#007bff',
+    color: '#fff',
+    border: 'none',
+    borderRadius: '4px',
   },
 };
 
