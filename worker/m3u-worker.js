@@ -65,110 +65,154 @@ export default {
     },
 };
 
-
-// --- New Proxy Handler ---
+// --- 新的代理处理函数 (已加入超时逻辑) ---
 async function handleProxyRequest(request, env) {
     const requestUrl = new URL(request.url);
     const targetUrlEncoded = requestUrl.searchParams.get('url');
 
     if (!targetUrlEncoded) {
+        // 如果请求里没有 'url' 参数，返回错误
         return new Response('Missing "url" query parameter', { status: 400, headers: corsHeaders });
     }
 
     let targetUrl;
     try {
+        // 解码 'url' 参数得到原始地址
         targetUrl = decodeURIComponent(targetUrlEncoded);
-        // Basic validation
+        // 简单检查一下是不是 http:// 或 https:// 开头
         if (!targetUrl.startsWith('http://') && !targetUrl.startsWith('https://')) {
             throw new Error('Invalid protocol');
         }
     } catch (e) {
+        // 如果 'url' 参数格式不对，返回错误
         return new Response('Invalid or malformed "url" query parameter', { status: 400, headers: corsHeaders });
     }
+
+    // --- 开始准备访问原始地址 ---
+
+    // 设置一个超时时间，单位是毫秒 (比如 15000 毫秒 = 15 秒)
+    const FETCH_TIMEOUT_MS = 15000;
+
+    // 创建一个 AbortController，它可以用来“取消”fetch 请求
+    const controller = new AbortController();
+
+    // 设置一个定时器 (闹钟)
+    // 如果 FETCH_TIMEOUT_MS 时间到了，fetch 还没完成，就调用 controller.abort() 来取消它
+    const timeoutId = setTimeout(() => {
+        console.log(`Fetch timeout triggered for ${targetUrl} after ${FETCH_TIMEOUT_MS}ms`);
+        controller.abort(); // 发出取消信号
+    }, FETCH_TIMEOUT_MS);
 
     try {
         console.log(`Worker proxying request for: ${targetUrl}`);
 
-        // Important: Create a new Request object to avoid passing Cloudflare-specific headers
-        // to the target server. Only pass essential headers if needed (like Range).
+        // 准备发给原始服务器的请求头
         const proxyRequestHeaders = new Headers();
-        const rangeHeader = request.headers.get('Range');
+        const rangeHeader = request.headers.get('Range'); // 检查浏览器是否请求了部分内容 (视频拖动时常用)
         if (rangeHeader) {
-            proxyRequestHeaders.set('Range', rangeHeader);
+            proxyRequestHeaders.set('Range', rangeHeader); // 如果有，就把它也发给原始服务器
             console.log(`Passing Range header: ${rangeHeader}`);
         }
-        // Add User-Agent if needed, some servers are picky
+        // 你可以按需添加 User-Agent 头，有些服务器会检查这个
         // proxyRequestHeaders.set('User-Agent', 'MyM3UPlayerProxy/1.0');
 
+        // --- 执行 fetch 请求，去访问原始地址 ---
+        // 注意：这里加了 signal: controller.signal
         const originResponse = await fetch(targetUrl, {
-             method: request.method, // Usually GET for HLS
+             method: request.method, // 通常是 GET
              headers: proxyRequestHeaders,
-             redirect: 'follow' // Follow redirects from the origin server
+             redirect: 'follow', // 自动跟随原始服务器的重定向
+             signal: controller.signal // 把取消信号关联到 fetch 请求
         });
 
+        // !!! 重要：如果 fetch 成功在超时前返回了，我们要立刻清除刚才设置的定时器 (取消闹钟)
+        clearTimeout(timeoutId);
 
-        // Check if the fetch was successful
+        // 检查从原始服务器获取的响应是不是成功的 (比如状态码是不是 200 OK)
         if (!originResponse.ok) {
             console.error(`Proxy target fetch failed for ${targetUrl} with status: ${originResponse.status}`);
-            // Relay the error status, but use our CORS headers
+            // 如果原始服务器返回了错误 (如 404 Not Found, 500 Internal Server Error)
+            // 我们就把这个错误状态和内容转发给浏览器，但加上我们自己的 CORS 头
             return new Response(originResponse.body, {
                  status: originResponse.status,
                  statusText: originResponse.statusText,
-                 headers: corsHeaders // Return CORS headers even on error
+                 headers: corsHeaders // 确保错误响应也有 CORS 头
             });
         }
 
-        // --- Response Header Handling ---
-        const responseHeaders = new Headers(corsHeaders);
+        // --- 处理来自原始服务器的成功响应 ---
+        const responseHeaders = new Headers(corsHeaders); // 准备返回给浏览器的响应头，先加上 CORS
 
-        // Copy relevant headers from the origin response
+        // 把原始响应的重要头信息复制过来
         const contentType = originResponse.headers.get('Content-Type');
         if (contentType) {
-            responseHeaders.set('Content-Type', contentType);
+            responseHeaders.set('Content-Type', contentType); // 复制内容类型 (比如 'application/vnd.apple.mpegurl' 或 'video/MP2T')
         }
         const contentLength = originResponse.headers.get('Content-Length');
         if (contentLength) {
-            responseHeaders.set('Content-Length', contentLength);
+            responseHeaders.set('Content-Length', contentLength); // 复制内容长度
         }
          const contentRange = originResponse.headers.get('Content-Range');
         if (contentRange) {
-            responseHeaders.set('Content-Range', contentRange);
+            responseHeaders.set('Content-Range', contentRange); // 复制部分内容的范围信息
         }
-        // Copy caching headers if desired
-        // const cacheControl = originResponse.headers.get('Cache-Control');
-        // if (cacheControl) responseHeaders.set('Cache-Control', cacheControl);
-        // const etag = originResponse.headers.get('ETag');
-        // if (etag) responseHeaders.set('ETag', etag);
-        // const lastModified = originResponse.headers.get('Last-Modified');
-        // if (lastModified) responseHeaders.set('Last-Modified', lastModified);
+        // 可以根据需要复制其他头，比如缓存相关的
 
-        // --- M3U8 Manifest Rewriting ---
-        // Check if the content type indicates an M3U8 file
+        // --- M3U8 文件内容重写 ---
+        // 检查内容类型是不是 M3U8 文件
         if (contentType && (contentType.includes('application/vnd.apple.mpegurl') || contentType.includes('application/x-mpegURL') || contentType.includes('audio/mpegurl'))) {
              console.log(`Detected M3U8 content type for ${targetUrl}. Rewriting URLs.`);
-             const m3uText = await originResponse.text(); // Read the body as text
-             const rewrittenM3u = rewriteM3uUrls(m3uText, targetUrl, requestUrl.origin + '/api/proxy'); // Pass base URL and proxy path
-             // Return the modified text
+             const m3uText = await originResponse.text(); // 把 M3U8 文件内容读成文本
+             // 调用 rewriteM3uUrls 函数 (这个函数你之前应该已经有了) 来修改里面的 URL
+             const rewrittenM3u = rewriteM3uUrls(m3uText, targetUrl, requestUrl.origin + '/api/proxy');
+             // 把修改后的 M3U8 文本返回给浏览器
              return new Response(rewrittenM3u, {
-                 status: originResponse.status,
+                 status: originResponse.status, // 保持原始的状态码 (通常是 200)
                  statusText: originResponse.statusText,
-                 headers: responseHeaders // Use the headers we constructed (with updated Content-Length if needed, though often omitted for dynamic content)
+                 headers: responseHeaders // 使用我们构造好的响应头
              });
         } else {
-            // --- Direct Proxy for other content (like TS segments) ---
-            // Stream the response body directly
+            // --- 对于非 M3U8 内容 (比如 .ts 视频片段) ---
+            // 直接把原始服务器的响应体 (body) 返回给浏览器，不做修改
             return new Response(originResponse.body, {
                 status: originResponse.status,
                 statusText: originResponse.statusText,
-                headers: responseHeaders
+                headers: responseHeaders // 使用我们构造好的响应头
             });
         }
 
     } catch (error) {
-        console.error(`Error during proxy request for ${targetUrl}: ${error.message}\n${error.stack}`);
-        return new Response('Proxy internal error', { status: 500, headers: corsHeaders });
+        // --- 错误处理 ---
+        // 如果在上面的 try 块中发生了任何错误 (包括 fetch 被取消)
+
+        // 同样，先确保清除定时器，以防万一错误发生在 fetch 之前或之后但定时器还在跑
+        clearTimeout(timeoutId);
+
+        // 检查错误是不是因为我们的“闹钟”响了 (超时导致 fetch 被取消)
+        if (error.name === 'AbortError') {
+            // 如果是 AbortError，说明是超时了
+            console.error(`Proxy fetch aborted for ${targetUrl} due to timeout.`);
+            // 返回一个 504 Gateway Timeout 错误给浏览器，这是表示“上游服务器超时”的标准状态码
+            return new Response('Gateway Timeout: Origin server did not respond in time.', {
+                status: 504,
+                headers: corsHeaders // 错误响应也要带 CORS 头
+            });
+        } else {
+            // 如果是其他类型的错误 (比如网络连接问题、DNS 解析失败、代码本身逻辑错误等)
+            console.error(`Error during proxy request for ${targetUrl}: ${error.message}\n${error.stack}`);
+            // 返回一个通用的服务器错误，比如 502 Bad Gateway (表示代理服务器无法从上游获取有效响应)
+            // 或者用 500 Internal Server Error 也可以
+            return new Response('Bad Gateway: Error fetching from origin server.', {
+                 status: 502,
+                 headers: corsHeaders // 错误响应也要带 CORS 头
+            });
+            // 或者: return new Response('Proxy internal error', { status: 500, headers: corsHeaders });
+        }
     }
 }
+
+
+
 
 
 // --- M3U8 Rewriting Helper Function ---
