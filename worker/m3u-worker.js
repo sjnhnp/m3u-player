@@ -228,23 +228,82 @@ function rewriteM3uUrls(m3uText, baseUrl, proxyPrefix) {
 
 
 // --- Existing Handler Functions (handleListSubscriptions, etc.) remain unchanged ---
-// Make sure they also use the `corsHeaders` constant.
+// --- Handler Functions (添加 CORS 头部) ---
+
 async function handleListSubscriptions(env) {
-    // ... (existing code)
-     const headers = { ...corsHeaders, 'Content-Type': 'application/json' };
-     return new Response(JSON.stringify(subscriptions), { headers: headers, status: 200 });
-    // ... (error handling with corsHeaders)
+    if (!env.SUBS_KV) {
+         return new Response('KV Namespace not bound.', { status: 500, headers: corsHeaders }); // 添加 CORS 头
+    }
+    try {
+        // ... (原有逻辑不变) ...
+        const listResult = await env.SUBS_KV.list();
+        const subscriptions = [];
+        for (const key of listResult.keys) {
+             const url = await env.SUBS_KV.get(key.name);
+             if (url) {
+                 subscriptions.push({ id: key.name, url: url });
+             }
+        }
+        // 将 CORS 头和 Content-Type 合并
+        const headers = { ...corsHeaders, 'Content-Type': 'application/json' };
+        return new Response(JSON.stringify(subscriptions), {
+            headers: headers,
+            status: 200,
+        });
+    } catch (error) {
+         console.error("Error listing subscriptions from KV:", error);
+         return new Response('Failed to list subscriptions', { status: 500, headers: corsHeaders }); // 添加 CORS 头
+    }
 }
 
 async function handleAddSubscription(request, env) {
-    // ... (existing code)
-     const headers = { ...corsHeaders, 'Content-Type': 'application/json' };
-     return new Response(JSON.stringify({ id: id, url: urlToAdd }), { status: 201, headers: headers });
-    // ... (error handling with corsHeaders)
+     if (!env.SUBS_KV) {
+         return new Response('KV Namespace not bound.', { status: 500, headers: corsHeaders }); // 添加 CORS 头
+    }
+    try {
+        const body = await request.json();
+        const urlToAdd = body?.url;
+        const headers = { ...corsHeaders, 'Content-Type': 'application/json' }; // 合并头
+
+        if (!urlToAdd || typeof urlToAdd !== 'string' || !urlToAdd.startsWith('http')) {
+            return new Response(JSON.stringify({ error: 'Invalid or missing URL in request body.' }), {
+                 status: 400,
+                 headers: headers
+             });
+        }
+
+        const id = crypto.randomUUID();
+        await env.SUBS_KV.put(id, urlToAdd);
+
+        return new Response(JSON.stringify({ id: id, url: urlToAdd }), {
+            status: 201,
+            headers: headers,
+        });
+    } catch (error) {
+         console.error("Error adding subscription:", error);
+         const headers = { ...corsHeaders, 'Content-Type': 'application/json' }; // 合并头
+         if (error instanceof SyntaxError) {
+              return new Response(JSON.stringify({ error: 'Invalid JSON format in request body.' }), { status: 400, headers: headers });
+         }
+         return new Response('Failed to add subscription', { status: 500, headers: corsHeaders }); // 添加 CORS 头
+    }
 }
 
 async function handleDeleteSubscription(id, env) {
-     // ... (existing code)
-     return new Response(null, { status: 204, headers: corsHeaders });
-    // ... (error handling with corsHeaders)
+     if (!env.SUBS_KV) {
+         return new Response('KV Namespace not bound.', { status: 500, headers: corsHeaders }); // 添加 CORS 头
+    }
+    try {
+        const exists = await env.SUBS_KV.get(id);
+        if (exists === null) {
+             return new Response('Subscription not found', { status: 404, headers: corsHeaders }); // 添加 CORS 头
+        }
+
+        await env.SUBS_KV.delete(id);
+        // 对于 204 No Content 响应，通常也需要 CORS 头
+        return new Response(null, { status: 204, headers: corsHeaders });
+    } catch (error) {
+         console.error(`Error deleting subscription ${id}:`, error);
+         return new Response('Failed to delete subscription', { status: 500, headers: corsHeaders }); // 添加 CORS 头
+    }
 }
