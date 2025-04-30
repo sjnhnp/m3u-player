@@ -1,43 +1,673 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
 <head>
-    <title>M3U Player</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>M3U 播放器</title>
     <style>
-        /* Basic Styling */
-        body { font-family: sans-serif; display: flex; gap: 20px; }
-        #sidebar, #main { display: flex; flex-direction: column; }
-        #subscriptionList, #channelList { list-style: none; padding: 0; margin: 5px 0; max-height: 300px; overflow-y: auto; border: 1px solid #ccc; min-width: 200px; }
-        #subscriptionList li, #channelList li { padding: 5px; cursor: pointer; border-bottom: 1px solid #eee; }
-        #subscriptionList li:hover, #channelList li:hover { background-color: #f0f0f0; }
-        #subscriptionList li.selected, #channelList li.selected { background-color: #d0e0ff; }
-        #videoContainer { border: 1px solid black; }
-        #videoPlayer { max-width: 640px; max-height: 480px; background-color: #000; }
-        #status { margin-top: 10px; color: grey; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            display: flex;
+            flex-wrap: wrap; /* Allow wrapping on smaller screens */
+            gap: 20px;
+            padding: 15px;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+        h2 {
+            width: 100%;
+            margin-bottom: 10px;
+            color: #555;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 5px;
+        }
+        #sidebar, #main {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        #sidebar {
+            flex: 1; /* Take up available space */
+            min-width: 250px; /* Minimum width */
+        }
+        #main {
+            flex: 2; /* Take up more space */
+            min-width: 300px;
+        }
+        #addSubscriptionArea, #subscriptionArea, #channelArea, #videoArea {
+            background-color: #fff;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h3 {
+            margin-top: 0;
+            margin-bottom: 10px;
+            color: #444;
+        }
+        input[type="url"], button {
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 1em;
+        }
+        input[type="url"] {
+            width: calc(100% - 22px); /* Account for padding and border */
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+            border: none;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        button:disabled {
+            background-color: #aaa;
+            cursor: not-allowed;
+        }
+        #subscriptionList, #channelList {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            max-height: 250px; /* Limit height */
+            overflow-y: auto; /* Add scrollbar if needed */
+            border: 1px solid #eee;
+            border-radius: 4px;
+        }
+        #subscriptionList li, #channelList li {
+            padding: 8px 12px;
+            cursor: pointer;
+            border-bottom: 1px solid #eee;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            transition: background-color 0.2s ease;
+        }
+        #subscriptionList li:last-child, #channelList li:last-child {
+            border-bottom: none;
+        }
+        #subscriptionList li:hover, #channelList li:hover {
+            background-color: #f0f0f0;
+        }
+        #subscriptionList li.selected, #channelList li.selected {
+            background-color: #d0e0ff;
+            font-weight: bold;
+        }
+        #videoContainer {
+            background-color: #000;
+            border-radius: 4px;
+            overflow: hidden; /* Ensure video stays within bounds */
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            position: relative; /* For potential future overlays */
+             /* Maintain aspect ratio (16:9) */
+            width: 100%;
+            padding-top: 56.25%; /* 16:9 Aspect Ratio (divide 9 by 16 = 0.5625) */
+            height: 0;
+        }
+        #videoPlayer {
+           /* Make video fill the container */
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none; /* Remove default border */
+        }
+        #status {
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #e9ecef;
+            border-radius: 4px;
+            color: #495057;
+            font-size: 0.9em;
+            min-height: 1.5em; /* Prevent layout shift */
+        }
+        .error {
+            color: #dc3545;
+            font-weight: bold;
+        }
+        .success {
+             color: #28a745;
+             font-weight: bold;
+        }
+        .loading {
+            color: #007bff;
+            font-style: italic;
+        }
+        /* Basic responsiveness */
+        @media (max-width: 768px) {
+            body {
+                flex-direction: column;
+            }
+            #sidebar, #main {
+                width: 100%;
+            }
+        }
     </style>
-    <!-- Include HLS.js library -->
+    <!-- 引入 HLS.js 库 -->
     <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 </head>
 <body>
+    <h2>M3U 播放器</h2>
+
     <div id="sidebar">
-        <h2>Subscriptions</h2>
-        <ul id="subscriptionList">
-            <!-- Subscription items will be loaded here -->
-        </ul>
-        <h2>Channels</h2>
-        <ul id="channelList">
-            <!-- Channel items will be loaded here -->
-        </ul>
-        <div id="status"></div>
-    </div>
-    <div id="main">
-        <h2>Player</h2>
-        <div id="videoContainer">
-            <video id="videoPlayer" controls></video>
+        <div id="addSubscriptionArea">
+            <h3>添加订阅</h3>
+            <input type="url" id="subUrlInput" placeholder="输入 M3U/M3U8 订阅 URL" required>
+            <button id="addSubscriptionBtn">添加</button>
         </div>
+
+        <div id="subscriptionArea">
+            <h3>我的订阅</h3>
+            <ul id="subscriptionList">
+                <!-- 订阅列表将在这里加载 -->
+            </ul>
+        </div>
+
+        <div id="channelArea">
+            <h3>频道列表</h3>
+            <ul id="channelList">
+                <!-- 频道列表将在这里加载 -->
+                <li>请先选择一个订阅</li>
+            </ul>
+        </div>
+
+         <div id="status">请先添加或选择一个订阅</div>
+    </div>
+
+    <div id="main">
+         <div id="videoArea">
+             <h3>播放器</h3>
+             <div id="videoContainer">
+                 <video id="videoPlayer" controls playsinline></video>
+                 <!-- playsinline is useful on mobile -->
+             </div>
+         </div>
     </div>
 
     <script>
-        // --- Javascript code from below goes here ---
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- 获取页面元素 ---
+            const subscriptionListElement = document.getElementById('subscriptionList');
+            const channelListElement = document.getElementById('channelList');
+            const videoElement = document.getElementById('videoPlayer');
+            const statusElement = document.getElementById('status');
+            const subUrlInput = document.getElementById('subUrlInput');
+            const addSubscriptionBtn = document.getElementById('addSubscriptionBtn');
+
+            // --- 全局变量 ---
+            let hls = null; // HLS.js 实例
+            let currentSubscriptions = []; // 存储从 Worker 获取的订阅 {id: '...', url: '...'}
+            let currentChannels = []; // 存储解析后的频道 {name: '..', url: '..', ...}
+            let selectedSubscriptionUrl = null;
+            let selectedChannelUrl = null;
+            const workerApiBase = '/api'; // Worker API 的基础路径 (相对于当前域名)
+
+            // --- 1. 初始化视频播放器 (HLS.js) ---
+            function setupHls() {
+                if (Hls.isSupported()) {
+                    console.log("HLS.js is supported. Initializing...");
+                    hls = new Hls({
+                        // 你可以在这里添加 HLS.js 的配置选项
+                        // enableWorker: true, // 尝试开启 Web Worker 提高性能
+                        // lowLatencyMode: true, // 如果是低延迟流可以尝试开启
+                    });
+                    hls.attachMedia(videoElement);
+
+                    // 监听 HLS.js 错误事件
+                    hls.on(Hls.Events.ERROR, function (event, data) {
+                        console.error('HLS Error:', event, data);
+                        setStatus(`播放错误: ${data.details || data.type}`, 'error');
+                        if (data.fatal) {
+                            switch (data.type) {
+                                case Hls.ErrorTypes.NETWORK_ERROR:
+                                    setStatus(`网络错误: ${data.details}. 正在尝试恢复...`, 'error');
+                                    // 可以在这里尝试恢复，或者提示用户检查网络/链接
+                                    // hls.startLoad();
+                                    break;
+                                case Hls.ErrorTypes.MEDIA_ERROR:
+                                    setStatus(`媒体错误: ${data.details}. 尝试恢复...`, 'error');
+                                    // hls.recoverMediaError();
+                                    break;
+                                default:
+                                    // 无法恢复的错误
+                                    setStatus(`严重错误: ${data.details}. 停止播放.`, 'error');
+                                    // hls.destroy(); // 可以选择销毁实例
+                                    break;
+                            }
+                        } else {
+                             setStatus(`播放警告: ${data.details || data.type}`, 'warning'); // 用 warning 样式或普通样式
+                        }
+                    });
+
+                     hls.on(Hls.Events.MANIFEST_PARSED, function() {
+                        console.log("HLS Manifest parsed, attempting to play.");
+                        setStatus("准备播放...", 'loading');
+                        videoElement.play().catch(e => {
+                            console.error("Autoplay failed:", e);
+                            setStatus("播放器已加载，请手动点击播放按钮", 'info'); // 用普通样式
+                        });
+                    });
+                     hls.on(Hls.Events.FRAG_LOADED, function() {
+                         // 可以更新状态为正在缓冲或播放中
+                         if (videoElement.paused) {
+                             setStatus("已加载，请点击播放", 'info');
+                         } else if (videoElement.seeking) {
+                             setStatus("跳转中...", 'loading');
+                         }
+                          else if (videoElement.readyState >= 3 ) { // HAVE_FUTURE_DATA or HAVE_ENOUGH_DATA
+                             setStatus("播放中...", 'success');
+                         } else {
+                              setStatus("缓冲中...", 'loading');
+                         }
+                    });
+
+                } else if (videoElement.canPlayType('application/vnd.apple.mpegurl')) {
+                    // 浏览器原生支持 HLS (例如 Safari)
+                    console.log("Using native HLS support.");
+                    videoElement.addEventListener('error', (e) => {
+                        console.error("Native HLS Error:", videoElement.error);
+                        setStatus(`播放错误: ${videoElement.error?.message || '未知原生 HLS 错误'}`, 'error');
+                    });
+                     videoElement.addEventListener('loadedmetadata', () => {
+                         setStatus("准备播放...", 'loading');
+                         videoElement.play().catch(e => {
+                             console.error("Autoplay failed:", e);
+                             setStatus("播放器已加载，请手动点击播放按钮", 'info');
+                        });
+                     });
+                      videoElement.addEventListener('playing', () => setStatus("播放中...", 'success'));
+                      videoElement.addEventListener('waiting', () => setStatus("缓冲中...", 'loading'));
+                      videoElement.addEventListener('seeking', () => setStatus("跳转中...", 'loading'));
+
+                } else {
+                    setStatus("此浏览器不支持 HLS 播放。", 'error');
+                    console.error("HLS not supported");
+                }
+            }
+
+            // --- 2. 加载指定的视频流 ---
+            function loadVideoStream(streamUrl) {
+                if (!streamUrl) {
+                    setStatus("无效的频道链接", 'error');
+                    return;
+                }
+                console.log(`Attempting to load stream: ${streamUrl}`);
+                setStatus(`正在加载频道: ${streamUrl.split('/').pop()}`, 'loading');
+                selectedChannelUrl = streamUrl;
+                highlightSelectedItem(channelListElement, streamUrl); // 高亮选中频道
+
+                // 清空之前的视频源，停止播放
+                videoElement.pause();
+                videoElement.removeAttribute('src'); // 清除原生 HLS 的 src
+                if (hls) {
+                    hls.stopLoad(); // 停止 HLS.js 加载
+                    hls.detachMedia(); // 解绑，防止旧数据干扰
+                    hls.attachMedia(videoElement); // 重新绑定
+                }
+
+                // 使用 HLS.js 加载
+                if (hls) {
+                    console.log(`HLS.js loading source: ${streamUrl}`);
+                    hls.loadSource(streamUrl);
+                }
+                // 使用原生 HLS 加载
+                else if (videoElement.canPlayType('application/vnd.apple.mpegurl')) {
+                    console.log(`Native HLS loading source: ${streamUrl}`);
+                    videoElement.src = streamUrl;
+                    videoElement.load(); // 开始加载
+                } else {
+                    setStatus("无法播放此流：不支持 HLS。", 'error');
+                }
+            }
+
+            // --- 3. 从 Worker 获取订阅列表 ---
+            async function fetchSubscriptions() {
+                setStatus("正在加载订阅列表...", 'loading');
+                subscriptionListElement.innerHTML = '<li>加载中...</li>'; // 显示加载提示
+                try {
+                    const response = await fetch(`${workerApiBase}/subscriptions`);
+                    if (!response.ok) {
+                        throw new Error(`获取订阅失败: ${response.status} ${response.statusText}`);
+                    }
+                    currentSubscriptions = await response.json();
+                    renderSubscriptionList();
+                    if (currentSubscriptions.length === 0) {
+                         setStatus("还没有添加任何订阅。");
+                    } else {
+                         setStatus("订阅列表加载成功。请选择一个订阅。");
+                    }
+                } catch (error) {
+                    console.error('Error fetching subscriptions:', error);
+                    setStatus(`加载订阅列表出错: ${error.message}`, 'error');
+                    subscriptionListElement.innerHTML = `<li>加载错误</li>`;
+                }
+            }
+
+            // --- 4. 渲染订阅列表到页面 ---
+            function renderSubscriptionList() {
+                subscriptionListElement.innerHTML = ''; // 清空旧列表
+                if (currentSubscriptions.length === 0) {
+                    subscriptionListElement.innerHTML = '<li>还没有添加订阅</li>';
+                    return;
+                }
+                currentSubscriptions.forEach(sub => {
+                    const li = document.createElement('li');
+                    // 尝试从 URL 获取一个简单的名字，否则显示完整 URL
+                    let name = sub.url.substring(sub.url.lastIndexOf('/') + 1);
+                    if (!name || name.length > 50) name = sub.url; // 如果名字太长或无效，显示URL
+                    li.textContent = name;
+                    li.title = sub.url; // 鼠标悬停显示完整 URL
+                    li.dataset.url = sub.url; // 将 URL 存储在 data 属性中
+                    li.dataset.id = sub.id; // 存储 ID
+
+                    // 添加点击事件监听器
+                    li.addEventListener('click', () => {
+                        if (selectedSubscriptionUrl === sub.url) return; // 避免重复加载
+                        selectedSubscriptionUrl = sub.url;
+                        highlightSelectedItem(subscriptionListElement, sub.url); // 高亮选中的订阅
+                        fetchAndParseM3u(sub.url); // 加载并解析此订阅的频道
+                    });
+
+                    // 添加删除按钮 (可选)
+                    const deleteBtn = document.createElement('button');
+                    deleteBtn.textContent = '删除';
+                    deleteBtn.style.marginLeft = '10px';
+                    deleteBtn.style.padding = '2px 5px';
+                    deleteBtn.style.fontSize = '0.8em';
+                    deleteBtn.style.backgroundColor = '#dc3545';
+                    deleteBtn.onclick = async (event) => {
+                        event.stopPropagation(); // 阻止事件冒泡到 li 的点击事件
+                        if (confirm(`确定要删除订阅 "${name}" 吗？`)) {
+                           await deleteSubscription(sub.id);
+                        }
+                    };
+                    li.appendChild(deleteBtn); // 将按钮添加到列表项
+
+                    subscriptionListElement.appendChild(li);
+                });
+                 // 如果之前有选中的订阅URL，尝试重新高亮
+                 if (selectedSubscriptionUrl) {
+                     highlightSelectedItem(subscriptionListElement, selectedSubscriptionUrl);
+                 }
+            }
+
+            // --- 5. 添加新的订阅 ---
+            async function addSubscription(url) {
+                if (!url || !url.startsWith('http')) {
+                    setStatus("请输入有效的 M3U/M3U8 URL。", 'error');
+                    return;
+                }
+                setStatus("正在添加订阅...", 'loading');
+                addSubscriptionBtn.disabled = true; // 禁用按钮防止重复提交
+
+                try {
+                    const response = await fetch(`${workerApiBase}/subscriptions`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ url: url }),
+                    });
+
+                    if (!response.ok) {
+                         const errorData = await response.json().catch(() => ({})); // 尝试解析错误信息
+                         throw new Error(`添加失败: ${response.status} ${response.statusText} ${errorData.error || ''}`);
+                    }
+
+                    const newSubscription = await response.json();
+                    setStatus(`订阅 "${newSubscription.url.split('/').pop()}" 添加成功!`, 'success');
+                    subUrlInput.value = ''; // 清空输入框
+                    fetchSubscriptions(); // 刷新订阅列表
+
+                } catch (error) {
+                    console.error('Error adding subscription:', error);
+                    setStatus(`添加订阅出错: ${error.message}`, 'error');
+                } finally {
+                    addSubscriptionBtn.disabled = false; // 重新启用按钮
+                }
+            }
+
+             // --- 6. 删除订阅 ---
+             async function deleteSubscription(id) {
+                 if (!id) return;
+                 setStatus(`正在删除订阅 ${id}...`, 'loading');
+                 try {
+                     const response = await fetch(`${workerApiBase}/subscriptions/${id}`, {
+                         method: 'DELETE',
+                     });
+                     if (!response.ok) {
+                         // Cloudflare Worker DELETE 成功通常返回 204 No Content，这里也处理其他可能的错误
+                         if (response.status === 204) {
+                              // 正常删除
+                         } else {
+                             const errorData = await response.json().catch(() => ({}));
+                             throw new Error(`删除失败: ${response.status} ${response.statusText} ${errorData.error || ''}`);
+                         }
+                     }
+                     setStatus(`订阅 ${id} 已删除。`, 'success');
+                     // 如果删除的是当前选中的订阅，清空频道列表和播放器
+                     const deletedSub = currentSubscriptions.find(s => s.id === id);
+                     if(deletedSub && selectedSubscriptionUrl === deletedSub.url) {
+                         selectedSubscriptionUrl = null;
+                         currentChannels = [];
+                         renderChannelList(); // 清空频道列表显示
+                         videoElement.pause();
+                         videoElement.removeAttribute('src');
+                         if (hls) hls.stopLoad();
+                     }
+                     fetchSubscriptions(); // 重新加载订阅列表
+                 } catch (error) {
+                     console.error(`Error deleting subscription ${id}:`, error);
+                     setStatus(`删除订阅出错: ${error.message}`, 'error');
+                 }
+             }
+
+
+            // --- 7. 获取并解析 M3U 文件内容 ---
+            async function fetchAndParseM3u(m3uUrl) {
+                if (!m3uUrl) return;
+                const subName = m3uUrl.split('/').pop();
+                setStatus(`正在加载 "${subName}" 的频道列表...`, 'loading');
+                channelListElement.innerHTML = '<li>加载中...</li>'; // 显示加载提示
+                currentChannels = []; // 清空旧频道
+
+                // 清空播放器
+                videoElement.pause();
+                videoElement.removeAttribute('src');
+                selectedChannelUrl = null; // 清除选中的频道URL
+                if (hls) hls.stopLoad();
+
+                try {
+                    // !!! 关键步骤: 直接从浏览器 fetch M3U URL !!!
+                    // 这要求 M3U 文件所在的服务器必须配置正确的 CORS 跨域头
+                    // (Access-Control-Allow-Origin: * 或 你的 Pages 域名)
+                    // 否则浏览器会阻止此请求，并在控制台显示 CORS 错误。
+                    console.log(`Fetching M3U content directly from: ${m3uUrl}`);
+                    const response = await fetch(m3uUrl, { mode: 'cors' }); // 明确请求 CORS 模式
+
+                    if (!response.ok) {
+                        // 特别提示 CORS 错误可能性
+                        if (response.status === 0 || response.type === 'opaque' || response.type === 'opaqueredirect' ) {
+                             throw new Error(`网络或 CORS 错误，无法加载 M3U。请检查浏览器控制台获取详细信息。服务器 (${new URL(m3uUrl).hostname}) 可能需要设置 Access-Control-Allow-Origin 头。`);
+                        }
+                        throw new Error(`获取 M3U 文件失败: ${response.status} ${response.statusText}`);
+                    }
+
+                    const m3uText = await response.text();
+                    console.log("M3U content fetched successfully. Parsing...");
+                    parseM3uContent(m3uText); // 解析获取到的文本内容
+                    if (currentChannels.length > 0) {
+                         setStatus(`"${subName}" 的频道列表加载成功。请选择一个频道播放。`);
+                    } else {
+                         setStatus(`"${subName}" 中没有找到有效的频道，或者解析失败。`, 'warning');
+                    }
+                } catch (error) {
+                    console.error('Error fetching or parsing M3U:', error);
+                    setStatus(`加载频道列表出错: ${error.message}`, 'error');
+                    channelListElement.innerHTML = `<li>加载错误: ${error.message}</li>`;
+                }
+            }
+
+            // --- 8. 解析 M3U 文本内容 ---
+            function parseM3uContent(m3uText) {
+                currentChannels = []; // 重置频道列表
+                const lines = m3uText.split('\n');
+                let currentChannelInfo = null;
+
+                if (!lines[0].toUpperCase().startsWith('#EXTM3U')) {
+                    console.warn("Warning: M3U file doesn't start with #EXTM3U. Parsing might be incomplete.");
+                    // 即使没有标准头，也尝试解析
+                }
+
+                for (let i = 0; i < lines.length; i++) {
+                    const line = lines[i].trim();
+
+                    if (line.startsWith('#EXTINF:')) {
+                        currentChannelInfo = { name: '', logo: '', group: '', url: '', rawExtinf: line };
+                        const infoLine = line.substring(8); // 移除 '#EXTINF:'
+                        const commaIndex = infoLine.indexOf(',');
+                        if (commaIndex !== -1) {
+                            const attributesPart = infoLine.substring(0, commaIndex);
+                            currentChannelInfo.name = infoLine.substring(commaIndex + 1).trim();
+                            // 尝试解析常见属性 (使用简单的匹配)
+                            const logoMatch = attributesPart.match(/tvg-logo="([^"]*)"/i);
+                            if (logoMatch) currentChannelInfo.logo = logoMatch[1];
+                            const groupMatch = attributesPart.match(/group-title="([^"]*)"/i);
+                            if (groupMatch) currentChannelInfo.group = groupMatch[1];
+                             const idMatch = attributesPart.match(/tvg-id="([^"]*)"/i);
+                             if (idMatch) currentChannelInfo.id = idMatch[1];
+                        } else {
+                            // 如果没有逗号，可能只有时长或属性，名字在后面？
+                             currentChannelInfo.name = infoLine.trim(); // 暂时设为这个
+                             console.warn(`Parsing EXTINF line without comma, name might be incorrect: ${line}`);
+                        }
+                    } else if (currentChannelInfo && line && !line.startsWith('#')) {
+                        // 这应该是流的 URL
+                        currentChannelInfo.url = line;
+                        // 做一个简单的 URL 校验
+                        if (currentChannelInfo.url.startsWith('http://') || currentChannelInfo.url.startsWith('https://') || currentChannelInfo.url.includes('.m3u8') || currentChannelInfo.url.includes('.mpd') || currentChannelInfo.url.includes('.mp4')) {
+                            currentChannels.push(currentChannelInfo);
+                        } else {
+                             console.warn(`Skipping entry. Invalid/missing/unsupported URL found: "${line}" for channel: ${currentChannelInfo.name || 'Unknown'}`);
+                        }
+                        currentChannelInfo = null; // 处理完一个条目，重置
+                    } else if (line.startsWith('#EXTGRP:')) {
+                        // 处理单独的组信息行
+                        if(currentChannelInfo && !currentChannelInfo.group) { // 如果还没解析到组信息
+                             currentChannelInfo.group = line.substring(8).trim();
+                        }
+                    }
+                    // 忽略其他 # 开头的注释行和空行
+                }
+                console.log(`Parsed ${currentChannels.length} channels.`);
+                renderChannelList(); // 渲染解析出的频道列表
+            }
+
+            // --- 9. 渲染频道列表到页面 ---
+            function renderChannelList() {
+                channelListElement.innerHTML = ''; // 清空旧列表
+                if (currentChannels.length === 0) {
+                    channelListElement.innerHTML = '<li>此订阅没有频道或解析失败</li>';
+                    return;
+                }
+
+                // 按分组排序（可选，但用户体验更好）
+                const groupedChannels = currentChannels.reduce((acc, channel) => {
+                    const group = channel.group || '未分组';
+                    if (!acc[group]) acc[group] = [];
+                    acc[group].push(channel);
+                    return acc;
+                }, {});
+
+                // 渲染分组和频道
+                 Object.keys(groupedChannels).sort().forEach(group => {
+                    // 添加分组标题 (可选)
+                    // const groupHeader = document.createElement('li');
+                    // groupHeader.textContent = `--- ${group} ---`;
+                    // groupHeader.style.fontWeight = 'bold';
+                    // groupHeader.style.backgroundColor = '#f8f9fa';
+                    // groupHeader.style.cursor = 'default';
+                    // channelListElement.appendChild(groupHeader);
+
+                    groupedChannels[group].forEach(channel => {
+                        const li = document.createElement('li');
+                        let displayText = channel.name || '未知频道';
+                        // 在名称前加上分组（如果想显示的话）
+                         if(channel.group) displayText = `[${channel.group}] ${displayText}`;
+                        li.textContent = displayText;
+                        li.title = `${channel.name}\nURL: ${channel.url}`; // 鼠标悬停显示名称和 URL
+                        li.dataset.url = channel.url; // 存储流 URL
+
+                        // 添加 Logo (可选)
+                        if (channel.logo) {
+                            const img = document.createElement('img');
+                            img.src = channel.logo;
+                            img.style.width = '20px';
+                            img.style.height = 'auto';
+                            img.style.marginRight = '8px';
+                            img.style.verticalAlign = 'middle';
+                            img.onerror = function() { this.style.display='none'; } // Logo 加载失败则隐藏
+                            li.prepend(img);
+                        }
+
+                        // 添加点击事件监听器
+                        li.addEventListener('click', () => {
+                            if (selectedChannelUrl === channel.url) return; // 避免重复加载同一个流
+                            loadVideoStream(channel.url); // 加载这个频道的流
+                        });
+                        channelListElement.appendChild(li);
+                    });
+                 });
+                  // 如果之前有选中的频道URL，尝试重新高亮
+                  if (selectedChannelUrl) {
+                     highlightSelectedItem(channelListElement, selectedChannelUrl);
+                 }
+            }
+
+            // --- 10. 设置状态/消息显示 ---
+            // type: 'info' (default), 'success', 'error', 'warning', 'loading'
+            function setStatus(message, type = 'info') {
+                console.log(`Status (${type}):`, message);
+                statusElement.textContent = message;
+                statusElement.className = ''; // Reset class
+                statusElement.classList.add(type); // Add specific class for styling
+            }
+
+            // --- 11. 高亮列表中的选中项 ---
+            function highlightSelectedItem(listElement, dataUrl) {
+                // 移除所有项的 'selected' 类
+                Array.from(listElement.children).forEach(item => {
+                    item.classList.remove('selected');
+                });
+                // 给匹配 data-url 的项添加 'selected' 类
+                const selectedItem = listElement.querySelector(`li[data-url="${CSS.escape(dataUrl)}"]`); // 使用 CSS.escape 处理特殊字符
+                if (selectedItem) {
+                    selectedItem.classList.add('selected');
+                }
+            }
+
+            // --- 12. 绑定添加按钮事件 ---
+            addSubscriptionBtn.addEventListener('click', () => {
+                addSubscription(subUrlInput.value.trim());
+            });
+            // 支持回车添加
+            subUrlInput.addEventListener('keypress', (e) => {
+                 if (e.key === 'Enter') {
+                    addSubscription(subUrlInput.value.trim());
+                 }
+            });
+
+
+            // --- 页面初始化 ---
+            setupHls(); // 设置播放器
+            fetchSubscriptions(); // 加载已保存的订阅列表
+
+        });
     </script>
 </body>
 </html>
