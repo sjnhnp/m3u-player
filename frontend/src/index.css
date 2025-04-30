@@ -1,0 +1,266 @@
+/* frontend/src/index.css */
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    display: flex;
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
+    gap: 20px;
+    padding: 15px;
+    background-color: #f4f4f9;
+    color: #333;
+    margin: 0; /* Added to remove default body margin */
+}
+
+h2 {
+    width: 100%;
+    margin-top: 0; /* Added consistency */
+    margin-bottom: 10px;
+    color: #555;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 5px;
+}
+
+#sidebar, #main {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+#sidebar {
+    flex: 1; /* Take up available space */
+    min-width: 250px; /* Minimum width */
+}
+
+#main {
+    flex: 2; /* Take up more space */
+    min-width: 300px;
+}
+
+/* Style for the React root if needed, or general container */
+#root {
+    display: contents; /* Allows flex layout from body to apply */
+}
+
+/* Style the main App container if App.jsx renders one */
+.App {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    width: 100%; /* Ensure it takes full width */
+}
+
+
+#addSubscriptionArea, #subscriptionArea, #channelArea, #videoArea,
+/* Target React component wrappers if they exist or add classes */
+div[class*="AddSubscription"], div[class*="SubscriptionList"], div[class*="Player"], div[class*="ChannelList"] {
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+h3 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    color: #444;
+}
+
+input[type="url"], input[type="text"], button { /* Apply to React inputs too */
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1em;
+    box-sizing: border-box; /* Include padding and border in element's total width and height */
+}
+
+input[type="url"], input[type="text"] { /* Apply to React inputs */
+    width: 100%; /* Make input take full width of its container */
+    /* width: calc(100% - 22px);  <-- Less reliable with box-sizing */
+}
+
+
+button {
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+    border: none;
+    transition: background-color 0.3s ease;
+    width: auto; /* Adjust button width */
+    margin-left: 10px; /* Spacing for buttons next to inputs */
+}
+/* Specific button styling if needed */
+form button[type="submit"] {
+    margin-left: 10px;
+}
+li button { /* Style delete buttons in lists */
+     padding: 5px 10px;
+     font-size: 0.9em;
+     background-color: #dc3545; /* Red for delete */
+}
+
+
+button:hover {
+    background-color: #0056b3;
+}
+li button:hover {
+    background-color: #c82333; /* Darker red on hover */
+}
+
+
+button:disabled {
+    background-color: #aaa;
+    cursor: not-allowed;
+}
+
+#subscriptionList, #channelList, ul[class*="SubscriptionList"], ul[class*="ChannelList"] { /* Target React lists */
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    max-height: 250px; /* Limit height */
+    overflow-y: auto; /* Add scrollbar if needed */
+    border: 1px solid #eee;
+    border-radius: 4px;
+}
+
+#subscriptionList li, #channelList li, ul[class*="List"] li { /* Target React list items */
+    padding: 8px 12px;
+    cursor: pointer;
+    border-bottom: 1px solid #eee;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: background-color 0.2s ease;
+    display: flex; /* Use flex for alignment */
+    justify-content: space-between; /* Space out text and button */
+    align-items: center;
+}
+
+#subscriptionList li:last-child, #channelList li:last-child, ul[class*="List"] li:last-child {
+    border-bottom: none;
+}
+
+#subscriptionList li:hover, #channelList li:hover, ul[class*="List"] li:hover {
+    background-color: #f0f0f0;
+}
+
+#subscriptionList li.selected, #channelList li.selected, ul[class*="List"] li.selected { /* Adjust class name if React uses different selection indication */
+    background-color: #d0e0ff;
+    font-weight: bold;
+}
+
+#videoContainer /* Might need adjustment based on React Player component structure */
+ {
+    background-color: #000;
+    border-radius: 4px;
+    overflow: hidden; /* Ensure video stays within bounds */
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    position: relative; /* For potential future overlays */
+    width: 100%;
+    padding-top: 56.25%; /* 16:9 Aspect Ratio */
+    height: 0;
+}
+
+#videoPlayer, video[class*="Player_video"] /* Target React video element */
+{
+   /* Make video fill the container */
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none; /* Remove default border */
+    display: block; /* Ensure block display */
+}
+
+#status /* Or a dedicated status component's class */
+{
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #e9ecef;
+    border-radius: 4px;
+    color: #495057;
+    font-size: 0.9em;
+    min-height: 1.5em; /* Prevent layout shift */
+    width: 100%; /* Take full width */
+    box-sizing: border-box;
+}
+
+/* Status message types */
+.status-info { /* Default */ }
+.status-error {
+    color: #dc3545;
+    font-weight: bold;
+    background-color: #f8d7da; /* Light red background */
+    border: 1px solid #f5c6cb; /* Red border */
+}
+.status-success {
+     color: #155724; /* Darker green text */
+     font-weight: bold;
+     background-color: #d4edda; /* Light green background */
+     border: 1px solid #c3e6cb; /* Green border */
+}
+.status-loading {
+    color: #004085; /* Darker blue text */
+    font-style: italic;
+    background-color: #cce5ff; /* Light blue background */
+    border: 1px solid #b8daff; /* Blue border */
+}
+.status-warning {
+    color: #856404; /* Darker yellow text */
+    background-color: #fff3cd; /* Light yellow background */
+    border: 1px solid #ffeeba; /* Yellow border */
+}
+
+
+/* Basic responsiveness */
+@media (max-width: 768px) {
+    body, .App { /* Apply to body or main App container */
+        flex-direction: column;
+    }
+    #sidebar, #main {
+        width: 100%; /* Make sidebar/main take full width on small screens */
+        min-width: unset; /* Remove min-width */
+    }
+}
+
+/* Add styles for potential React components if needed */
+.AddSubscription form {
+    display: flex;
+    align-items: center; /* Align input and button */
+}
+
+.AddSubscription input {
+    flex-grow: 1; /* Allow input to take available space */
+    margin-right: 10px; /* Space before button */
+    margin-bottom: 0; /* Remove bottom margin if form handles spacing */
+}
+.AddSubscription button {
+    flex-shrink: 0; /* Prevent button from shrinking */
+    margin-left: 0; /* Remove default margin if flex handles spacing */
+     margin-bottom: 0;
+}
+
+.SubscriptionList ul {
+    /* Inherits from #subscriptionList styles, add specifics if needed */
+}
+
+.SubscriptionList li span { /* Style the text part of the list item if needed */
+    flex-grow: 1;
+    margin-right: 10px; /* Space before delete button */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.Player video {
+    background-color: #000; /* Ensure video background is black */
+    display: block;
+    margin: 0 auto; /* Center video if container allows */
+}
+
+.Player p { /* Style the placeholder text */
+    text-align: center;
+    padding: 20px;
+    color: #666;
+}
