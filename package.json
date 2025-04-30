@@ -3,14 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-
     "dev": "vite --config frontend/vite.config.js",
-
     "build": "vite build --config frontend/vite.config.js",
-
     "preview": "vite preview --config frontend/vite.config.js",
- 
-
     "lint": "eslint frontend/src --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "format": "prettier --write \"frontend/**/*.{js,jsx,ts,tsx,css,md}\""
   },
