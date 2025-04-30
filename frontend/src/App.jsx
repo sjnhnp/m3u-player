@@ -5,7 +5,7 @@ import axios from 'axios';
 import AddSubscription from './components/AddSubscription';
 import SubscriptionList from './components/SubscriptionList';
 import Player from './components/Player';
-import './index.css'; 
+// import './index.css'; 
 
 // 从 Vite 环境变量获取 API 基础 URL
 // 在本地开发时会读取 .env 文件，在 Cloudflare Pages 会读取 Pages 的环境变量设置
