@@ -1,13 +1,43 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8" />
-
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>M3U Player</title>
+    <title>M3U Player</title>
+    <style>
+        /* Basic Styling */
+        body { font-family: sans-serif; display: flex; gap: 20px; }
+        #sidebar, #main { display: flex; flex-direction: column; }
+        #subscriptionList, #channelList { list-style: none; padding: 0; margin: 5px 0; max-height: 300px; overflow-y: auto; border: 1px solid #ccc; min-width: 200px; }
+        #subscriptionList li, #channelList li { padding: 5px; cursor: pointer; border-bottom: 1px solid #eee; }
+        #subscriptionList li:hover, #channelList li:hover { background-color: #f0f0f0; }
+        #subscriptionList li.selected, #channelList li.selected { background-color: #d0e0ff; }
+        #videoContainer { border: 1px solid black; }
+        #videoPlayer { max-width: 640px; max-height: 480px; background-color: #000; }
+        #status { margin-top: 10px; color: grey; }
+    </style>
+    <!-- Include HLS.js library -->
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 </head>
 <body>
-  <div id="root"></div>
-  <script type="module" src="/src/index.jsx"></script>
+    <div id="sidebar">
+        <h2>Subscriptions</h2>
+        <ul id="subscriptionList">
+            <!-- Subscription items will be loaded here -->
+        </ul>
+        <h2>Channels</h2>
+        <ul id="channelList">
+            <!-- Channel items will be loaded here -->
+        </ul>
+        <div id="status"></div>
+    </div>
+    <div id="main">
+        <h2>Player</h2>
+        <div id="videoContainer">
+            <video id="videoPlayer" controls></video>
+        </div>
+    </div>
+
+    <script>
+        // --- Javascript code from below goes here ---
+    </script>
 </body>
 </html>
