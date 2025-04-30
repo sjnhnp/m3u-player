@@ -5,19 +5,15 @@ import path from 'path';
 
 export default defineConfig({
   plugins: [react()],
-  root: path.resolve(__dirname, '..'), // 设置根目录为项目根目录
+  root: path.resolve(__dirname, 'src'), // 改为 src 目录作为项目源码根目录
   build: {
-    outDir: path.resolve(__dirname, '../build'), // 构建输出目录为项目根目录下的 build 文件夹
+    outDir: path.resolve(__dirname, '../dist'), // 输出到 dist 而非 build
     manifest: true,
     assetsInlineLimit: 0,
     cssCodeSplit: true,
     sourcemap: false,
   },
-  resolve: {
-    alias: {
-      '@': path.resolve(__dirname, 'src'),
-    },
-  },
+  publicDir: path.resolve(__dirname, 'public'), // 显式声明 public 目录
   server: {
     port: 3000,
     open: true,
