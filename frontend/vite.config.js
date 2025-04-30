@@ -1,45 +1,31 @@
 // frontend/vite.config.js
-import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react';
-import path from 'path';
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
+import path from 'path'
 
 export default defineConfig({
-  // --- Explicitly set the project root ---
-  // __dirname resolves to the directory containing this config file (frontend/)
-  root: '.', 
-  publicDir: 'frontend/public',
+  // 1. 指定根目录为当前文件所在的 frontend/
+  root: path.resolve(__dirname),
+
+  // 2. 公共静态资源目录，默认会拷到 dist 根下。这里指向 frontend/public
+  publicDir: path.resolve(__dirname, 'public'),
+
+  // 3. 你的插件、别名配置
   plugins: [react()],
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, 'src'),
+    },
+  },
+
+  // 4. 输出目录为 frontend/dist
   build: {
-    // --- Output directory relative to the explicit root ---
-    // Since root is now 'frontend/', 'dist' means '<repo>/frontend/dist'
-    outDir: 'dist',
-    // Ensure the output directory is emptied before building
+    outDir: path.resolve(__dirname, 'dist'),
     emptyOutDir: true,
     manifest: true,
     assetsInlineLimit: 0,
     cssCodeSplit: true,
     sourcemap: false,
-    // No need for rollupOptions.input, Vite will find index.html in the root
   },
-  resolve: {
-    // Alias should still work relative to the config file location (__dirname)
-    alias: {
-      '@': path.resolve(__dirname, 'src'),
-    },
-  },
-  // publicDir is relative to the root by default ('public')
-  // So Vite will look for '<repo>/frontend/public/' for static assets to copy.
-  // Make sure any static assets like favicons are in 'frontend/public/'
-  publicDir: 'public',
+})
 
-  server: { // Server settings are irrelevant for the build process
-    port: 3000,
-    open: true,
-    proxy: {
-      '/api': {
-           target: 'http://127.0.0.1:8787',
-           changeOrigin: true,
-      }
-    },
-  },
-});
