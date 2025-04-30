@@ -12,7 +12,7 @@ if (!rootElement) {
 const root = ReactDOM.createRoot(rootElement);
 
 root.render(
-  // <React.StrictMode> // <-- Commented out or removed
+   <React.StrictMode>
     <App />
-  // </React.StrictMode> // <-- Commented out or removed
-); // <-- Keep the semicolon
+   </React.StrictMode>
+);
