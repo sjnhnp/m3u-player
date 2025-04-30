@@ -10,7 +10,8 @@ import './index.css';
 // 从 Vite 环境变量获取 API 基础 URL
 // 在本地开发时会读取 .env 文件，在 Cloudflare Pages 会读取 Pages 的环境变量设置
 // const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '/api'; // 提供备用 '/api'
-const API_BASE_URL = 'https://m3u-worker.pigpig.workers.dev/api';
+   const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '/api';
+// const API_BASE_URL = 'https://m3u-worker.pigpig.workers.dev/api';
 const App = () => {
   const [subscriptions, setSubscriptions] = useState([]);
   // const [apiBaseUrl, setApiBaseUrl] = useState(''); // 不再需要 state 来存储 base url
