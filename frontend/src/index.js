@@ -12,7 +12,7 @@ if (!rootElement) {
 const root = ReactDOM.createRoot(rootElement);
 
 root.render(
-  <React.StrictMode>
+  // <React.StrictMode> // <-- Commented out or removed
     <App />
-  </React.StrictMode>
-); // <-- Make absolutely sure this semicolon is the VERY LAST character.
+  // </React.StrictMode> // <-- Commented out or removed
+); // <-- Keep the semicolon
