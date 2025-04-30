@@ -18,7 +18,7 @@ export default defineConfig({
 
   build: {
     // 3. 输出到 frontend/dist
-    outDir: 'frontend/dist',
+    outDir: 'dist',
     emptyOutDir: true,
     manifest: true,
     assetsInlineLimit: 0,
