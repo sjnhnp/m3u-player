@@ -1,6 +1,0 @@
-{
-"version": 1,
-"include": ["/api/*"],
-"exclude": [],
-"handler": { "service": "m3u-worker" }
-}
