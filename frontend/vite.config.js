@@ -6,8 +6,8 @@ import path from 'path';
 export default defineConfig({
   // --- Explicitly set the project root ---
   // __dirname resolves to the directory containing this config file (frontend/)
-  root: __dirname,
-
+  root: '.', 
+  publicDir: 'frontend/public',
   plugins: [react()],
   build: {
     // --- Output directory relative to the explicit root ---
