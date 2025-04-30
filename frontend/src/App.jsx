@@ -1,6 +1,6 @@
 // frontend/src/App.jsx
 import React, { useState, useEffect, useRef } from 'react';
-
+import Hls from 'hls.js';
 // 你可以将各部分拆分成子组件，但要确保它们最终渲染出带有正确 ID 的元素
 // 例如: import AddSubscription from './AddSubscription'; // 这个组件需要渲染 <div id="addSubscriptionArea">...</div>
 
