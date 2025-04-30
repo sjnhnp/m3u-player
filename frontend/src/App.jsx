@@ -10,8 +10,16 @@ import Player from './components/Player';
 // 从 Vite 环境变量获取 API 基础 URL
 // 在本地开发时会读取 .env 文件，在 Cloudflare Pages 会读取 Pages 的环境变量设置
 // const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '/api'; // 提供备用 '/api'
-   const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '/api';
+//   const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '/api';
 // const API_BASE_URL = 'https://m3u-worker.pigpig.workers.dev/api';
+
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+console.log('API Base URL used:', API_BASE_URL); // 添加日志
+if (!API_BASE_URL) {
+     console.error("FATAL: VITE_API_BASE_URL is not defined during build!");
+     // 可以在这里抛出错误或显示一个明显的错误消息给用户
+}
+
 const App = () => {
   const [subscriptions, setSubscriptions] = useState([]);
   // const [apiBaseUrl, setApiBaseUrl] = useState(''); // 不再需要 state 来存储 base url
