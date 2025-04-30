@@ -3,9 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev":    "vite",
-    "build":  "vite build",        // 会自动读取根目录下的 vite.config.js
-    "preview":"vite preview"
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "lint": "eslint frontend/src --ext js,jsx --report-unused-disable-directives --max-warnings 0",
+    "format": "prettier --write \"frontend/**/*.{js,jsx,ts,tsx,css,md}\""
   },
   "dependencies": {
     "axios": "^1.4.0",
