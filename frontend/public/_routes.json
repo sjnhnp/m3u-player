@@ -1,10 +1,6 @@
 {
-  "version": 1,
-  "include": ["/api/*"],
-  "exclude": [],
-  "handler": {
-    "worker": {
-      "service": "m3u-worker" // 确保这里的 "m3u-worker" 是你 Worker 的确切名称
-    }
-  }
+"version": 1,
+"include": ["/api/*"],
+"exclude": [],
+"handler": { "service": "m3u-worker" }
 }
