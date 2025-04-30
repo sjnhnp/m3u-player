@@ -4,11 +4,10 @@
   "private": true,
   "scripts": {
     "dev": "vite --config frontend/vite.config.js",
-    "build": "vite build --config frontend/vite.config.js",
-    "preview": "vite preview --config frontend/vite.config.js",
-    "lint": "eslint frontend/src --ext js,jsx --report-unused-disable-directives --max-warnings 0",
-    "format": "prettier --write \"frontend/**/*.{js,jsx,ts,tsx,css,md}\""
+    "build": "vite build --config frontend/vite.config.js && cp -r frontend/public/* dist/",
+    "preview": "vite preview --dist"
   },
+
   "dependencies": {
     "axios": "^1.4.0",
     "hls.js": "^1.4.0",
