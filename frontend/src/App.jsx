@@ -330,7 +330,7 @@ function App() {
 
     // 智能更新状态消息：仅当应用刚加载完成，且之前是加载状态时，设置一个合适的初始提示
     if (status.message.includes("加载中") || status.message.includes("获取固定订阅列表")) {
-        setStatus({ message: merged.length > 0 ? "请选择一个订阅源" : "请添加您的第一个自定义订阅", type: 'info'});
+        setStatus({ message: merged.length > 0 ? "请选择一个订阅源" : "", type: 'info'});
     }
   }, [fixedSubscriptions, userSubscriptions, status.message]); // 依赖项: fixedSubscriptions, userSubscriptions, status.message
 
