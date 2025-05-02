@@ -216,56 +216,89 @@ h3 {
 /* 主要修改 768px 及以下的规则 */
 @media (max-width: 768px) {
   html, body {
-    height: 100%; /* 确保 html 和 body 能撑满屏幕 */
-    overflow: hidden; /* 防止 body 滚动，让 .main-flex 滚动 */
+    height: 100%;
+    overflow: hidden; /* 防止 body 滚动 */
+    margin: 0;
+    padding: 0;
   }
 
-  .main-flex {
+  /* --- 让 .app-root 成为 flex 容器，垂直排列 --- */
+  .app-root {
+    display: flex;
     flex-direction: column;
-    height: 100vh; /* 让 main-flex 占据整个视口高度 */
-    overflow-y: auto; /* 让 main-flex 成为主要的垂直滚动容器 */
-    padding-bottom: 56.25vw; /* 关键：为底部固定的播放器预留空间 (16:9 高度) */
-    /* 如果播放器有其他固定高度或最小高度，需要相应调整这里的 padding */
-    box-sizing: border-box; /* 确保 padding 包含在 height 内 */
-    gap: 0; /* 移除 flex 子元素间隙 */
-    position: relative; /* 可选，如果内部有绝对定位需要 */
+    height: 100vh; /* ★★★ 关键：撑满视口高度 */
+    width: 100%;
+    box-sizing: border-box;
   }
 
+  /* --- .main-flex 现在是可滚动的内容区域 --- */
+  .main-flex {
+    flex: 1 1 auto; /* ★★★ 关键：占据所有剩余空间 */
+    overflow-y: auto; /* ★★★ 关键：自身滚动 */
+    min-height: 0; /* ★★★ 关键：允许 flex item 收缩 */
+    /* 它不再需要 100vh 高度或 padding-bottom */
+    width: 100%;
+    box-sizing: border-box;
+    display: flex; /* 内部仍然用 flex 布局 */
+    flex-direction: column; /* 让 sidebar 内容垂直排列 */
+    gap: 0; /* 移除之前的 gap */
+  }
+
+  /* --- #sidebar 现在是 .main-flex 的直接内容 --- */
   #sidebar {
     width: 100%;
-    min-width: unset; /* 重置桌面端的 min-width */
-    max-width: unset; /* 重置桌面端的 max-width */
-    height: auto; /* 高度由内容决定，会在 .main-flex 内滚动 */
-    overflow-y: visible; /* 不独立滚动，让父级 .main-flex 滚动 */
-    border-right: none; /* 移除右边框 */
-    padding: 10px; /* 可以给边栏一些内边距 */
+    height: auto; /* 高度由内容决定 */
+    min-width: unset;
+    max-width: unset;
+    overflow-y: visible; /* 不滚动，让父级 .main-flex 滚动 */
+    border-right: none;
+    background-color: transparent; /* 背景可以透明或根据需要设置 */
+    padding: 10px; /* 给内容区域一些内边距 */
     box-sizing: border-box;
-    /* background-color: #f7f7fa; 保留或根据主题调整 */
-    display: flex; /* 让内部块元素自然排列 */
+    /* 内部元素样式 */
+    display: flex;
     flex-direction: column;
-    gap: 10px; /* 给内部区域一些间距 */
+    gap: 10px;
   }
 
-  /* 隐藏 #main 容器本身，因为 #videoArea 会被固定 */
+   /* 列表和添加区域样式调整 (确保它们在 sidebar 内) */
+  #addSubscriptionArea, #subscriptionArea, #channelArea {
+     width: 100%; /* 宽度撑满 sidebar */
+     margin: 0 0 10px 0; /* 调整间距 */
+     box-sizing: border-box;
+     /* 保留背景、圆角、阴影等 */
+     background-color: #fff;
+     padding: 10px;
+     border-radius: 4px;
+     box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+  }
+  #status {
+    width: calc(100% - 20px); /* 考虑 sidebar padding */
+    margin: 0 auto 10px auto; /* 居中并添加底部间距 */
+    box-sizing: border-box;
+  }
+
+  /* --- #main 容器仍然隐藏 --- */
   #main {
     display: none;
   }
 
-  /* 将 #videoArea 固定到底部 */
+  /* --- #videoArea 作为固定的底部栏 --- */
   #videoArea {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0; /* 自动宽度为 100% */
-    width: 100%; /* 显式设置 */
-    z-index: 100; /* 确保在最上层 */
-    background-color: #fff; /* 设置背景色，防止透明 */
-    box-shadow: 0 -2px 5px rgba(0,0,0,0.1); /* 顶部阴影，可选 */
-    padding: 0; /* 移除内边距 */
-    margin: 0; /* 移除外边距 */
-    border-radius: 0; /* 移除圆角 */
-    max-width: 100%; /* 覆盖桌面端的 max-width */
+    flex-shrink: 0; /* ★★★ 关键：不允许收缩 */
+    width: 100%;
+    /* 不再使用 position: fixed */
+    /* 使用 height 来定义其固定高度 */
+    height: 56.25vw; /* ★★★ 关键：基于宽度的 16:9 高度，或者你可以设置一个固定像素值如 height: 200px; */
+    /* 如果设置固定像素值，记得调整下面 #videoContainer 的 padding-top */
+    background-color: #fff; /* 或者 #000，根据设计 */
+    box-shadow: 0 -2px 5px rgba(0,0,0,0.1); /* 顶部阴影 */
+    padding: 0;
+    margin: 0;
+    border-radius: 0;
+    max-width: 100%;
     box-sizing: border-box;
+    position: relative; /* ★★★ 确保内部绝对定位的播放器正确 */
   }
 
   /* 隐藏固定的播放器区域的标题 */
@@ -273,20 +306,21 @@ h3 {
     display: none;
   }
 
-  /* 调整 #videoContainer 适应固定区域 */
+  /* --- #videoContainer 填充 #videoArea --- */
   #videoContainer {
-    /* 保持宽高比 */
+    position: absolute; /* 相对于 #videoArea 定位 */
+    top: 0;
+    left: 0;
     width: 100%;
-    padding-top: 56.25%; /* 16:9 */
-    height: 0;
-    position: relative;
+    height: 100%; /* ★★★ 关键：高度填充父元素 #videoArea */
+    padding-top: 0; /* ★★★ 关键：不再需要 padding-top hack */
     background-color: #000;
-    border-radius: 0; /* 移除圆角 */
-    box-shadow: none; /* 移除阴影 */
-    max-width: 100%; /* 确保不超出 */
+    border-radius: 0;
+    box-shadow: none;
     overflow: hidden;
   }
 
+  /* --- #videoPlayer 填充 #videoContainer --- */
   #videoPlayer {
     /* 样式保持不变，它会填充 #videoContainer */
     position: absolute;
@@ -298,23 +332,8 @@ h3 {
     display: block;
     background: #000;
   }
-
-  /* 确保列表和添加区域在 sidebar 内正常显示 */
-  #addSubscriptionArea, #subscriptionArea, #channelArea {
-    padding: 10px; /* 调整内边距 */
-    margin: 0 0 10px 0; /* 调整外边距 */
-    border-radius: 4px; /* 可以保留圆角 */
-    box-shadow: 0 1px 2px rgba(0,0,0,0.05); /* 可以调整阴影 */
-    width: auto; /* 让宽度适应 sidebar */
-  }
-
-  #status {
-    /* 可以考虑将 status 也放入 sidebar 内 */
-    margin: 0 10px 10px 10px; /* 调整外边距 */
-     position: relative; /* 如果之前是 fixed 或 absolute，需要改回 */
-     /* 其他样式根据需要调整 */
-  }
 }
+
 
 @media (max-width: 600px) {
     #videoArea, #videoContainer {
