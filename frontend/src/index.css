@@ -212,25 +212,13 @@ h3 {
     }
 }
 @media (max-width: 768px) {
-    .main-flex {
-        flex-direction: column;
-        height: auto;
-    }
-    #sidebar, #main {
-        width: 100%;
-        max-width: none;
-        min-width: 0;
-        height: auto;
-    }
-    #videoArea {
-        padding: 0;
-        margin: 0;
-        max-width: 100vw;
-    }
-    #videoContainer {
-        border-radius: 0;
-        max-width: 100vw;
-    }
+  .main-flex { flex-direction: column; }
+  #sidebar, #main {
+    width: 100%;
+    min-width: unset;
+    height: auto;
+    max-width: unset;
+  }
 }
 @media (max-width: 600px) {
     #videoArea, #videoContainer {
