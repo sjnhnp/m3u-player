@@ -599,7 +599,6 @@ const styles = {
     <div className="app-root">
       <h2>电视直播</h2>
       <ThemeSwitcher /> 
-      <SmallNote />
       <div className="main-flex">
         {/* --- 左侧边栏 --- */}
         <div id="sidebar">
