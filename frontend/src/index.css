@@ -1,411 +1,240 @@
-/* ===============================
-   主题色变量（YouTube风格三模式）
-   支持跟随系统/白天/夜晚
-   =============================== */
-:root {
-  --color-bg:       #f8f9fa;
-  --color-bg-card:  #fff;
-  --color-border:   #e5e7eb;
-  --color-text:     #202124;
-  --color-text-light: #757575;
-  --color-primary:  #ff0000;  /* YouTube主色红 */
-  --color-sidebar:  #f3f5f7;
-  --color-sidebar-border: #eee;
-  --color-shadow:   0 2px 12px 0 rgba(32,37,83,0.04);
-  --color-btn:      #ff0000;
-  --color-btn-hover:#e52d27;
-  --color-selected-bg: #fff3f0;
-  --color-selected-border: #ff0000;
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    display: flex;
+    gap: 20px;
+    padding: 15px;
+    background-color: #f4f4f9;
+    color: #333;
+    margin: 0;
 }
-
-body, #root {
-  background: var(--color-bg);
-  color: var(--color-text);
-}
+#root { display: contents; }
 
 h2 {
-  width: 100%;
-  margin-top: 0;
-  margin-bottom: 10px;
-  color: var(--color-text-light);
-  border-bottom: 1px solid var(--color-border);
-  padding-bottom: 5px;
+    width: 100%;
+    margin-top: 0;
+    margin-bottom: 10px;
+    color: #555;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 5px;
 }
 h3 {
-  margin-top: 0;
-  margin-bottom: 10px;
-  color: var(--color-text-light);
-  font-weight: bold;
-  letter-spacing: .5px;
+    margin-top: 0;
+    margin-bottom: 10px;
+    color: #444;
 }
 
+/* --- 核心主布局区域 --- */
 .app-root { width: 100%; }
 .main-flex {
-  display: flex;
-  gap: 20px;
-  height: 100vh;
-  min-height: 0;
+    display: flex;
+    gap: 20px;
+    height: 100vh;
+    min-height: 0;
 }
 
-/* 左侧sidebar */
+/* 左侧sidebar独立滚动栏 */
 #sidebar {
-  width: 320px;
-  min-width: 220px;
-  max-width: 400px;
-  height: 100vh;
-  overflow-y: auto;
-  background: var(--color-sidebar);
-  border-right: 1px solid var(--color-sidebar-border);
-  box-shadow: 2px 0 8px 0 rgba(32,37,83,.03);
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
-#sidebar h2 {
-  font-size: 1.25em;
-  color: var(--color-primary);
-  border: none;
-  background: none;
-  padding-bottom: 0;
-  margin-bottom: 10px;
-  letter-spacing: .5px;
+    width: 320px;
+    min-width: 220px;
+    max-width: 400px;
+    height: 100vh;
+    overflow-y: auto;
+    background-color: #f7f7fa;
+    border-right: 1px solid #eee;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
 }
 
-/* 右主区 */
+/* 右侧主内容区（播放器等） */
 #main {
-  flex: 1 1 0;
-  min-width: 0;
-  height: 100vh;
-  overflow-y: auto;
-  background: var(--color-bg-card);
-  padding: 32px 24px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  gap: 18px;
-  box-shadow: 0 0 20px 0 rgba(28, 88, 125, .04);
-  border-radius: 18px;
+    flex: 1 1 0;
+    min-width: 0;
+    height: 100vh;
+    overflow-y: auto;
+    background: #fff;
+    padding: 32px 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 15px;
 }
 
-/* 卡片样式 */
+/* 控件块通用外观 */
 #addSubscriptionArea, #subscriptionArea, #channelArea, #videoArea {
-  background: var(--color-bg-card);
-  border-radius: 14px;
-  box-shadow: var(--color-shadow);
-  padding: 16px;
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
-/* 列表美化 */
+/* 频道与订阅频道列表 */
 #subscriptionList, #channelList {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  max-height: 250px;
-  overflow-y: auto;
-  border: 1px solid var(--color-border);
-  border-radius: 8px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    max-height: 250px;
+    overflow-y: auto;
+    border: 1px solid #eee;
+    border-radius: 4px;
 }
 
 #subscriptionList li, #channelList li {
-  padding: 10px 15px;
-  cursor: pointer;
-  border-bottom: 1px solid var(--color-border);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  transition: background 0.2s, color 0.2s;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 1.04em;
+    padding: 8px 12px;
+    cursor: pointer;
+    border-bottom: 1px solid #eee;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: background-color 0.2s ease;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 #subscriptionList li span {
-  flex-grow: 1;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  margin-right: 6px;
+    flex-grow: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin-right: 5px;
 }
 #subscriptionList li:last-child, #channelList li:last-child { border-bottom: none; }
+#subscriptionList li:hover, #channelList li:hover { background-color: #f0f0f0; }
 #subscriptionList li.selected, #channelList li.selected {
-  background: var(--color-selected-bg);
-  border-left: 5px solid var(--color-selected-border);
-  color: var(--color-primary);
-  font-weight: bold;
-}
-#subscriptionList li:hover, #channelList li:hover {
-  background-color: #ffeded;
-  color: var(--color-primary);
+    background-color: #d0e0ff;
+    font-weight: bold;
 }
 
-/* 表单/输入区美化 */
-#addSubscriptionArea input[type="url"],
-#addSubscriptionArea button {
-  padding: 10px;
-  margin-bottom: 10px;
-  border: 1px solid var(--color-border);
-  border-radius: 6px;
-  font-size: 1em;
-  box-sizing: border-box;
+/* 表单输入区、按钮美化 */
+#addSubscriptionArea input[type="url"], #addSubscriptionArea button {
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1em;
+    box-sizing: border-box;
 }
 #addSubscriptionArea input[type="url"] {
-  width: 100%;
-  display: block;
-  margin-bottom: 10px;
-  background: var(--color-bg);
-  color: var(--color-text);
-  transition: border 0.2s, box-shadow 0.2s;
+    width: 100%;
+    display: block;
+    margin-bottom: 10px;
 }
-#addSubscriptionArea input[type="url"]:focus {
-  border: 1.5px solid var(--color-primary);
-  box-shadow: 0 2px 8px 0 rgba(255,0,0,0.06);
+#addSubscriptionArea button {
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+    border: none;
+    transition: background-color 0.3s ease;
+    width: 100%;
+    display: block;
 }
+#addSubscriptionArea button:hover { background-color: #0056b3; }
+#addSubscriptionArea button:disabled { background-color: #aaa; cursor: not-allowed; }
 
-#addSubscriptionArea button,
 #subscriptionList li button {
-  background: var(--color-btn);
-  color: #fff;
-  border-radius: 6px;
-  font-weight: 600;
-  box-shadow: 0 2px 8px 0 rgba(255,0,0,0.07);
-  border: none;
-  transition: background 0.16s, box-shadow 0.2s;
-  cursor: pointer;
+    background-color: #dc3545;
+    color: white;
+    cursor: pointer;
+    border: none;
+    padding: 2px 5px;
+    font-size: 0.8em;
+    border-radius: 3px;
+    margin-left: 10px;
+    transition: background-color 0.3s ease;
 }
-#addSubscriptionArea button:hover,
-#subscriptionList li button:hover {
-  background: var(--color-btn-hover);
-  box-shadow: 0 4px 16px 0 rgba(220,40,40, 0.15);
-}
-#addSubscriptionArea button:disabled {
-  background: #eee;
-  color: #aaa;
-  cursor: not-allowed;
-  box-shadow: none;
-}
-#subscriptionList li button {
-  margin-left: 10px;
-  background: #f87171;
-  font-size: 0.9em;
-  padding: 3px 7px;
-  border-radius: 5px;
-  color: #fff;
-  border: none;
-}
-#subscriptionList li button:hover { background: #e52d27; }
+#subscriptionList li button:hover { background-color: #c82333; }
 
-/* 状态信息条 */
+/* status条 */
 #status {
-  margin-top: 10px;
-  padding: 10px;
-  background: #ffeaea;
-  border-radius: 6px;
-  color: #d32f2f;
-  font-size: 0.98em;
-  min-height: 1.5em;
-  box-sizing: border-box;
-  border: 1px solid #ffe0e0;
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #e9ecef;
+    border-radius: 4px;
+    color: #495057;
+    font-size: 0.9em;
+    min-height: 1.5em;
+    box-sizing: border-box;
 }
-#status.error { color: #721c24; background: #f8d7da; border: 1px solid #f5c6cb; font-weight: bold; }
-#status.success { color: #18842b; background: #d4edda; border: 1px solid #c3e6cb; font-weight: bold; }
-#status.loading { color: #004085; background: #cce5ff; border: 1px solid #b8daff; font-style: italic; }
-#status.warning { color: #856404; background: #fff3cd; border: 1px solid #ffeeba; }
+#status.error {
+    color: #721c24;
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+    font-weight: bold;
+}
+#status.success {
+     color: #155724;
+     background-color: #d4edda;
+     border: 1px solid #c3e6cb;
+     font-weight: bold;
+}
+#status.loading {
+    color: #004085;
+    background-color: #cce5ff;
+    border: 1px solid #b8daff;
+    font-style: italic;
+}
+#status.warning {
+    color: #856404;
+    background-color: #fff3cd;
+    border: 1px solid #ffeeba;
+}
 
-/* 播放器主区自适应&美化 */
+/* --- 播放器主区自适应美化 --- */
 #videoArea {
-  width: 100%;
-  max-width: 760px;
-  margin: 0 auto 16px auto;
+    width: 100%;
+    max-width: 680px;
+    margin: 0 auto 16px auto;
 }
 #videoContainer {
-  width: 100%;
-  padding-top: 56.25%;   /* 16:9缩放 */
-  height: 0;
-  background: #191919;
-  border-radius: 16px;
-  overflow: hidden;
-  position: relative;
-  box-shadow: 0 2px 20px 0 rgba(48,64,112,0.10);
-  max-width: 100%;
+    width: 100%;
+    padding-top: 56.25%;   /* 16:9缩放 */
+    height: 0;
+    background-color: #000;
+    border-radius: 4px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    max-width: 100%;
 }
 #videoPlayer {
-  position: absolute;
-  top: 0; left: 0; width: 100%; height: 100%;
-  border: none; display: block;
-  background: #000;
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    border: none; display: block;
+    background: #000;
 }
 
-/* ========== 夜间暗色模式覆盖（body.dark或.dark类即可生效） ========== */
-body.dark, .dark {
-  --color-bg:       #11141a;      /* 主背景 更深邃 */
-  --color-bg-card:  #191c24;      /* 卡片背景略浅但够对比 */
-  --color-border:   #232634;
-  --color-text:     #eceef1;      /* 文字更明亮 */
-  --color-text-light:#8b97ab;
-  --color-primary:  #ff3c3c;
-  --color-sidebar:  #171a22;
-  --color-sidebar-border: #262a38;
-  --color-shadow:   0 2px 24px 0 rgba(21,23,35,0.40);
-  --color-btn:      #ff3c3c;
-  --color-btn-hover:#d32525;
-  --color-selected-bg: #202432;
-  --color-selected-border: #ff3c3c;
-}
-body.dark, .dark, body.dark #root {
-  background: var(--color-bg) !important;
-  color: var(--color-text) !important;
-}
-.dark #main,
-body.dark #main {
-  background: var(--color-bg-card);
-  color: var(--color-text);
-  box-shadow: 0 0 30px 0 rgba(0,0,0,0.15);
-}
-.dark #addSubscriptionArea, .dark #subscriptionArea, .dark #channelArea, .dark #videoArea,
-body.dark #addSubscriptionArea,
-body.dark #subscriptionArea,
-body.dark #channelArea,
-body.dark #videoArea {
-  box-shadow: var(--color-shadow);
-  background: var(--color-bg-card);
-  color: var(--color-text);
-}
-.dark #sidebar, body.dark #sidebar {
-  background: var(--color-sidebar);
-  border-right: 1px solid var(--color-sidebar-border);
-}
-.dark h2, body.dark h2,
-.dark h3, body.dark h3 {
-  color: var(--color-text-light);
-}
-.dark #videoContainer, body.dark #videoContainer {
-  background: #161a20;
-  border-radius: 16px;
-  box-shadow: 0 2px 28px 0 rgba(0,0,0,0.24);
-}
-.dark #addSubscriptionArea input[type="url"],
-.dark #addSubscriptionArea input,
-body.dark #addSubscriptionArea input[type="url"],
-body.dark #addSubscriptionArea input {
-  background: #1b1f27 !important;
-  color: #eee;
-  border: 1px solid #282b35;
-  box-shadow: 0 1px 6px 0 rgba(70,70,90, 0.11) inset;
-  transition: border 0.2s;
-}
-.dark #addSubscriptionArea input[type="url"]:focus,
-body.dark #addSubscriptionArea input[type="url"]:focus {
-  border: 1.5px solid var(--color-primary);
-  box-shadow: 0 2px 10px 0 rgba(255,0,0,0.12) inset;
-}
-.dark #addSubscriptionArea button,
-body.dark #addSubscriptionArea button {
-  background: linear-gradient(90deg, #ff4153 80%, #ff6868 100%);
-  color: #fff;
-  font-weight: bold;
-  border: none;
-  border-radius: 6px;
-  box-shadow: 0 3px 24px 0 rgba(255,63,63,0.11);
-  transition: background 0.2s;
-}
-.dark #addSubscriptionArea button:hover,
-body.dark #addSubscriptionArea button:hover {
-  background: #d32525;
-}
-.dark #subscriptionList li.selected, .dark #channelList li.selected {
-  background: var(--color-selected-bg);
-  border-left: 4px solid var(--color-selected-border);
-  color: var(--color-primary);
-  font-weight: bold;
-}
-.dark #subscriptionList li:hover, .dark #channelList li:hover {
-  background: #2b3246;
-  color: var(--color-primary);
-}
-.dark #status {
-  background: #1b1f27;
-  color: #ffbfc0;
-  border: 1px solid #4c2626;
-}
-.dark #status.error  { background: #2e1f21; color: #ff6d6d; border-color: #b97a88; }
-.dark #status.success{ background: #232f23; color: #8dffb9; border-color: #7ddbaf;}
-.dark #status.loading{ background: #172234; color: #f9dea2; border-color: #c68a13; }
-.dark #status.warning{ background: #2d250f; color:#ffe47a; border-color: #d6bc45; }
-
-
-/* ========== 跟随系统（auto）模式 ========== */
-@media (prefers-color-scheme: dark) {
-  :root {
-    --color-bg:       #181818;
-    --color-bg-card:  #222;
-    --color-border:   #232323;
-    --color-text:     #f1f3fa;
-    --color-text-light:#acb2ba;
-    --color-primary:  #ff5252;
-    --color-sidebar:  #212121;
-    --color-sidebar-border: #242424;
-    --color-shadow:   0 2px 16px 0 rgba(48,38,87,0.16);
-    --color-btn:      #ff5252;
-    --color-btn-hover:#e52d27;
-    --color-selected-bg: #272727;
-    --color-selected-border: #ff5252;
-  }
-}
-
-/* 白天主题，可以强制覆盖 body.light 或 .light */
-body.light, .light {
-  --color-bg:       #f8f9fa;
-  --color-bg-card:  #fff;
-  --color-border:   #e5e7eb;
-  --color-text:     #202124;
-  --color-text-light: #757575;
-  --color-primary:  #ff0000;
-  --color-sidebar:  #f3f5f7;
-  --color-sidebar-border: #eee;
-  --color-shadow:   0 2px 12px 0 rgba(32,37,83,0.04);
-  --color-btn:      #ff0000;
-  --color-btn-hover:#e52d27;
-  --color-selected-bg: #fff3f0;
-  --color-selected-border: #ff0000;
-}
-
-/* ========== 移动端响应式 ========== */
+/* ---------- 移动端响应式覆盖 ---------- */
 @media (max-width: 900px) {
-  #videoArea, #videoContainer { max-width: 100vw; }
+    #videoArea, #videoContainer {
+        max-width: 100vw;
+    }
 }
 @media (max-width: 768px) {
-  .main-flex {
-    flex-direction: column;
-    height: auto;
-  }
-  #sidebar, #main {
-    width: 100%;
-    max-width: none;
-    min-width: 0;
-    height: auto;
-    border-radius: 0;
-    padding: 10px 0 10px 0;
-  }
-  #videoArea {
-    padding: 0;
-    margin: 0;
-    max-width: 100vw;
-  }
-  #videoContainer {
-    border-radius: 0;
-    max-width: 100vw;
-  }
+    .main-flex {
+        flex-direction: column;
+        height: auto;
+    }
+    #sidebar, #main {
+        width: 100%;
+        max-width: none;
+        min-width: 0;
+        height: auto;
+    }
+    #videoArea {
+        padding: 0;
+        margin: 0;
+        max-width: 100vw;
+    }
+    #videoContainer {
+        border-radius: 0;
+        max-width: 100vw;
+    }
 }
 @media (max-width: 600px) {
-  #videoArea, #videoContainer {
-    max-width: 100vw;
-    min-width: 0;
-  }
-}
-
-/* 字体更柔和YouTube风 */
-body, input, select, button {
-  font-family: Roboto,Noto,Noto Sans SC,Arial,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+    #videoArea, #videoContainer {
+        max-width: 100vw;
+        min-width: 0;
+    }
 }
