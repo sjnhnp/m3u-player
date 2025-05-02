@@ -598,6 +598,7 @@ const styles = {
   return (
     <div className="app-root">
       <h2>电视直播</h2>
+      <ThemeSwitcher /> 
       <SmallNote />
       <div className="main-flex">
         {/* --- 左侧边栏 --- */}
@@ -679,7 +680,6 @@ const styles = {
 
         {/* --- 右侧主内容区域 --- */}
         <div id="main">
-          <ThemeSwitcher /> 
           <div id="videoArea">
             <h3>播放器</h3>
             <div id="videoContainer">
