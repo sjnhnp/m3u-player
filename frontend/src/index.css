@@ -224,5 +224,21 @@ h3 {
         min-width: unset; /* Reset min-width */
     }
 }
+
+.app-root {
+  width: 100%;
+}
+
+.main-flex {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+@media (max-width: 768px) {
+  .main-flex {
+    flex-direction: column;
+  }
+}
+
 /* --- END COPY FROM EXAMPLE HTML <style> --- */
 
