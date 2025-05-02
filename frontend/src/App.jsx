@@ -568,7 +568,7 @@ function App() {
   return (
     <>
       <h2>M3U 播放器</h2>
-      
+      <SmallNote />
       {/* --- 左侧边栏 --- */}
       <div id="sidebar">
         {/* 添加自定义订阅区域 */}
