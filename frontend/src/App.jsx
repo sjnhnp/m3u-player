@@ -566,9 +566,10 @@ function App() {
 
   // --- JSX 结构渲染 ---
   return (
-    <>
-      <h2>M3U 播放器</h2>
-      <SmallNote />
+      <div className="app-root">
+        <h2>电视直播</h2>
+        <SmallNote />
+        <div className="main-flex">
       {/* --- 左侧边栏 --- */}
       <div id="sidebar">
         {/* 添加自定义订阅区域 */}
