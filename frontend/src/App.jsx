@@ -679,6 +679,7 @@ const styles = {
 
         {/* --- 右侧主内容区域 --- */}
         <div id="main">
+          <ThemeSwitcher /> 
           <div id="videoArea">
             <h3>播放器</h3>
             <div id="videoContainer">
