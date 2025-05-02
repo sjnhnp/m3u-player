@@ -564,6 +564,35 @@ function App() {
   });
 
 
+// --- 定义组件内部使用的样式 ---
+const styles = {
+  searchInput: {
+    width: 'calc(100% - 20px)', // 宽度适应容器，留边距
+    padding: '8px 10px',
+    marginBottom: '10px',
+    border: '1px solid #ccc',
+    borderRadius: '4px',
+    boxSizing: 'border-box',
+    display: 'block',
+    marginLeft: 'auto',
+    marginRight: 'auto',
+  },
+  channelLogo: {
+    width: '20px',
+    height: 'auto',
+    marginRight: '8px',
+    verticalAlign: 'middle',
+    flexShrink: 0, // 防止 logo 被压缩
+  },
+  channelName: {
+    flexGrow: 1, // 占据剩余空间
+    overflow: 'hidden', // 隐藏溢出内容
+    textOverflow: 'ellipsis', // 显示省略号
+    whiteSpace: 'nowrap', // 不换行
+  }
+};
+
+  
   // --- JSX 结构渲染 ---
   return (
       <div className="app-root">
@@ -667,37 +696,10 @@ function App() {
           </div>
         </div>
       </div> {/* --- 右侧主内容结束 --- */}
-    </>
+    </div>
   );
 }
 
-// --- 定义组件内部使用的样式 ---
-const styles = {
-  searchInput: {
-    width: 'calc(100% - 20px)', // 宽度适应容器，留边距
-    padding: '8px 10px',
-    marginBottom: '10px',
-    border: '1px solid #ccc',
-    borderRadius: '4px',
-    boxSizing: 'border-box',
-    display: 'block',
-    marginLeft: 'auto',
-    marginRight: 'auto',
-  },
-  channelLogo: {
-    width: '20px',
-    height: 'auto',
-    marginRight: '8px',
-    verticalAlign: 'middle',
-    flexShrink: 0, // 防止 logo 被压缩
-  },
-  channelName: {
-    flexGrow: 1, // 占据剩余空间
-    overflow: 'hidden', // 隐藏溢出内容
-    textOverflow: 'ellipsis', // 显示省略号
-    whiteSpace: 'nowrap', // 不换行
-  }
-};
 
 // 导出 App 组件
 export default App;
