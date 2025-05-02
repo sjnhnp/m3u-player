@@ -8,27 +8,30 @@ const corsHeaders = {
     'Access-Control-Expose-Headers': 'Content-Length, Content-Range',
   };
   
+
   // --- ★★★ START: 定义你的固定订阅列表 ★★★ ---
   // 在这里添加你希望所有用户都能看到的订阅源
   // 格式: { name: "显示名称", url: "订阅地址 M3U/M3U8" }
   const fixedSubscriptions = [
     {
-      name: "国际电视",
+      name: "1.外语电视",
       url: "https://raw.githubusercontent.com/YueChan/Live/refs/heads/main/Global.m3u"
     },
     {
-      name: "国内http地址很多无法收看",
-      url: "https://raw.githubusercontent.com/vbskycn/iptv/refs/heads/master/tv/iptv4.m3u"
+      name: "2.国语电视",
+      url: "https://raw.githubusercontent.com/sjnhnp/adblock/refs/heads/main/filtered_https_only.m3u"
+    },
+    {
+      name: "3.国语电视-品质不佳",
+      url: "https://raw.githubusercontent.com/sjnhnp/adblock/refs/heads/main/filtered_http_only_valid.m3u"
     },
   ];
   // --- ★★★ END: 定义你的固定订阅列表 ★★★ ---
-  
-  
+
   export default {
       async fetch(request, env, ctx) {
           const url = new URL(request.url);
           const pathSegments = url.pathname.split('/').filter(Boolean);
-  
           // --- OPTIONS Preflight Handling ---
           if (request.method === 'OPTIONS') {
               // 允许对 fixed-subscriptions 和 proxy 的预检请求
