@@ -211,140 +211,27 @@ h3 {
         max-width: 100vw;
     }
 }
-
-
-/* 主要修改 768px 及以下的规则 */
 @media (max-width: 768px) {
-  html, body {
-    height: 100%;
-    overflow: hidden; /* 仍然防止 body 滚动 */
-    margin: 0;
-    padding: 0;
-    position: relative; /* ★★★ 关键：为绝对定位的子元素提供上下文 */
-  }
-
-  /* --- .app-root 不再需要特殊布局 --- */
-  .app-root {
-    width: 100%;
-    height: 100%;
-    /* display: flex; */ /* 移除 flex */
-    /* flex-direction: column; */ /* 移除 flex */
-    box-sizing: border-box;
-  }
-
-  /* ★★★ 定义播放器的高度变量 (方便修改) ★★★ */
-  :root {
-    --player-height-mobile: 200px; /* ★★★ 在这里设置你想要的播放器固定高度 ★★★ */
-    /* 或者如果你坚持用 vw，可以用 calc()，但固定像素更稳定 */
-    /* --player-height-mobile: calc(100vw * 9 / 16); */
-  }
-
-  /* --- .main-flex 作为可滚动的内容区域 (绝对定位) --- */
-  .main-flex {
-    position: absolute; /* ★★★ 关键 */
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: var(--player-height-mobile); /* ★★★ 关键：底部距离等于播放器高度 */
-    overflow-y: auto; /* ★★★ 关键：自身滚动 */
-    width: 100%;
-    box-sizing: border-box;
-    /* 内部仍然是 column flex 布局，用于排列 sidebar 内容 */
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-    padding: 10px; /* 给滚动区域一些内边距 */
-  }
-
-  /* --- #sidebar 填充 .main-flex --- */
-  #sidebar {
-    width: 100%;
-    height: auto; /* 高度由内容决定 */
-    min-width: unset;
-    max-width: unset;
-    overflow-y: visible; /* 不滚动，让父级 .main-flex 滚动 */
-    border-right: none;
-    background-color: transparent;
-    box-sizing: border-box;
-    /* 内部元素样式 */
-    display: flex;
-    flex-direction: column;
-    gap: 10px; /* 列表等元素之间的间距 */
-    padding: 0; /* 移除 sidebar 的内边距，因为 .main-flex 已经有了 */
-  }
-
-   /* 列表和添加区域样式调整 */
-  #addSubscriptionArea, #subscriptionArea, #channelArea {
-     width: 100%;
-     margin: 0 0 10px 0;
-     box-sizing: border-box;
-     background-color: #fff;
-     padding: 10px;
-     border-radius: 4px;
-     box-shadow: 0 1px 2px rgba(0,0,0,0.05);
-  }
-  #status {
-    width: 100%;
-    margin: 0 auto 10px auto;
-    box-sizing: border-box;
-  }
-
-  /* --- #main 容器仍然隐藏 --- */
-  #main {
-    display: none;
-  }
-
-  /* --- #videoArea 作为固定的底部栏 (绝对定位) --- */
-  #videoArea {
-    position: absolute; /* ★★★ 关键 */
-    bottom: 0;
-    left: 0;
-    right: 0;
-    width: 100%;
-    height: var(--player-height-mobile); /* ★★★ 关键：使用变量定义的固定高度 */
-    background-color: #fff; /* 或者 #000 */
-    box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
-    padding: 0;
-    margin: 0;
-    border-radius: 0;
-    max-width: 100%;
-    box-sizing: border-box;
-    z-index: 100; /* 确保在滚动内容之上 */
-  }
-
-  /* 隐藏固定的播放器区域的标题 */
-  #videoArea > h3 {
-    display: none;
-  }
-
-  /* --- #videoContainer 填充 #videoArea --- */
-  #videoContainer {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%; /* 填充 #videoArea */
-    padding-top: 0; /* 不需要 padding-top */
-    background-color: #000;
-    border-radius: 0;
-    box-shadow: none;
-    overflow: hidden;
-  }
-
-  /* --- #videoPlayer 填充 #videoContainer --- */
-  #videoPlayer {
-    /* 样式保持不变 */
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    border: none;
-    display: block;
-    background: #000;
-  }
+    .main-flex {
+        flex-direction: column;
+        height: auto;
+    }
+    #sidebar, #main {
+        width: 100%;
+        max-width: none;
+        min-width: 0;
+        height: auto;
+    }
+    #videoArea {
+        padding: 0;
+        margin: 0;
+        max-width: 100vw;
+    }
+    #videoContainer {
+        border-radius: 0;
+        max-width: 100vw;
+    }
 }
-
 @media (max-width: 600px) {
     #videoArea, #videoContainer {
         max-width: 100vw;
