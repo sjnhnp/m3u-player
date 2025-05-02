@@ -7,7 +7,7 @@ import Hls from 'hls.js';
 // --- 导入子组件 ---
 import SubscriptionList from './components/SubscriptionList'; // 导入列表组件
 import AddSubscription from './components/AddSubscription';   // 导入添加组件
-// import ThemeSwitcher from './components/ThemeSwitcher';
+import ThemeSwitcher from './components/ThemeSwitcher';
 
 // ---- 在这里插入小组件 ----
 function SmallNote() {
