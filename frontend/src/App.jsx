@@ -596,17 +596,14 @@ const styles = {
   
   // --- JSX 结构渲染 ---
   return (
-<div className="app-root">
-  <header style={{
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "space-between",
-    padding: "10px 16px 0 16px",
-    marginBottom: "4px"
-  }}>
-    <h2 style={{margin:'0'}}>电视直播</h2>
-    <ThemeSwitcher /> {/* 右侧切换 */}
-  </header>
+      <div className="app-root">
+        <div style={{
+           display:'flex', justifyContent:'space-between', alignItems:'center',
+           marginBottom:8, gap:12
+        }}>
+          <h2 style={{marginBottom:0}}>电视直播</h2>
+          <ThemeSwitcher />
+        </div>
       <SmallNote />
       <div className="main-flex">
         {/* --- 左侧边栏 --- */}
