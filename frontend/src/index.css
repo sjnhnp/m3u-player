@@ -188,15 +188,14 @@ h3 {
     margin: 0 auto 16px auto;
 }
 #videoContainer {
-    width: 100%;
-    padding-top: 56.25%;   /* 16:9缩放 */
-    height: 0;
     background-color: #000;
     border-radius: 4px;
-    overflow: hidden;
-    position: relative;
+    overflow: hidden; /* Ensure video stays within bounds */
     box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-    max-width: 100%;
+    position: relative; /* For potential future overlays */
+    width: 100%;
+    padding-top: 56.25%; /* 16:9 Aspect Ratio */
+    height: 0;
 }
 #videoPlayer {
     position: absolute;
