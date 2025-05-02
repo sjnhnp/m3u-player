@@ -1,47 +1,68 @@
-/* frontend/src/index.css */
-
-/* --- START COPY FROM EXAMPLE HTML <style> --- */
 body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
     display: flex;
-    flex-wrap: wrap; /* Allow wrapping on smaller screens */
     gap: 20px;
     padding: 15px;
     background-color: #f4f4f9;
     color: #333;
-    margin: 0; /* Ensure no default body margin */
+    margin: 0;
 }
-
-/* Add this rule to make body styles effectively apply to React content */
-#root {
-    display: contents;
-}
+#root { display: contents; }
 
 h2 {
     width: 100%;
-    margin-top: 0; /* Ensure consistency */
+    margin-top: 0;
     margin-bottom: 10px;
     color: #555;
     border-bottom: 1px solid #ddd;
     padding-bottom: 5px;
 }
+h3 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    color: #444;
+}
 
-#sidebar, #main {
+/* --- 核心主布局区域 --- */
+.app-root { width: 100%; }
+.main-flex {
+    display: flex;
+    gap: 20px;
+    height: 100vh;
+    min-height: 0;
+}
+
+/* 左侧sidebar独立滚动栏 */
+#sidebar {
+    width: 320px;
+    min-width: 220px;
+    max-width: 400px;
+    height: 100vh;
+    overflow-y: auto;
+    background-color: #f7f7fa;
+    border-right: 1px solid #eee;
+    box-sizing: border-box;
     display: flex;
     flex-direction: column;
     gap: 15px;
 }
 
-#sidebar {
-    flex: 1; /* Take up available space */
-    min-width: 250px; /* Minimum width */
-}
-
+/* 右侧主内容区（播放器等） */
 #main {
-    flex: 2; /* Take up more space */
-    min-width: 300px;
+    flex: 1 1 0;
+    min-width: 0;
+    height: 100vh;
+    overflow-y: auto;
+    background: #fff;
+    padding: 32px 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 15px;
 }
 
+/* 控件块通用外观 */
 #addSubscriptionArea, #subscriptionArea, #channelArea, #videoArea {
     background-color: #fff;
     padding: 15px;
@@ -49,72 +70,13 @@ h2 {
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
-h3 {
-    margin-top: 0;
-    margin-bottom: 10px;
-    color: #444;
-}
-
-/* Apply to inputs/buttons rendered by React */
-#addSubscriptionArea input[type="url"], #addSubscriptionArea button {
-    padding: 10px;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 1em;
-    box-sizing: border-box; /* Added for better width calculation */
-}
-
-#addSubscriptionArea input[type="url"] {
-    /* width: calc(100% - 22px);  Replaced with 100% + box-sizing */
-    width: 100%;
-    display: block; /* Make it take full width */
-    margin-bottom: 10px; /* Ensure spacing */
-}
-
-#addSubscriptionArea button {
-    background-color: #007bff;
-    color: white;
-    cursor: pointer;
-    border: none;
-    transition: background-color 0.3s ease;
-    width: 100%; /* Make button full width in this area */
-    display: block;
-}
-
-/* Style delete buttons within list items */
-#subscriptionList li button {
-    background-color: #dc3545;
-    color: white;
-    cursor: pointer;
-    border: none;
-    padding: 2px 5px;
-    font-size: 0.8em;
-    border-radius: 3px;
-    margin-left: 10px; /* Space from text */
-    transition: background-color 0.3s ease;
-}
-
-
-#addSubscriptionArea button:hover {
-    background-color: #0056b3;
-}
-#subscriptionList li button:hover {
-     background-color: #c82333; /* Darker red */
-}
-
-
-#addSubscriptionArea button:disabled {
-    background-color: #aaa;
-    cursor: not-allowed;
-}
-
+/* 频道与订阅频道列表 */
 #subscriptionList, #channelList {
     list-style: none;
     padding: 0;
     margin: 0;
-    max-height: 250px; /* Limit height */
-    overflow-y: auto; /* Add scrollbar if needed */
+    max-height: 250px;
+    overflow-y: auto;
     border: 1px solid #eee;
     border-radius: 4px;
 }
@@ -127,118 +89,152 @@ h3 {
     overflow: hidden;
     text-overflow: ellipsis;
     transition: background-color 0.2s ease;
-    display: flex; /* Use flex for item layout (text + button) */
+    display: flex;
     justify-content: space-between;
     align-items: center;
 }
-
-#subscriptionList li span { /* If you wrap text in a span */
-    flex-grow: 1; /* Allow text to take space */
+#subscriptionList li span {
+    flex-grow: 1;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    margin-right: 5px; /* Space before button */
+    margin-right: 5px;
 }
-
-
-#subscriptionList li:last-child, #channelList li:last-child {
-    border-bottom: none;
-}
-
-#subscriptionList li:hover, #channelList li:hover {
-    background-color: #f0f0f0;
-}
-
-/* React will need to add the 'selected' class dynamically */
+#subscriptionList li:last-child, #channelList li:last-child { border-bottom: none; }
+#subscriptionList li:hover, #channelList li:hover { background-color: #f0f0f0; }
 #subscriptionList li.selected, #channelList li.selected {
     background-color: #d0e0ff;
     font-weight: bold;
 }
 
-#videoContainer {
-    background-color: #000;
+/* 表单输入区、按钮美化 */
+#addSubscriptionArea input[type="url"], #addSubscriptionArea button {
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
     border-radius: 4px;
-    overflow: hidden; /* Ensure video stays within bounds */
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-    position: relative; /* For potential future overlays */
-    width: 100%;
-    padding-top: 56.25%; /* 16:9 Aspect Ratio */
-    height: 0;
+    font-size: 1em;
+    box-sizing: border-box;
 }
-
-#videoPlayer {
-   /* Make video fill the container */
-    position: absolute;
-    top: 0;
-    left: 0;
+#addSubscriptionArea input[type="url"] {
     width: 100%;
-    height: 100%;
-    border: none; /* Remove default border */
-    display: block; /* Ensure proper rendering */
+    display: block;
+    margin-bottom: 10px;
 }
+#addSubscriptionArea button {
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+    border: none;
+    transition: background-color 0.3s ease;
+    width: 100%;
+    display: block;
+}
+#addSubscriptionArea button:hover { background-color: #0056b3; }
+#addSubscriptionArea button:disabled { background-color: #aaa; cursor: not-allowed; }
 
+#subscriptionList li button {
+    background-color: #dc3545;
+    color: white;
+    cursor: pointer;
+    border: none;
+    padding: 2px 5px;
+    font-size: 0.8em;
+    border-radius: 3px;
+    margin-left: 10px;
+    transition: background-color 0.3s ease;
+}
+#subscriptionList li button:hover { background-color: #c82333; }
+
+/* status条 */
 #status {
-    margin-top: 10px; /* Original had this within sidebar gap */
+    margin-top: 10px;
     padding: 10px;
     background-color: #e9ecef;
     border-radius: 4px;
     color: #495057;
     font-size: 0.9em;
-    min-height: 1.5em; /* Prevent layout shift */
-    box-sizing: border-box; /* Include padding */
+    min-height: 1.5em;
+    box-sizing: border-box;
 }
-
-/* Status classes (React needs to apply these to #status element) */
 #status.error {
-    color: #721c24; /* Darker text for better contrast */
+    color: #721c24;
     background-color: #f8d7da;
     border: 1px solid #f5c6cb;
-    font-weight: bold; /* Keep bold */
+    font-weight: bold;
 }
 #status.success {
      color: #155724;
      background-color: #d4edda;
      border: 1px solid #c3e6cb;
-     font-weight: bold; /* Keep bold */
+     font-weight: bold;
 }
 #status.loading {
     color: #004085;
     background-color: #cce5ff;
     border: 1px solid #b8daff;
-    font-style: italic; /* Keep italic */
+    font-style: italic;
 }
-#status.warning { /* Added warning class styling */
+#status.warning {
     color: #856404;
     background-color: #fff3cd;
     border: 1px solid #ffeeba;
 }
 
+/* --- 播放器主区自适应美化 --- */
+#videoArea {
+    width: 100%;
+    max-width: 680px;
+    margin: 0 auto 16px auto;
+}
+#videoContainer {
+    width: 100%;
+    padding-top: 56.25%;   /* 16:9缩放 */
+    height: 0;
+    background-color: #000;
+    border-radius: 4px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    max-width: 100%;
+}
+#videoPlayer {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    border: none; display: block;
+    background: #000;
+}
 
-/* Basic responsiveness */
+/* ---------- 移动端响应式覆盖 ---------- */
+@media (max-width: 900px) {
+    #videoArea, #videoContainer {
+        max-width: 100vw;
+    }
+}
 @media (max-width: 768px) {
-    body { /* Target body directly */
+    .main-flex {
         flex-direction: column;
+        height: auto;
     }
     #sidebar, #main {
         width: 100%;
-        min-width: unset; /* Reset min-width */
+        max-width: none;
+        min-width: 0;
+        height: auto;
+    }
+    #videoArea {
+        padding: 0;
+        margin: 0;
+        max-width: 100vw;
+    }
+    #videoContainer {
+        border-radius: 0;
+        max-width: 100vw;
     }
 }
-
-.app-root {
-  width: 100%;
+@media (max-width: 600px) {
+    #videoArea, #videoContainer {
+        max-width: 100vw;
+        min-width: 0;
+    }
 }
-
-.main-flex {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-}
-@media (max-width: 768px) {
-  .main-flex {
-    flex-direction: column;
-  }
-}
-
-/* --- END COPY FROM EXAMPLE HTML <style> --- */
-
