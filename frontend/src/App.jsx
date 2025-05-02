@@ -8,6 +8,21 @@ import Hls from 'hls.js';
 import SubscriptionList from './components/SubscriptionList'; // 导入列表组件
 import AddSubscription from './components/AddSubscription';   // 导入添加组件
 
+// ---- 在这里插入小组件 ----
+function SmallNote() {
+  return (
+    <div style={{
+      color: '#888',
+      fontSize: '13px',
+      marginBottom: '16px',
+      marginTop: '-8px'
+    }}>
+      请先选择订阅列表其中一个，每次切换订阅列表/刷新网页都是一次重新加载订阅，品质不佳的是因为http，所以很多不能播放。
+    </div>
+  );
+}
+// ---- 到这里结束 ----
+
 // --- 常量定义 ---
 const USER_SUBS_LOCALSTORAGE_KEY = 'm3uPlayerUserSubscriptions'; // LocalStorage 键名, 用于存储用户自定义订阅
 
@@ -553,16 +568,6 @@ function App() {
   return (
     <>
       <h2>M3U 播放器</h2>
-
-      <div style={{
-          color: '#888',        // 灰色小字
-          fontSize: '13px',     // 小号字体
-          marginBottom: '16px', // 和下方内容间隔
-          marginTop: '-8px',    // 可选，让距离标题更紧
-          textAlign: 'left'     // 或'any'，比如'center','right'
-      }}>
-        请先选择订阅列表其中一个，每次切换订阅列表/刷新网页都是一次重新加载订阅，品质不佳的是因为http，所以很多不能播放。
-      </div>
       
       {/* --- 左侧边栏 --- */}
       <div id="sidebar">
