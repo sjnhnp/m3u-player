@@ -682,19 +682,7 @@ const styles = {
           <div id="videoArea">
             <h3>播放器</h3>
             <div id="videoContainer">
-              <video
-                ref={videoRef}
-                id="videoPlayer"
-                controls
-                playsInline
-                style={{
-                  backgroundColor: '#000',
-                  width: '100%',
-                  height: '100%',
-                 // minHeight: '160px',
-                  objectFit: 'contain'
-                }}
-              ></video>
+               <video ref={videoRef} id="videoPlayer" controls playsInline style={{backgroundColor: '#000', width: '100%', height: '100%'}}></video>
             </div>
           </div>
         </div>
