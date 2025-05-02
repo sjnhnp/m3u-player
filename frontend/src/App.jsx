@@ -7,7 +7,7 @@ import Hls from 'hls.js';
 // --- 导入子组件 ---
 import SubscriptionList from './components/SubscriptionList'; // 导入列表组件
 import AddSubscription from './components/AddSubscription';   // 导入添加组件
-import ThemeSwitcher from './components/ThemeSwitcher';
+// import ThemeSwitcher from './components/ThemeSwitcher';
 
 // ---- 在这里插入小组件 ----
 function SmallNote() {
@@ -596,14 +596,8 @@ const styles = {
   
   // --- JSX 结构渲染 ---
   return (
-      <div className="app-root">
-        <div style={{
-           display:'flex', justifyContent:'space-between', alignItems:'center',
-           marginBottom:8, gap:12
-        }}>
-          <h2 style={{marginBottom:0}}>电视直播</h2>
-          <ThemeSwitcher />
-        </div>
+    <div className="app-root">
+      <h2>电视直播</h2>
       <SmallNote />
       <div className="main-flex">
         {/* --- 左侧边栏 --- */}
@@ -699,14 +693,10 @@ const styles = {
             </div>
           </div>
         </div>
-        {/* --- 右侧主内容结束 --- */}
       </div>
-      {/* --- .main-flex 结束 --- */}
     </div>
-    // {/* --- .app-root 结束 --- */}
   );
 }
-
 
 // 导出 App 组件
 export default App;
