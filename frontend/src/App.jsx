@@ -696,6 +696,8 @@ const styles = {
           </div>
         </div>
       </div> {/* --- 右侧主内容结束 --- */}
+    </div> {/* --- .main-flex 结束 --- */}
+   </div> {/* --- .app-root 结束 --- */}
   );
 }
 
