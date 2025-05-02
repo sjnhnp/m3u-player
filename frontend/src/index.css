@@ -212,26 +212,63 @@ h3 {
     }
 }
 @media (max-width: 768px) {
-    .main-flex {
-        flex-direction: column;
-        height: auto;
-    }
-    #sidebar, #main {
-        width: 100%;
-        max-width: none;
-        min-width: 0;
-        height: auto;
-    }
-    #videoArea {
-        padding: 0;
-        margin: 0;
-        max-width: 100vw;
-    }
-    #videoContainer {
-        border-radius: 0;
-        max-width: 100vw;
-    }
+  .main-flex {
+    flex-direction: column;
+    height: auto;
+  }
+  #sidebar, #main {
+    width: 100%;
+    max-width: none;
+    min-width: 0;
+    height: auto;
+    border-radius: 0;
+    padding: 0;
+  }
+
+  #main {
+    padding: 8px 0 0 0;
+    gap: 8px;
+    align-items: stretch;
+    justify-content: flex-start;
+    background: #fff;
+    min-height: 0;
+  }
+  #videoArea {
+    padding: 0;
+    margin: 0;
+    max-width: 100vw;
+    background: none;
+    box-shadow: none;
+    border-radius: 0;
+  }
+  #videoContainer {
+    width: 100vw !important;
+    max-width: 100vw;
+    min-width: 0;
+    border-radius: 0;
+    margin: 0;
+    position: relative;
+    padding: 0;
+    height: calc(100vw * 9 / 16);
+    min-height: 180px;
+    background: #000;
+  }
+  #videoPlayer {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+  }
+  #videoArea > h3 {
+    display: none;
+  }
+  #addSubscriptionArea, #subscriptionArea, #channelArea {
+    padding: 10px 4px;
+    margin: 0 2vw 6px 2vw;
+    border-radius: 7px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  }
 }
+
 @media (max-width: 600px) {
     #videoArea, #videoContainer {
         max-width: 100vw;
