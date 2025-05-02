@@ -239,21 +239,20 @@ h3 {
 
 /* ========== 夜间暗色模式覆盖（body.dark或.dark类即可生效） ========== */
 body.dark, .dark {
-  --color-bg:       #181818;
-  --color-bg-card:  #222;
-  --color-border:   #232323;
-  --color-text:     #f1f3fa;
-  --color-text-light:#acb2ba;
-  --color-primary:  #ff5252;
-  --color-sidebar:  #212121;
-  --color-sidebar-border: #242424;
-  --color-shadow:   0 2px 16px 0 rgba(48,38,87,0.16);
-  --color-btn:      #ff5252;
-  --color-btn-hover:#e52d27;
-  --color-selected-bg: #272727;
-  --color-selected-border: #ff5252;
+  --color-bg:       #11141a;      /* 主背景 更深邃 */
+  --color-bg-card:  #191c24;      /* 卡片背景略浅但够对比 */
+  --color-border:   #232634;
+  --color-text:     #eceef1;      /* 文字更明亮 */
+  --color-text-light:#8b97ab;
+  --color-primary:  #ff3c3c;
+  --color-sidebar:  #171a22;
+  --color-sidebar-border: #262a38;
+  --color-shadow:   0 2px 24px 0 rgba(21,23,35,0.40);
+  --color-btn:      #ff3c3c;
+  --color-btn-hover:#d32525;
+  --color-selected-bg: #202432;
+  --color-selected-border: #ff3c3c;
 }
-
 body.dark, .dark, body.dark #root {
   background: var(--color-bg) !important;
   color: var(--color-text) !important;
@@ -262,7 +261,7 @@ body.dark, .dark, body.dark #root {
 body.dark #main {
   background: var(--color-bg-card);
   color: var(--color-text);
-  box-shadow: 0 0 30px 0 rgba(0,0,0,0.08);
+  box-shadow: 0 0 30px 0 rgba(0,0,0,0.15);
 }
 .dark #addSubscriptionArea, .dark #subscriptionArea, .dark #channelArea, .dark #videoArea,
 body.dark #addSubscriptionArea,
@@ -282,17 +281,59 @@ body.dark #videoArea {
   color: var(--color-text-light);
 }
 .dark #videoContainer, body.dark #videoContainer {
-  background: #101010;
+  background: #161a20;
   border-radius: 16px;
-  box-shadow: 0 2px 28px 0 rgba(0,0,0,0.19);
+  box-shadow: 0 2px 28px 0 rgba(0,0,0,0.24);
 }
-
-/* 夜间模式按钮更暗一些文字反白 */
-.dark #addSubscriptionArea input[type="url"] {
-  background: #252525;
+.dark #addSubscriptionArea input[type="url"],
+.dark #addSubscriptionArea input,
+body.dark #addSubscriptionArea input[type="url"],
+body.dark #addSubscriptionArea input {
+  background: #1b1f27 !important;
   color: #eee;
-  border: 1px solid #292929;
+  border: 1px solid #282b35;
+  box-shadow: 0 1px 6px 0 rgba(70,70,90, 0.11) inset;
+  transition: border 0.2s;
 }
+.dark #addSubscriptionArea input[type="url"]:focus,
+body.dark #addSubscriptionArea input[type="url"]:focus {
+  border: 1.5px solid var(--color-primary);
+  box-shadow: 0 2px 10px 0 rgba(255,0,0,0.12) inset;
+}
+.dark #addSubscriptionArea button,
+body.dark #addSubscriptionArea button {
+  background: linear-gradient(90deg, #ff4153 80%, #ff6868 100%);
+  color: #fff;
+  font-weight: bold;
+  border: none;
+  border-radius: 6px;
+  box-shadow: 0 3px 24px 0 rgba(255,63,63,0.11);
+  transition: background 0.2s;
+}
+.dark #addSubscriptionArea button:hover,
+body.dark #addSubscriptionArea button:hover {
+  background: #d32525;
+}
+.dark #subscriptionList li.selected, .dark #channelList li.selected {
+  background: var(--color-selected-bg);
+  border-left: 4px solid var(--color-selected-border);
+  color: var(--color-primary);
+  font-weight: bold;
+}
+.dark #subscriptionList li:hover, .dark #channelList li:hover {
+  background: #2b3246;
+  color: var(--color-primary);
+}
+.dark #status {
+  background: #1b1f27;
+  color: #ffbfc0;
+  border: 1px solid #4c2626;
+}
+.dark #status.error  { background: #2e1f21; color: #ff6d6d; border-color: #b97a88; }
+.dark #status.success{ background: #232f23; color: #8dffb9; border-color: #7ddbaf;}
+.dark #status.loading{ background: #172234; color: #f9dea2; border-color: #c68a13; }
+.dark #status.warning{ background: #2d250f; color:#ffe47a; border-color: #d6bc45; }
+
 
 /* ========== 跟随系统（auto）模式 ========== */
 @media (prefers-color-scheme: dark) {
