@@ -47,19 +47,23 @@ export default function ThemeSwitcher() {
     setBodyClass(theme);
 
     // 系统主题变动监听器，仅auto生效
-    let mql;
-    function systemChange(e) {
-      if (localStorage.getItem("__themeMode") === "auto") {
-        setBodyClass(e.matches ? "dark" : "light");
-      }
+  let mql;
+  function systemChange(e) {
+    if (localStorage.getItem("__themeMode") === "auto") {
+      // auto 模式下，系统主题变化时移除所有类名
+      document.body.classList.remove("dark", "light");
     }
-    if (theme === "auto") {
-      mql = window.matchMedia("(prefers-color-scheme: dark)");
-      setBodyClass(mql.matches ? "dark" : "light");
-      mql.addEventListener("change", systemChange);
-    }
-    return () => { mql && mql.removeEventListener("change", systemChange); };
-  }, [theme]);
+  }
+  if (theme === "auto") {
+    mql = window.matchMedia("(prefers-color-scheme: dark)");
+    // 移除强制设置类名的代码
+    document.body.classList.remove("dark", "light"); // 确保类名被清除
+    mql.addEventListener("change", systemChange);
+  }
+  return () => { 
+    mql && mql.removeEventListener("change", systemChange); 
+  };
+}, [theme]);
 
   function handleSelect(selected) {
     setTheme(selected);
