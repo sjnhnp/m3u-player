@@ -595,109 +595,108 @@ const styles = {
   
   // --- JSX 结构渲染 ---
   return (
-      <div className="app-root">
-        <h2>电视直播</h2>
-        <SmallNote />
-        <div className="main-flex">
-      {/* --- 左侧边栏 --- */}
-      <div id="sidebar">
-        {/* 添加自定义订阅区域 */}
-        <div id="addSubscriptionArea">
+    <div className="app-root">
+      <h2>电视直播</h2>
+      <SmallNote />
+      <div className="main-flex">
+        {/* --- 左侧边栏 --- */}
+        <div id="sidebar">
+          {/* 添加自定义订阅区域 */}
+          <div id="addSubscriptionArea">
             <h3>添加自定义订阅</h3>
             <AddSubscription addSubscription={handleAddUserSubscription} />
-        </div>
-        {/* 订阅源列表区域 */}
-        <div id="subscriptionArea">
-          <h3>订阅源列表</h3>
-           <SubscriptionList
-                subscriptions={mergedSubscriptions}
-                removeSubscription={handleDeleteUserSubscription}
-                selectSubscription={fetchAndParseM3u}
-                selectedSubscriptionUrl={selectedSubscriptionUrl}
-           />
-        </div>
-        {/* 频道列表区域 */}
-        <div id="channelArea">
-          <h3>频道列表</h3>
-          {/* --- 频道搜索框 --- */}
-          {selectedSubscriptionUrl && channels.length > 0 && (
-            <input
-              type="search"
-              placeholder="搜索频道名称或分组..."
-              value={channelSearchQuery}
-              onChange={(e) => setChannelSearchQuery(e.target.value)}
-              style={styles.searchInput} // 应用样式
+          </div>
+          {/* 订阅源列表区域 */}
+          <div id="subscriptionArea">
+            <h3>订阅源列表</h3>
+            <SubscriptionList
+              subscriptions={mergedSubscriptions}
+              removeSubscription={handleDeleteUserSubscription}
+              selectSubscription={fetchAndParseM3u}
+              selectedSubscriptionUrl={selectedSubscriptionUrl}
             />
-          )}
-          {/* --- 频道列表 UL --- */}
-          <ul id="channelList">
-             {/* 条件渲染: 提示信息 */}
-            {!selectedSubscriptionUrl && status.type !== 'loading' && !status.message.includes("频道列表") && (
-                 <li>请先选择一个订阅源</li>
-             )}
-             {selectedSubscriptionUrl && status.type === 'loading' && status.message.includes("频道列表") && (
-                 <li>加载频道中...</li>
-             )}
-             {selectedSubscriptionUrl && channels.length === 0 && (status.type === 'warning' || status.type === 'info') && !status.message.includes("加载中") && (
-                 <li>此订阅源没有找到可用频道或解析失败</li>
-             )}
-             {selectedSubscriptionUrl && channels.length > 0 && filteredChannels.length === 0 && (
-                <li>无匹配的频道</li> // 无搜索结果提示
-             )}
-             {selectedSubscriptionUrl && channels.length === 0 && status.type === 'error' && (
-                 <li>加载频道列表失败，请检查源或代理</li> // 加载错误提示
-             )}
-
-             {/* --- 渲染过滤后的频道列表 --- */}
-             {filteredChannels.map((channel) => (
-               <li
-                 key={channel.id} // 使用唯一 ID
-                 className={selectedChannelUrl === channel.url ? 'selected' : ''} // 高亮选中项
-                 onClick={() => loadVideoStream(channel.url)} // 点击播放
-                 title={`${channel.name || '未知频道'}\n${channel.url || '无URL'}`} // 鼠标悬停提示
-               >
-                  {/* 频道 Logo */}
+          </div>
+          {/* 频道列表区域 */}
+          <div id="channelArea">
+            <h3>频道列表</h3>
+            {/* --- 频道搜索框 --- */}
+            {selectedSubscriptionUrl && channels.length > 0 && (
+              <input
+                type="search"
+                placeholder="搜索频道名称或分组..."
+                value={channelSearchQuery}
+                onChange={(e) => setChannelSearchQuery(e.target.value)}
+                style={styles.searchInput}
+              />
+            )}
+            {/* --- 频道列表 UL --- */}
+            <ul id="channelList">
+              {!selectedSubscriptionUrl && status.type !== 'loading' && !status.message.includes("频道列表") && (
+                <li>请先选择一个订阅源</li>
+              )}
+              {selectedSubscriptionUrl && status.type === 'loading' && status.message.includes("频道列表") && (
+                <li>加载频道中...</li>
+              )}
+              {selectedSubscriptionUrl && channels.length === 0 && (status.type === 'warning' || status.type === 'info') && !status.message.includes("加载中") && (
+                <li>此订阅源没有找到可用频道或解析失败</li>
+              )}
+              {selectedSubscriptionUrl && channels.length > 0 && filteredChannels.length === 0 && (
+                <li>无匹配的频道</li>
+              )}
+              {selectedSubscriptionUrl && channels.length === 0 && status.type === 'error' && (
+                <li>加载频道列表失败，请检查源或代理</li>
+              )}
+              {filteredChannels.map((channel) => (
+                <li
+                  key={channel.id}
+                  className={selectedChannelUrl === channel.url ? 'selected' : ''}
+                  onClick={() => loadVideoStream(channel.url)}
+                  title={`${channel.name || '未知频道'}\n${channel.url || '无URL'}`}
+                >
                   {channel.logo && (
-                     <img
-                        src={channel.logo}
-                        alt=""
-                        style={styles.channelLogo}
-                        onError={(e) => { e.target.style.display = 'none'; }} // 加载失败则隐藏
-                     />
-                   )}
-                  {/* 频道名称和分组 */}
+                    <img
+                      src={channel.logo}
+                      alt=""
+                      style={styles.channelLogo}
+                      onError={(e) => { e.target.style.display = 'none'; }}
+                    />
+                  )}
                   <span style={styles.channelName}>
-                     {channel.group ? `[${channel.group}] ` : ''}
-                     {channel.name || '未知频道'}
+                    {channel.group ? `[${channel.group}] ` : ''}
+                    {channel.name || '未知频道'}
                   </span>
-               </li>
-             ))}
-          </ul>
-        </div>
-        {/* 状态显示区域 */}
-        <div id="status" className={status.type}>
-          {status.message}
-        </div>
-      </div> {/* --- 左侧边栏结束 --- */}
+                </li>
+              ))}
+            </ul>
+          </div>
+          {/* 状态显示区域 */}
+          <div id="status" className={status.type}>
+            {status.message}
+          </div>
+        </div> 
+        {/* --- 左侧边栏结束 --- */}
 
-      {/* --- 右侧主内容区域 --- */}
-      <div id="main">
-        <div id="videoArea">
-          <h3>播放器</h3>
-          <div id="videoContainer">
-            {/* 视频播放器元素 */}
-            <video
-              ref={videoRef}
-              id="videoPlayer"
-              controls
-              playsInline
-              style={{backgroundColor: '#000', width: '100%', height: '100%'}}
-            ></video>
+        {/* --- 右侧主内容区域 --- */}
+        <div id="main">
+          <div id="videoArea">
+            <h3>播放器</h3>
+            <div id="videoContainer">
+              {/* 视频播放器元素 */}
+              <video
+                ref={videoRef}
+                id="videoPlayer"
+                controls
+                playsInline
+                style={{ backgroundColor: '#000', width: '100%', height: '100%' }}
+              ></video>
+            </div>
           </div>
         </div>
-      </div> {/* --- 右侧主内容结束 --- */}
-    </div> {/* --- .main-flex 结束 --- */}
-   </div> {/* --- .app-root 结束 --- */}
+        {/* --- 右侧主内容结束 --- */}
+      </div>
+      {/* --- .main-flex 结束 --- */}
+    </div>
+    // {/* --- .app-root 结束 --- */}
   );
 }
 
