@@ -210,6 +210,9 @@ h3 {
   box-sizing: border-box;
   border: 1px solid var(--notice-bg);
   min-height: unset;            /* 不再硬撑 1.5em，高度由内容决定 */
+  max-width: 100%;
+  overflow-wrap: break-word;   /* 自动断长词 / URL */
+  box-sizing: border-box;      /* padding 计入宽度，防止撑开 */
 }
 #status.error { color: #721c24; background: #f8d7da; border: 1px solid #f5c6cb; font-weight: bold; }
 #status.success { color: #18842b; background: #d4edda; border: 1px solid #c3e6cb; font-weight: bold; }
