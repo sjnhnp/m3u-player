@@ -220,7 +220,7 @@ h3 {
   max-width: 760px; /* ★★★ 限制最大宽度 */
   /* margin: 0 auto; */ /* ★★★ 移除 */
   position: absolute;   /* ★★★ 设置为绝对定位 */
-  top: 50%;             /* ★★★ 垂直方向移到 50% */
+  top: 20px;             /* ★★★ 垂直方向移到 50% */
   left: 50%;            /* ★★★ 水平方向移到 50% */
   transform: translate(-50%, -50%); /* ★★★ 使用 transform 精确居中 */
   background: var(--color-bg-card); /* ★★★ 保留背景 */
