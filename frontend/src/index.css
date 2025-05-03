@@ -129,14 +129,16 @@ h3 {
   margin-right: 6px;
 }
 #subscriptionList li:last-child, #channelList li:last-child { border-bottom: none; }
-#subscriptionList li.selected, #channelList li.selected {
-  background: var(--color-selected-bg);
+#subscriptionList li.selected, 
+#channelList li.selected {
+  background: var(--item-hover-bg);
   border-left: 5px solid var(--color-selected-border);
   color: var(--color-primary);
   font-weight: bold;
 }
-#subscriptionList li:hover, #channelList li:hover {
-  background-color: #ffeded;
+#subscriptionList li:hover, 
+#channelList li:hover {
+  background-color: var(--item-hover-bg);
   color: var(--color-primary);
 }
 
@@ -199,14 +201,15 @@ h3 {
 /* 状态信息条 */
 #status {
   margin-top: 10px;
-  padding: 10px;
-  background: #ffeaea;
+  padding: 8px 12px;            /* ↙ ↘ 给足垂直空间 */
+  background: var(--notice-bg); /* 用主题变量 */
   border-radius: 6px;
   color: #d32f2f;
   font-size: 0.98em;
-  min-height: 1.5em;
+  line-height: 1.4;             /* 让两行字不挤 */
   box-sizing: border-box;
-  border: 1px solid #ffe0e0;
+  border: 1px solid var(--notice-bg);
+  min-height: unset;            /* 不再硬撑 1.5em，高度由内容决定 */
 }
 #status.error { color: #721c24; background: #f8d7da; border: 1px solid #f5c6cb; font-weight: bold; }
 #status.success { color: #18842b; background: #d4edda; border: 1px solid #c3e6cb; font-weight: bold; }
@@ -252,6 +255,8 @@ body.dark, .dark {
   --color-btn-hover:#e52d27;
   --color-selected-bg: #272727;
   --color-selected-border: #ff5252;
+  --item-hover-bg: #2a2a2d;   
+  --notice-bg:     #3c2b2b;
 }
 
 body.dark, .dark, body.dark #root {
@@ -328,6 +333,8 @@ body.light, .light {
   --color-btn-hover:#e52d27;
   --color-selected-bg: #fff3f0;
   --color-selected-border: #ff0000;
+  --item-hover-bg: #f5f5f5;
+  --notice-bg:     #ffecec;
 }
 
 /* ---------- 移动端响应式覆盖 ---------- */
@@ -587,8 +594,9 @@ body.dark input[type="text"] {
   color: var(--color-primary);
 }
 
-/* ===== 主题专属颜色 ===== */
-:root.light { --item-hover-bg: #f5f5f5; }  /* 亮色主题下用浅灰 */
-:root.dark  { --item-hover-bg: #2a2a2d; }  /* 暗色主题下用深灰 */
+/* ===== 频道 / 订阅列表专用 ===== */
+:root.light { --item-hover-bg: #f5f5f5; }   /* 亮色主题下，浅灰 */
+:root.light { --notice-bg: #ffecec; }       /* 亮色：淡粉红 */
+
 
 
