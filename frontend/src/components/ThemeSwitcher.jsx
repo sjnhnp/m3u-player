@@ -1,40 +1,76 @@
-// ThemeSwitcher.jsx
-import React from "react";
+// src/components/ThemeSwitcher.jsx
+import React, { useState, useEffect, useRef } from "react";
+import { FaRegSun, FaRegMoon, FaRegClock } from "react-icons/fa"; // ☀️ 🌙 ⏰
 
+/**
+ * 小白理解版：
+ * 1) 点右上角图标 => 打开一个小菜单
+ * 2) 菜单里点“白天 / 夜晚 / 自动”即可切主题
+ * 3) 结果写入 localStorage，刷新页面还能记住
+ */
 export default function ThemeSwitcher() {
-  function handleChange(e) {
-    const mode = e.target.value;
-    document.body.classList.remove('dark', 'light');
-    if (mode === 'dark')   document.body.classList.add('dark');
-    if (mode === 'light')  document.body.classList.add('light');
-    // 'auto' 则不加额外类名
-    // 尽量用 localStorage 持久化，页面刷新后记忆用户选择
-    window.localStorage.setItem('__themeMode', mode);
-  }
-  // 首次加载时自动读取（建议加到App的useEffect里）
-  React.useEffect(()=>{
-    const stored = localStorage.getItem('__themeMode');
-    if(stored==='dark'||stored==='light'){
-      document.body.classList.add(stored);
+  const [mode, setMode] = useState("auto");   // 当前模式
+  const [showMenu, setShowMenu] = useState(false); // 是否展开菜单
+  const menuRef = useRef(null); // 用来监听“点空白处关闭菜单”
+
+  /* -------------- 第一次渲染：读 localStorage ------------- */
+  useEffect(() => {
+    const stored = localStorage.getItem("__themeMode") || "auto";
+    applyMode(stored);
+    setMode(stored);
+  }, []);
+
+  /* -------------- 监听点击页面其它地方就关菜单 ------------- */
+  useEffect(() => {
+    function handleClickOutside(e) {
+      if (menuRef.current && !menuRef.current.contains(e.target)) {
+        setShowMenu(false);
+      }
     }
-  },[]);
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  /* -------------- 真正的“切主题”动作 ------------- */
+  function applyMode(nextMode) {
+    document.body.classList.remove("light", "dark"); // 先清理
+    if (nextMode === "light") document.body.classList.add("light");
+    if (nextMode === "dark") document.body.classList.add("dark");
+    localStorage.setItem("__themeMode", nextMode);
+  }
+
+  /* -------------- 处理菜单点击 ------------- */
+  function handleSelect(nextMode) {
+    applyMode(nextMode);
+    setMode(nextMode);
+    setShowMenu(false);
+  }
+
+  /* -------------- 当前图标显示什么？ ------------- */
+  const icon =
+    mode === "light" ? <FaRegSun /> :
+    mode === "dark"  ? <FaRegMoon /> :
+                       <FaRegClock />; // auto = 时钟图标
+
   return (
-    <div style={{display:'flex',alignItems:'center',gap:'0.5em',margin:'1em 0'}}>
-      <label style={{fontWeight:'bold',color:'var(--color-primary)'}}>主题</label>
-      <select
-        aria-label="颜色模式"
-        onChange={handleChange}
-        defaultValue={localStorage.getItem('__themeMode') || "auto"}
-        style={{
-          padding: '5px 10px',
-          borderRadius: '6px',
-          border: '1px solid var(--color-border)',
-          fontWeight: 500
-        }}>
-        <option value="auto">自动</option>
-        <option value="light">白天</option>
-        <option value="dark">夜晚</option>
-      </select>
+    <div className="theme-switcher" ref={menuRef}>
+      {/* 顶部右侧那颗按钮 */}
+      <button
+        className="theme-btn"
+        aria-label="选择主题"
+        onClick={() => setShowMenu((v) => !v)}
+      >
+        {icon}
+      </button>
+
+      {/* 弹出的菜单 */}
+      {showMenu && (
+        <ul className="theme-menu">
+          <li onClick={() => handleSelect("auto")}>自动（跟随系统）</li>
+          <li onClick={() => handleSelect("light")}>白天</li>
+          <li onClick={() => handleSelect("dark")}>夜晚</li>
+        </ul>
+      )}
     </div>
   );
 }
