@@ -587,3 +587,8 @@ body.dark input[type="text"] {
   color: var(--color-primary);
 }
 
+/* ===== 主题专属颜色 ===== */
+:root.light { --item-hover-bg: #f5f5f5; }  /* 亮色主题下用浅灰 */
+:root.dark  { --item-hover-bg: #2a2a2d; }  /* 暗色主题下用深灰 */
+
+
