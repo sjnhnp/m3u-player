@@ -157,13 +157,8 @@ h3 {
   width: 100%;
   display: block;
   margin-bottom: 10px;
-  background: var(--color-bg);
-  color: var(--color-text);
-  transition: border 0.2s, box-shadow 0.2s;
 }
 #addSubscriptionArea input[type="url"]:focus {
-  border: 1.5px solid var(--color-primary);
-  box-shadow: 0 2px 8px 0 rgba(255,0,0,0.06);
 }
 
 #addSubscriptionArea button,
@@ -532,11 +527,13 @@ body.dark select {
 }
 
 /* 让浏览器自带的 input、select 也暗色，比如搜索框 */
-body.dark input[type="search"],
-body.dark input[type="text"] {
+body.dark input[type="url"]:focus,
+body.dark input[type="search"]:focus,
+body.dark input[type="text"]:focus {
   background: #222 !important;
   color: #eee !important;
   border: 1px solid #333 !important;
+  box-shadow: 0 2px 8px 0 rgba(255, 82, 82, 0.12);
 }
 
 /* ------ 主题切换器（右上角） ------ */
@@ -613,9 +610,29 @@ body.dark input[type="text"] {
   color: var(--color-primary);
 }
 
-/* ===== 频道 / 订阅列表专用 ===== */
-:root.light { --item-hover-bg: #f5f5f5; }   /* 亮色主题下，浅灰 */
-:root.light { --notice-bg: #ffecec; }       /* 亮色：淡粉红 */
+/* === 所有输入框基础外观，覆盖浏览器默认 === */
+input[type="url"],
+input[type="search"],
+input[type="text"] {
+  background: var(--color-bg);
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  padding: 10px;
+  font-size: 1em;
+  box-sizing: border-box;
+  transition: border 0.2s, box-shadow 0.2s;
+}
+
+/* === 聚焦态：红色内边框 + 阴影；去掉蓝色外描边 === */
+input[type="url"]:focus,
+input[type="search"]:focus,
+input[type="text"]:focus {
+  border: 1.5px solid var(--color-primary);          /* 红边 */
+  box-shadow: 0 2px 8px 0 rgba(255, 0, 0, 0.06);     /* 红阴影 */
+  outline: none;                                     /* 去掉系统蓝圈 */
+}
+
 
 
 
