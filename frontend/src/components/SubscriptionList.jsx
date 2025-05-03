@@ -24,7 +24,7 @@ const SubscriptionList = ({
             key={sub.url}
             style={styles.listItem}
             // 添加高亮样式
-            className={selectedSubscriptionUrl === sub.url ? 'selected' : ''}
+            className={`list-item ${selectedSubscriptionUrl === sub.url ? 'selected' : ''}`}
             // 点击列表项选择订阅
             onClick={() => selectSubscription(sub.url)}
             title={sub.url} // 鼠标悬停显示 URL
