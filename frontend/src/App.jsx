@@ -597,7 +597,7 @@ const styles = {
   return (
     <div className="app-root">
       <header className="app-header">
-        <h2 className="app-title">电视直播</h2>
+        <h2 className="app-title">看看讲究将就看看</h2>
         {/* 右侧小图标 */}
         <ThemeSwitcher />
       </header>
@@ -683,7 +683,7 @@ const styles = {
         {/* --- 右侧主内容区域 --- */}
         <div id="main">
           <div id="videoArea">
-            <h3>播放器</h3>
+            
             <div id="videoContainer">
                <video ref={videoRef} id="videoPlayer" controls playsInline style={{backgroundColor: '#000', width: '100%', height: '100%'}}></video>
             </div>
