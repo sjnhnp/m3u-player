@@ -84,6 +84,8 @@ h3 {
 #main {
   flex: 1 1 0;
   min-width: 0;
+  height: 100vh;
+  overflow-y: auto;
   background: var(--color-bg-card);
   padding: 32px 24px;
   display: flex;
@@ -613,36 +615,3 @@ input[type="text"]:focus {
   box-shadow: 0 2px 8px 0 rgba(255, 0, 0, 0.06);     /* 红阴影 */
   outline: none;                                     /* 去掉系统蓝圈 */
 }
-
-/* ===== 桌面宽度 (>= 769px) ===== */
-@media (min-width: 769px) {
-
-  /* 1️⃣ 左右两栏的最外层——确保不会再被 100vh 卡死 */
-  .main-flex {
-    height: auto !important;
-    min-height: 100vh;
-  }
-
-  /* 2️⃣ 右栏本身禁止再滚（你已有 overflow:hidden，可放这里再保险一次） */
-  #main {
-    overflow: hidden !important;
-  }
-
-  /* 3️⃣ 播放器彻底脱离文档流 —— 固定在视窗中央 */
-  #videoArea {
-    position: fixed !important;      /* 关键！覆盖旧的 sticky */
-    top: 50%;
-    right: 32px;                     /* 看你想离右边多远 */
-    transform: translateY(-50%);
-    width: calc(100% - 320px - 64px);/* 视口宽 - 左栏宽 - 左右安全距 */
-    max-width: 900px;                /* 自行调整上限 */
-    z-index: 2000;
-  }
-}
-
-
-
-
-
-
-
