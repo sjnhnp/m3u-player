@@ -17,6 +17,7 @@
   --color-selected-bg: #fff3f0;
   --color-selected-border: #ff0000;
   --item-hover-bg: #f5f5f5;
+  --notice-bg: #ffecec;
 }
 
 body, #root {
@@ -144,21 +145,10 @@ h3 {
 }
 
 /* 表单/输入区美化 */
-#addSubscriptionArea input[type="url"],
-#addSubscriptionArea button {
-  padding: 10px;
-  margin-bottom: 10px;
-  border: 1px solid var(--color-border);
-  border-radius: 6px;
-  font-size: 1em;
-  box-sizing: border-box;
-}
 #addSubscriptionArea input[type="url"] {
   width: 100%;
   display: block;
   margin-bottom: 10px;
-}
-#addSubscriptionArea input[type="url"]:focus {
 }
 
 #addSubscriptionArea button,
@@ -203,7 +193,6 @@ h3 {
   color: #d32f2f;
   font-size: 0.98em;
   line-height: 1.4;             /* 让两行字不挤 */
-  box-sizing: border-box;
   border: 1px solid var(--notice-bg);
   min-height: unset;            /* 不再硬撑 1.5em，高度由内容决定 */
   max-width: 100%;
