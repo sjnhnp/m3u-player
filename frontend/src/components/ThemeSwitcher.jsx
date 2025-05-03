@@ -63,6 +63,35 @@ export default function ThemeSwitcher() {
     localStorage.setItem("__themeMode", next);
   }
 
+   
+function MenuItem({ value, children }) {
+  const active = mode === value;
+  return (
+    <li
+      onClick={() => handleSelect(value)}
+      style={{
+        fontWeight: active ? 700 : 400,
+        color: active ? 'var(--color-primary)' : 'inherit',
+        display: 'flex',
+        alignItems: 'center',
+        gap: '4px'
+      }}
+    >
+      {active && <span>✔</span>}
+      {children}
+    </li>
+  );
+}
+
+/* 下拉菜单 */
+{showMenu && (
+  <ul className="theme-menu">
+    <MenuItem value="auto">自动（跟随系统）</MenuItem>
+    <MenuItem value="light">白天</MenuItem>
+    <MenuItem value="dark">夜晚</MenuItem>
+  </ul>
+)}
+
   /* --- 菜单点击回调 --- */
   function handleSelect(next) {
     applyMode(next);
