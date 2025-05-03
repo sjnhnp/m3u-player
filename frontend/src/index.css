@@ -74,6 +74,12 @@ h3 {
   letter-spacing: .5px;
 }
 
+/* ===== 桌面 (≥ 769 px) 侧栏排序 ===== */
+#channelArea      { order: 1; }   /* ① 频道列表 */
+#status           { order: 2; }   /* ② 通知栏   */
+#subscriptionArea { order: 3; }   /* ③ 订阅列表 */
+#addSubscriptionArea { order: 4; }/* ④ 添加订阅 */
+
 /* 右主区 */
 #main {
   flex: 1 1 0;
