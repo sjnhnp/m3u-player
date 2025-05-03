@@ -571,7 +571,6 @@ const styles = {
     width: 'calc(100% - 20px)', // 宽度适应容器，留边距
     padding: '8px 10px',
     marginBottom: '10px',
-    border: '1px solid #ccc',
     borderRadius: '4px',
     boxSizing: 'border-box',
     display: 'block',
