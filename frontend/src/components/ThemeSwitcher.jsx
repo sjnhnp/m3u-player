@@ -32,8 +32,8 @@ export default function ThemeSwitcher() {
           fontWeight: 500
         }}>
         <option value="auto">自动</option>
-        <option value="light">光亮</option>
-        <option value="dark">夜幕</option>
+        <option value="light">白天</option>
+        <option value="dark">夜晚</option>
       </select>
     </div>
   );
