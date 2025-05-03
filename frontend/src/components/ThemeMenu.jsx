@@ -1,6 +1,11 @@
-/* ThemeMenu.jsx */
+// src/components/ThemeMenu.jsx
 import React from 'react';
 
+/**
+ * 显示三项菜单；由父组件传入：
+ * mode      当前模式字符串 'auto' | 'light' | 'dark'
+ * onChange  选择后的回调
+ */
 export default function ThemeMenu({ mode, onChange }) {
   const MenuItem = ({ value, children }) => {
     const active = mode === value;
@@ -9,7 +14,7 @@ export default function ThemeMenu({ mode, onChange }) {
         className={`menu-item ${active ? 'active' : ''}`}
         onClick={() => onChange(value)}
       >
-        {/* 留一个占位，让没对勾的行也对齐 */}
+        {/* check 占位：没勾也占 1em 宽，三行字才能对齐 */}
         <span className="check">{active && '✔'}</span>
         {children}
       </li>
