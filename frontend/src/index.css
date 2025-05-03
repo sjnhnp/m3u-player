@@ -84,8 +84,6 @@ h3 {
 #main {
   flex: 1 1 0;
   min-width: 0;
-  height: 100vh;
-  overflow-y: auto;
   background: var(--color-bg-card);
   padding: 32px 24px;
   display: flex;
@@ -95,6 +93,7 @@ h3 {
   gap: 18px;
   box-shadow: 0 0 20px 0 rgba(28, 88, 125, .04);
   border-radius: 18px;
+  padding-bottom: 40vh;
 }
 
 /* 卡片样式 */
@@ -623,14 +622,14 @@ input[type="text"]:focus {
   #main {
     height: auto;       /* 把 100vh 盖掉 */
     min-height: 100vh;
-    overflow-y: visible;/* 把 auto 盖掉 */
+    overflow-y: visible !important;
     padding-bottom: 50vh;
   }
 
   /* 2️⃣ 让播放器永远钉在屏幕正中 */
   #videoArea {
     position: sticky;   /* 粘在滚动阈值处 */
-    top: 50%;           /* 阈值 = 屏幕垂直中点 */
+    top: calc(50vh + 24px);          /* 阈值 = 屏幕垂直中点 */
     transform: translateY(-50%); /* 自己再上移半个身高，就真正在中间 */
     margin-bottom: 0 !important;
     z-index: 1;         /* 防止被别的层盖住，可留可删 */
