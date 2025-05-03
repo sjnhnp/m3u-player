@@ -9,6 +9,15 @@ import SubscriptionList from './components/SubscriptionList'; // 导入列表组
 import AddSubscription from './components/AddSubscription';   // 导入添加组件
 import ThemeSwitcher from './components/ThemeSwitcher';
 
+export default function Header() {
+  return (
+    <header style={{position:'relative',height:'56px',background:'#222', color:'#fff'}}>
+      <span style={{marginLeft:20, fontWeight:'bold'}}>你的网站LOGO</span>
+      <ThemeSwitcher />
+    </header>
+  );
+}
+
 // ---- 在这里插入小组件 ----
 function SmallNote() {
   return (
@@ -598,7 +607,6 @@ const styles = {
   return (
     <div className="app-root">
       <h2>电视直播</h2>
-      <ThemeSwitcher />
       <SmallNote />
       <div className="main-flex">
         {/* --- 左侧边栏 --- */}
