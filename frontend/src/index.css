@@ -615,32 +615,31 @@ input[type="text"]:focus {
   outline: none;                                     /* 去掉系统蓝圈 */
 }
 
-/* ===== 桌面宽度 (>= 769px) 专用 ===== */
-/* ===== 桌面宽度 (>= 769px) ===== */
+/* ===== 桌面宽度 (>= 769px) 专用补丁 ===== */
 @media (min-width: 769px) {
-
-  /* 0️⃣ 先把最外层容器放开高度 —— 这行才是关键！ */
+  /* ★ 1. 让最外层 flex 容器不再定死 100vh ★ */
   .main-flex {
-    height: auto;        /* ← 原先的 100vh 改成 auto */
-    min-height: 100vh;   /* 至少一屏，但允许继续长高 */
+    height: auto !important;   /* ← 关键：覆盖原来的 height:100vh */
+    min-height: 100vh;         /* 至少一屏高，但允许继续变高 */
   }
 
-  /* 1️⃣ 右侧不再滚动，只跟随整页 */
+  /* ★ 2. 右侧 #main 绝不滚动，只由整页滚 ★ */
   #main {
     overflow-y: visible !important;
-    min-height: 100vh;   /* 给 sticky 足够跑道 */
-    padding-bottom: 40vh;/* 想多留就 30~50vh 自由调 */
+    min-height: 100vh;         /* 给 sticky 足够“跑道” */
+    padding-bottom: 40vh;      /* 想多留或少留，自行调 30~50vh */
   }
 
-  /* 2️⃣ 播放器钉中 */
+  /* ★ 3. 播放器牢牢钉在视窗正中 ★ */
   #videoArea {
     position: sticky;
-    top: 50vh;           /* 如果有固定头栏，用 calc(50vh + 头栏/2) */
+    top: 50vh;                 /* 若有固定 48 px 头栏 → 改 calc(50vh + 24px) */
     transform: translateY(-50%);
     margin-bottom: 0 !important;
     z-index: 1;
   }
 }
+
 
 
 
