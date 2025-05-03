@@ -16,11 +16,20 @@ const MoonIcon = () => (
   </svg>
 );
 const AutoIcon = () => (
-  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-    <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="2" fill="none" />
-    <path d="M12 7v5l3 3" stroke="currentColor" strokeWidth="2" fill="none" />
+  <svg
+    width="22" height="22"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.5"          {/*  ← 线条改细 */}
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <circle cx="12" cy="12" r="9"></circle>
+    <polyline points="12 7 12 12 15 15"></polyline>
   </svg>
 );
+
 
 /* ====================== 主题切换主组件 ====================== */
 export default function ThemeSwitcher() {
