@@ -597,8 +597,11 @@ const styles = {
   // --- JSX 结构渲染 ---
   return (
     <div className="app-root">
-      <h2>电视直播</h2>
-      <ThemeSwitcher />
+      <header className="app-header">
+        <h2 className="app-title">电视直播</h2>
+        {/* 右侧小图标 */}
+        <ThemeSwitcher />
+      </header>
       <SmallNote />
       <div className="main-flex">
         {/* --- 左侧边栏 --- */}
