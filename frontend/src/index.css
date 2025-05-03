@@ -84,18 +84,21 @@ h3 {
 #main {
   flex: 1 1 0;
   min-width: 0;
-  height: 100vh;
-  /* overflow-y: auto; */ /* 移除或注释掉这一行 */
+  /* height: 100vh; */ /* 保持移除 */
+  /* overflow-y: auto; */ /* 保持移除/注释 */
   background: var(--color-bg-card);
-  padding: 32px 24px; /* 内边距可以保留，看是否影响居中效果 */
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center; /* 修改这里：从 flex-start 改为 center */
-  gap: 18px; /* 如果#main里有多个元素，gap会影响它们 */
+  padding: 20px; /* ★★★ 保留或调整内边距 */
+  position: relative; /* ★★★ 添加：作为绝对定位的参照物 */
+  /* display: flex; */ /* ★★★ 移除 */
+  /* flex-direction: column; */ /* ★★★ 移除 */
+  /* align-items: center; */ /* ★★★ 移除 */
+  /* justify-content: center; */ /* ★★★ 移除 */
+  gap: 18px; /* 这个 gap 不再对 #videoArea 生效，如果 #main 内有其他非绝对定位元素则有用 */
   box-shadow: 0 0 20px 0 rgba(28, 88, 125, .04);
   border-radius: 18px;
+  /* ★★★ 高度仍然由 .main-flex 的 align-items: stretch (默认) 控制 */
 }
+
 
 
 /* 卡片样式 */
@@ -213,10 +216,20 @@ h3 {
 
 /* 播放器主区自适应&美化 */
 #videoArea {
-  width: 100%;
-  max-width: 760px;
-  margin: 0 auto 16px auto;
+  width: 100%; /* ★★★ 宽度相对于 #main 的 padding box */
+  max-width: 760px; /* ★★★ 限制最大宽度 */
+  /* margin: 0 auto; */ /* ★★★ 移除 */
+  position: absolute;   /* ★★★ 设置为绝对定位 */
+  top: 50%;             /* ★★★ 垂直方向移到 50% */
+  left: 50%;            /* ★★★ 水平方向移到 50% */
+  transform: translate(-50%, -50%); /* ★★★ 使用 transform 精确居中 */
+  background: var(--color-bg-card); /* ★★★ 保留背景 */
+  border-radius: 14px;              /* ★★★ 保留圆角 */
+  box-shadow: var(--color-shadow);  /* ★★★ 保留阴影 */
+  padding: 16px;                    /* ★★★ 保留内边距 */
+  box-sizing: border-box;           /* ★★★ 确保 padding 包含在 width 内 */
 }
+
 #videoContainer {
   width: 100%;
   padding-top: 56.25%;   /* 16:9缩放 */
