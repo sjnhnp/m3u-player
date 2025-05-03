@@ -615,30 +615,46 @@ input[type="text"]:focus {
   outline: none;                                     /* 去掉系统蓝圈 */
 }
 
-/* ===== 桌面宽度 (>= 769px) 专用补丁 ===== */
+/* ===== ≥ 769 px 桌面 ===== */
 @media (min-width: 769px) {
-  /* ★ 1. 让最外层 flex 容器不再定死 100vh ★ */
+
+  /* 1️⃣ 整体布局改成两列 Grid，左滚右不滚 */
   .main-flex {
-    height: auto !important;   /* ← 关键：覆盖原来的 height:100vh */
-    min-height: 100vh;         /* 至少一屏高，但允许继续变高 */
+    display: grid;
+    grid-template-columns: 320px 1fr;  /* 左栏固定 320px，可按需调 */
+    gap: 0;
+    min-height: 100vh;                 /* 让整块至少满屏 */
+  }
+  #sidebar {
+    height: 100vh;                     /* 左栏单独滚 */
+    overflow-y: auto;
   }
 
-  /* ★ 2. 右侧 #main 绝不滚动，只由整页滚 ★ */
+  /* 2️⃣ 右栏本身不滚动，也不需要多余 padding-bottom */
   #main {
-    overflow-y: visible !important;
-    min-height: 100vh;         /* 给 sticky 足够“跑道” */
-    padding-bottom: 40vh;      /* 想多留或少留，自行调 30~50vh */
+    overflow: hidden;                  /* 里面再不会冒滚动条 */
+    position: relative;                /* 供 absolutely‑pos 子元素参照 */
   }
 
-  /* ★ 3. 播放器牢牢钉在视窗正中 ★ */
+  /* 3️⃣ 播放器彻底脱离文档流 → 固定在视口正中 */
   #videoArea {
-    position: sticky;
-    top: 50vh;                 /* 若有固定 48 px 头栏 → 改 calc(50vh + 24px) */
+    position: fixed;                   /* 关键！ */
+    top: 50%;                          /* 垂直居中 */
+    right: 32px;                       /* 距右边留一点安全距 */
     transform: translateY(-50%);
-    margin-bottom: 0 !important;
-    z-index: 1;
+    width: calc(100% - 320px - 64px);  /* 视口宽 - 左栏 - 左右安全距 */
+    max-width: 900px;                  /* 给个上限，防止过宽 */
+    z-index: 2000;                     /* 盖住左栏阴影等 */
+  }
+  /* 视频容器 & 播放器尺寸自己掌控 */
+  #videoArea #videoContainer,
+  #videoPlayer {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
   }
 }
+
 
 
 
