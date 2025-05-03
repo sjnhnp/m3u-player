@@ -615,45 +615,32 @@ input[type="text"]:focus {
   outline: none;                                     /* 去掉系统蓝圈 */
 }
 
-/* ===== ≥ 769 px 桌面 ===== */
+/* ===== 桌面宽度 (>= 769px) ===== */
 @media (min-width: 769px) {
 
-  /* 1️⃣ 整体布局改成两列 Grid，左滚右不滚 */
+  /* 1️⃣ 左右两栏的最外层——确保不会再被 100vh 卡死 */
   .main-flex {
-    display: grid;
-    grid-template-columns: 320px 1fr;  /* 左栏固定 320px，可按需调 */
-    gap: 0;
-    min-height: 100vh;                 /* 让整块至少满屏 */
-  }
-  #sidebar {
-    height: 100vh;                     /* 左栏单独滚 */
-    overflow-y: auto;
+    height: auto !important;
+    min-height: 100vh;
   }
 
-  /* 2️⃣ 右栏本身不滚动，也不需要多余 padding-bottom */
+  /* 2️⃣ 右栏本身禁止再滚（你已有 overflow:hidden，可放这里再保险一次） */
   #main {
-    overflow: hidden;                  /* 里面再不会冒滚动条 */
-    position: relative;                /* 供 absolutely‑pos 子元素参照 */
+    overflow: hidden !important;
   }
 
-  /* 3️⃣ 播放器彻底脱离文档流 → 固定在视口正中 */
+  /* 3️⃣ 播放器彻底脱离文档流 —— 固定在视窗中央 */
   #videoArea {
-    position: fixed;                   /* 关键！ */
-    top: 50%;                          /* 垂直居中 */
-    right: 32px;                       /* 距右边留一点安全距 */
+    position: fixed !important;      /* 关键！覆盖旧的 sticky */
+    top: 50%;
+    right: 32px;                     /* 看你想离右边多远 */
     transform: translateY(-50%);
-    width: calc(100% - 320px - 64px);  /* 视口宽 - 左栏 - 左右安全距 */
-    max-width: 900px;                  /* 给个上限，防止过宽 */
-    z-index: 2000;                     /* 盖住左栏阴影等 */
-  }
-  /* 视频容器 & 播放器尺寸自己掌控 */
-  #videoArea #videoContainer,
-  #videoPlayer {
-    width: 100%;
-    height: auto;
-    aspect-ratio: 16 / 9;
+    width: calc(100% - 320px - 64px);/* 视口宽 - 左栏宽 - 左右安全距 */
+    max-width: 900px;                /* 自行调整上限 */
+    z-index: 2000;
   }
 }
+
 
 
 
