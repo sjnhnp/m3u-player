@@ -85,17 +85,18 @@ h3 {
   flex: 1 1 0;
   min-width: 0;
   height: 100vh;
-  overflow-y: auto;
+  /* overflow-y: auto; */ /* 移除或注释掉这一行 */
   background: var(--color-bg-card);
-  padding: 32px 24px;
+  padding: 32px 24px; /* 内边距可以保留，看是否影响居中效果 */
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
-  gap: 18px;
+  justify-content: center; /* 修改这里：从 flex-start 改为 center */
+  gap: 18px; /* 如果#main里有多个元素，gap会影响它们 */
   box-shadow: 0 0 20px 0 rgba(28, 88, 125, .04);
   border-radius: 18px;
 }
+
 
 /* 卡片样式 */
 #addSubscriptionArea, #subscriptionArea, #channelArea, #videoArea {
@@ -423,16 +424,19 @@ body.light, .light {
   }
 
   /* --- 播放器区域样式调整 --- */
-  #videoArea {
-    width: 100%;
-    max-width: 100%; /* 覆盖桌面端的 max-width */
-    margin: 0 0 15px 0; /* 底部留出间距 */
-    padding: 0; /* 通常不需要内边距 */
-    /* 保留之前的背景/阴影/圆角设置 */
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  }
+/* 播放器主区自适应&美化 */
+#videoArea {
+  width: 100%;
+  max-width: 760px;
+  /* margin: 0 auto 16px auto; */ /* 原来的 */
+  margin: 0 auto; /* 修改为这个，实现更精确的垂直居中 */
+  /* 其他样式保持不变 */
+  background: var(--color-bg-card); /* 注意：这个背景色可能不需要了，因为 #main 有背景 */
+  border-radius: 14px;
+  box-shadow: var(--color-shadow);
+  padding: 16px; /* 这个内边距是 videoArea 自身的，可以保留 */
+}
+
 
   /* 播放器标题可以保留 */
   #videoArea > h3 {
