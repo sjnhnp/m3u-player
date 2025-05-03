@@ -616,25 +616,32 @@ input[type="text"]:focus {
 }
 
 /* ===== 桌面宽度 (>= 769px) 专用 ===== */
+/* ===== 桌面宽度 (>= 769px) ===== */
 @media (min-width: 769px) {
 
-  /* 1️⃣ 让右侧区域本身不再滚动 */
-  #main {
-    height: auto;       /* 把 100vh 盖掉 */
-    min-height: 100vh;
-    overflow-y: visible !important;
-    padding-bottom: 50vh;
+  /* 0️⃣ 先把最外层容器放开高度 —— 这行才是关键！ */
+  .main-flex {
+    height: auto;        /* ← 原先的 100vh 改成 auto */
+    min-height: 100vh;   /* 至少一屏，但允许继续长高 */
   }
 
-  /* 2️⃣ 让播放器永远钉在屏幕正中 */
+  /* 1️⃣ 右侧不再滚动，只跟随整页 */
+  #main {
+    overflow-y: visible !important;
+    min-height: 100vh;   /* 给 sticky 足够跑道 */
+    padding-bottom: 40vh;/* 想多留就 30~50vh 自由调 */
+  }
+
+  /* 2️⃣ 播放器钉中 */
   #videoArea {
-    position: sticky;   /* 粘在滚动阈值处 */
-    top: calc(50vh + 24px);          /* 阈值 = 屏幕垂直中点 */
-    transform: translateY(-50%); /* 自己再上移半个身高，就真正在中间 */
+    position: sticky;
+    top: 50vh;           /* 如果有固定头栏，用 calc(50vh + 头栏/2) */
+    transform: translateY(-50%);
     margin-bottom: 0 !important;
-    z-index: 1;         /* 防止被别的层盖住，可留可删 */
+    z-index: 1;
   }
 }
+
 
 
 
