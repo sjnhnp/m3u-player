@@ -401,7 +401,7 @@ body.light, .light {
 
   /* --- 调整 #sidebar 内元素的顺序 --- */
   #channelArea {
-    order: 1; /* ★★★ 频道列表最先 (在 Sidebar 内部) */
+    order: 2; /* ★★★ 频道列表最先 (在 Sidebar 内部) */
     width: 100%;
     margin: 0; /* 重置外边距 */
   }
@@ -416,7 +416,7 @@ body.light, .light {
      margin: 0;
   }
   #status {
-    order: 2; /* ★★★ 状态栏最后 (在 Sidebar 内部) */
+    order: 1; /* ★★★ 状态栏最后 (在 Sidebar 内部) */
     width: 100%;
     margin: 0; /* 重置外边距 */
     margin-top: 5px; /* 可以稍微给点顶部间距 */
