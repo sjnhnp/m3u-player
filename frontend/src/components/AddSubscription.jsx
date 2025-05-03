@@ -34,6 +34,8 @@ const AddSubscription = ({ addSubscription }) => {
         onChange={(e) => setName(e.target.value)}
         placeholder="输入订阅名称"
         required
+        onInvalid={(e) => e.target.setCustomValidity('请输入订阅名称')}
+        onInput ={(e) => e.target.setCustomValidity('')}
         style={styles.inputName} // 可以用新的样式或复用 input 样式
       />
       <input
@@ -42,6 +44,12 @@ const AddSubscription = ({ addSubscription }) => {
         onChange={(e) => setUrl(e.target.value)}
         placeholder="输入 m3u 订阅链接"
         required
+        onInvalid={(e) =>
+          e.target.setCustomValidity(
+            '请输入有效的 M3U/M3U8 地址（必须以 http:// 或 https:// 开头）'
+          )
+        }
+        onInput ={(e) => e.target.setCustomValidity('')}
         style={styles.inputUrl} // 可以用新的样式或复用 input 样式
       />
       <button type="submit" style={styles.button}>
