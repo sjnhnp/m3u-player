@@ -283,8 +283,6 @@ body.dark #videoArea {
 /* 夜间模式按钮更暗一些文字反白 */
 .dark #addSubscriptionArea input[type="url"] {
   background: #252525;
-  color: #eee;
-  border: 1px solid #292929;
 }
 
 /* ========== 跟随系统（auto）模式 ========== */
@@ -513,16 +511,6 @@ body.dark select {
   background: #222 !important;
   color: #eee !important;
   border: 1px solid #333 !important;
-}
-
-/* 让浏览器自带的 input、select 也暗色，比如搜索框 */
-body.dark input[type="url"]:focus,
-body.dark input[type="search"]:focus,
-body.dark input[type="text"]:focus {
-  background: #222 !important;
-  color: #eee !important;
-  border: 1px solid #333 !important;
-  box-shadow: 0 2px 8px 0 rgba(255, 82, 82, 0.12);
 }
 
 /* ------ 主题切换器（右上角） ------ */
