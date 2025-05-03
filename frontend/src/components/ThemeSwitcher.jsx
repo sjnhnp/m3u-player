@@ -78,27 +78,6 @@ export default function ThemeSwitcher() {
     setMode(next);
     setShowMenu(false);
   }
-
-  function MenuItem({ value, children }) { 
-    const active = mode === value;
-    return (
-      <li
-        onClick={() => handleSelect(value)}
-        style={{
-          fontWeight: active ? 700 : 400,
-          color: active ? 'var(--color-primary)' : 'inherit',
-          display: 'flex',
-          alignItems: 'center',
-          gap: '4px',
-          cursor: 'pointer',
-          padding: '6px 12px'
-        }}
-      >
-        {active && <span>✔</span>}
-        {children}
-      </li>
-    );
-  }
    
   /* --- 根据当前模式选一个图标 --- */
   const icon =
