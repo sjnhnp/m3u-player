@@ -5,27 +5,44 @@ import React, { useState } from 'react';
 const AddSubscription = ({ addSubscription }) => {
   const [name, setName] = useState(''); // 新增 name state
   const [url, setUrl] = useState('');
-
+  // 底部通知条用的两条 state 
+  const [statusMsg,  setStatusMsg]  = useState('');
+  const [statusType, setStatusType] = useState('');
+  
   const handleSubmit = (e) => {
     e.preventDefault();
     const trimmedName = name.trim();
-    const trimmedUrl = url.trim();
+    const trimmedUrl  = url.trim();
 
+    /* --- 简单校验 --- */
     if (trimmedName === '') {
-        alert('请输入订阅名称');
-        return;
-    }
-    if (trimmedUrl === '' || !(trimmedUrl.startsWith('http://') || trimmedUrl.startsWith('https://'))) {
-      alert('请输入有效的 M3U/M3U8 URL (以 http:// 或 https:// 开头)');
+      setStatusMsg('请输入订阅名称');
+      setStatusType('error');
       return;
     }
-    // 传递包含 name 和 url 的对象
+    if (
+      trimmedUrl === '' ||
+      !(trimmedUrl.startsWith('http://') || trimmedUrl.startsWith('https://'))
+    ) {
+      setStatusMsg('请输入有效的 M3U/M3U8 地址（以 http:// 或 https:// 开头）');
+      setStatusType('error');
+      return;
+    }
+
+    /* --- 真正提交 --- */
     addSubscription({ name: trimmedName, url: trimmedUrl });
-    setName(''); // 清空 name 输入框
+
+    /* 成功提示 */
+    setStatusMsg('订阅已添加！');
+    setStatusType('success');
+
+    /* 清空输入框 */
+    setName('');
     setUrl('');
   };
 
   return (
+    <>
     <form onSubmit={handleSubmit} style={styles.form}>
       {/* 新增 Name 输入框 */}
       <input
@@ -56,6 +73,12 @@ const AddSubscription = ({ addSubscription }) => {
         添加
       </button>
     </form>
+      {statusMsg && (
+        <div id="status" className={statusType}>
+          {statusMsg}
+        </div>
+      )}
+    </>
   );
 };
 
