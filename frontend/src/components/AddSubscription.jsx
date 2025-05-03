@@ -33,7 +33,7 @@ const AddSubscription = ({ addSubscription }) => {
         value={name}
         onChange={(e) => setName(e.target.value)}
         placeholder="输入订阅名称"
-        //required
+        required
         style={styles.inputName} // 可以用新的样式或复用 input 样式
       />
       <input
@@ -41,7 +41,7 @@ const AddSubscription = ({ addSubscription }) => {
         value={url}
         onChange={(e) => setUrl(e.target.value)}
         placeholder="输入 m3u 订阅链接"
-       // required
+        required
         style={styles.inputUrl} // 可以用新的样式或复用 input 样式
       />
       <button type="submit" style={styles.button}>
