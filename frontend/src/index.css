@@ -616,6 +616,23 @@ input[type="text"]:focus {
   outline: none;                                     /* 去掉系统蓝圈 */
 }
 
+/* ===== 桌面宽度 (>= 769px) 专用 ===== */
+@media (min-width: 769px) {
+
+  /* 1️⃣ 让右侧区域本身不再滚动 */
+  #main {
+    height: auto;       /* 把 100vh 盖掉 */
+    overflow-y: visible;/* 把 auto 盖掉 */
+  }
+
+  /* 2️⃣ 让播放器永远钉在屏幕正中 */
+  #videoArea {
+    position: sticky;   /* 粘在滚动阈值处 */
+    top: 50%;           /* 阈值 = 屏幕垂直中点 */
+    transform: translateY(-50%); /* 自己再上移半个身高，就真正在中间 */
+    z-index: 1;         /* 防止被别的层盖住，可留可删 */
+  }
+}
 
 
 
