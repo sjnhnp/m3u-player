@@ -406,17 +406,17 @@ body.light, .light {
     margin: 0; /* 重置外边距 */
   }
   #subscriptionArea {
-    order: 2; /* ★★★ 订阅源列表其次 */
+    order: 3; /* ★★★ 订阅源列表其次 */
     width: 100%;
      margin: 0;
   }
   #addSubscriptionArea {
-    order: 3; /* ★★★ 添加区域再次 */
+    order: 4; /* ★★★ 添加区域再次 */
     width: 100%;
      margin: 0;
   }
   #status {
-    order: 4; /* ★★★ 状态栏最后 (在 Sidebar 内部) */
+    order: 2; /* ★★★ 状态栏最后 (在 Sidebar 内部) */
     width: 100%;
     margin: 0; /* 重置外边距 */
     margin-top: 5px; /* 可以稍微给点顶部间距 */
