@@ -1,326 +1,8 @@
 /* ===============================
-   主题色变量（YouTube风格三模式）
-   支持跟随系统/白天/夜晚
+   全局样式和主题变量
    =============================== */
 :root {
-  --color-bg:       #f8f9fa;
-  --color-bg-card:  #fff;
-  --color-border:   #e5e7eb;
-  --color-text:     #202124;
-  --color-text-light: #757575;
-  --color-primary:  #ff0000;  /* YouTube主色红 */
-  --color-sidebar:  #f3f5f7;
-  --color-sidebar-border: #eee;
-  --color-shadow:   0 2px 12px 0 rgba(32,37,83,0.04);
-  --color-btn:      #ff0000;
-  --color-btn-hover:#e52d27;
-  --color-selected-bg: #fff3f0;
-  --color-selected-border: #ff0000;
-  --item-hover-bg: #f5f5f5;
-  --notice-bg: #ffecec;
-}
-
-body, #root {
-  background: var(--color-bg);
-  color: var(--color-text);
-}
-
-h2 {
-  width: 100%;
-  margin-top: 0;
-  margin-bottom: 10px;
-  color: var(--color-text-light);
-  border-bottom: 1px solid var(--color-border);
-  padding-bottom: 5px;
-}
-h3 {
-  margin-top: 0;
-  margin-bottom: 10px;
-  color: var(--color-text-light);
-  font-weight: bold;
-  letter-spacing: .5px;
-}
-
-.app-root { width: 100%; }
-.main-flex {
-  display: flex;
-  gap: 20px;
-  height: 100vh;
-  min-height: 0;
-}
-
-/* 左侧sidebar */
-#sidebar {
-  width: 320px;
-  min-width: 220px;
-  max-width: 400px;
-  height: 100vh;
-  overflow-y: auto;
-  background: var(--color-sidebar);
-  border-right: 1px solid var(--color-sidebar-border);
-  box-shadow: 2px 0 8px 0 rgba(32,37,83,.03);
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
-#sidebar h2 {
-  font-size: 1.25em;
-  color: var(--color-primary);
-  border: none;
-  background: none;
-  padding-bottom: 0;
-  margin-bottom: 10px;
-  letter-spacing: .5px;
-}
-
-/* ===== 桌面 (≥ 769 px) 侧栏排序 ===== */
-#channelArea      { order: 1; }   /* ① 频道列表 */
-#status           { order: 2; }   /* ② 通知栏   */
-#subscriptionArea { order: 3; }   /* ③ 订阅列表 */
-#addSubscriptionArea { order: 4; }/* ④ 添加订阅 */
-
-/* 右主区 */
-#main {
-  flex: 1 1 0;
-  min-width: 0;
-  height: 100vh;
-  /* overflow-y: auto; */ /* 移除或注释掉这一行 */
-  background: var(--color-bg-card);
-  padding: 32px 24px; /* 内边距可以保留，看是否影响居中效果 */
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center; /* 修改这里：从 flex-start 改为 center */
-  gap: 18px; /* 如果#main里有多个元素，gap会影响它们 */
-  box-shadow: 0 0 20px 0 rgba(28, 88, 125, .04);
-  border-radius: 18px;
-}
-
-
-/* 卡片样式 */
-#addSubscriptionArea, #subscriptionArea, #channelArea, #videoArea {
-  background: var(--color-bg-card);
-  border-radius: 14px;
-  box-shadow: var(--color-shadow);
-  padding: 16px;
-}
-
-/* 列表美化 */
-#subscriptionList, #channelList {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  max-height: 250px;
-  overflow-y: auto;
-  border: 1px solid var(--color-border);
-  border-radius: 8px;
-}
-
-#subscriptionList li, #channelList li {
-  padding: 10px 15px;
-  cursor: pointer;
-  border-bottom: 1px solid var(--color-border);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  transition: background 0.2s, color 0.2s;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 1.04em;
-}
-#subscriptionList li span {
-  flex-grow: 1;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  margin-right: 6px;
-}
-#subscriptionList li:last-child, #channelList li:last-child { border-bottom: none; }
-#subscriptionList li.selected, 
-#channelList li.selected {
-  background: var(--item-hover-bg);
-  border-left: 5px solid var(--color-selected-border);
-  color: var(--color-primary);
-  font-weight: bold;
-}
-#subscriptionList li:hover, 
-#channelList li:hover {
-  background-color: var(--item-hover-bg);
-  color: var(--color-primary);
-}
-
-/* 表单/输入区美化 */
-#addSubscriptionArea input[type="url"] {
-  width: 100%;
-  display: block;
-  margin-bottom: 10px;
-}
-
-#addSubscriptionArea button,
-#subscriptionList li button {
-  background: var(--color-btn);
-  color: #fff;
-  border-radius: 6px;
-  font-weight: 600;
-  box-shadow: 0 2px 8px 0 rgba(255,0,0,0.07);
-  border: none;
-  transition: background 0.16s, box-shadow 0.2s;
-  cursor: pointer;
-}
-#addSubscriptionArea button:hover,
-#subscriptionList li button:hover {
-  background: var(--color-btn-hover);
-  box-shadow: 0 4px 16px 0 rgba(220,40,40, 0.15);
-}
-#addSubscriptionArea button:disabled {
-  background: #eee;
-  color: #aaa;
-  cursor: not-allowed;
-  box-shadow: none;
-}
-#subscriptionList li button {
-  margin-left: 10px;
-  background: #f87171;
-  font-size: 0.9em;
-  padding: 3px 7px;
-  border-radius: 5px;
-  color: #fff;
-  border: none;
-}
-#subscriptionList li button:hover { background: #e52d27; }
-
-/* 状态信息条 */
-#status {
-  margin-top: 10px;
-  padding: 8px 12px;            /* ↙ ↘ 给足垂直空间 */
-  background: var(--notice-bg); /* 用主题变量 */
-  border-radius: 6px;
-  color: #d32f2f;
-  font-size: 0.98em;
-  line-height: 1.4;             /* 让两行字不挤 */
-  border: 1px solid var(--notice-bg);
-  min-height: unset;            /* 不再硬撑 1.5em，高度由内容决定 */
-  max-width: 100%;
-  overflow-wrap: break-word;   /* 自动断长词 / URL */
-  box-sizing: border-box;      /* padding 计入宽度，防止撑开 */
-}
-#status.error { color: #721c24; background: #f8d7da; border: 1px solid #f5c6cb; font-weight: bold; }
-#status.success { color: #18842b; background: #d4edda; border: 1px solid #c3e6cb; font-weight: bold; }
-#status.loading { color: #004085; background: #cce5ff; border: 1px solid #b8daff; font-style: italic; }
-#status.warning { color: #856404; background: #fff3cd; border: 1px solid #ffeeba; }
-
-/* 播放器主区自适应&美化 */
-#videoArea {
-  width: 100%;
-  max-width: 760px;
-  /* margin: 0 auto 16px auto; */ /* 原来的 */
-  margin: 0 auto; /* 修改为这个，实现更精确的垂直居中 */
-  /* 其他样式保持不变 */
-  background: var(--color-bg-card); /* 注意：这个背景色可能不需要了，因为 #main 有背景 */
-  border-radius: 14px;
-  box-shadow: var(--color-shadow);
-  padding: 16px; /* 这个内边距是 videoArea 自身的，可以保留 */
-}
-
-
-#videoContainer {
-  width: 100%;
-  padding-top: 56.25%;   /* 16:9缩放 */
-  height: 0;
-  background: #191919;
-  border-radius: 16px;
-  overflow: hidden;
-  position: relative;
-  box-shadow: 0 2px 20px 0 rgba(48,64,112,0.10);
-  max-width: 100%;
-}
-#videoPlayer {
-  position: absolute;
-  top: 0; left: 0; width: 100%; height: 100%;
-  border: none; display: block;
-  background: #000;
-}
-
-/* ========== 夜间暗色模式覆盖（body.dark或.dark类即可生效） ========== */
-body.dark, .dark {
-  --color-bg:       #181818;
-  --color-bg-card:  #222;
-  --color-border:   #232323;
-  --color-text:     #f1f3fa;
-  --color-text-light:#acb2ba;
-  --color-primary:  #ff5252;
-  --color-sidebar:  #212121;
-  --color-sidebar-border: #242424;
-  --color-shadow:   0 2px 16px 0 rgba(48,38,87,0.16);
-  --color-btn:      #ff5252;
-  --color-btn-hover:#e52d27;
-  --color-selected-bg: #272727;
-  --color-selected-border: #ff5252;
-  --item-hover-bg: #2a2a2d;   
-  --notice-bg:     #3c2b2b;
-}
-
-body.dark, .dark, body.dark #root {
-  background: var(--color-bg) !important;
-  color: var(--color-text) !important;
-}
-.dark #main,
-body.dark #main {
-  background: var(--color-bg-card);
-  color: var(--color-text);
-  box-shadow: 0 0 30px 0 rgba(0,0,0,0.08);
-}
-.dark #addSubscriptionArea, .dark #subscriptionArea, .dark #channelArea, .dark #videoArea,
-body.dark #addSubscriptionArea,
-body.dark #subscriptionArea,
-body.dark #channelArea,
-body.dark #videoArea {
-  box-shadow: var(--color-shadow);
-  background: var(--color-bg-card);
-  color: var(--color-text);
-}
-.dark #sidebar, body.dark #sidebar {
-  background: var(--color-sidebar);
-  border-right: 1px solid var(--color-sidebar-border);
-}
-.dark h2, body.dark h2,
-.dark h3, body.dark h3 {
-  color: var(--color-text-light);
-}
-.dark #videoContainer, body.dark #videoContainer {
-  background: #101010;
-  border-radius: 16px;
-  box-shadow: 0 2px 28px 0 rgba(0,0,0,0.19);
-}
-
-/* 夜间模式按钮更暗一些文字反白 */
-.dark #addSubscriptionArea input[type="url"] {
-  background: #252525;
-}
-
-/* ========== 跟随系统（auto）模式 ========== */
-@media (prefers-color-scheme: dark) {
-  :root {
-    --color-bg:       #181818;
-    --color-bg-card:  #222;
-    --color-border:   #232323;
-    --color-text:     #f1f3fa;
-    --color-text-light:#acb2ba;
-    --color-primary:  #ff5252;
-    --color-sidebar:  #212121;
-    --color-sidebar-border: #242424;
-    --color-shadow:   0 2px 16px 0 rgba(48,38,87,0.16);
-    --color-btn:      #ff5252;
-    --color-btn-hover:#e52d27;
-    --color-selected-bg: #272727;
-    --color-selected-border: #ff5252;
-  }
-}
-
-/* 白天主题，可以强制覆盖 body.light 或 .light */
-body.light, .light {
+  /* --- Light Theme (Default) --- */
   --color-bg:       #f8f9fa;
   --color-bg-card:  #fff;
   --color-border:   #e5e7eb;
@@ -329,306 +11,564 @@ body.light, .light {
   --color-primary:  #ff0000;
   --color-sidebar:  #f3f5f7;
   --color-sidebar-border: #eee;
-  --color-shadow:   0 2px 12px 0 rgba(32,37,83,0.04);
+  --color-shadow:   0 2px 12px 0 rgba(32, 37, 83, 0.04);
   --color-btn:      #ff0000;
   --color-btn-hover:#e52d27;
   --color-selected-bg: #fff3f0;
   --color-selected-border: #ff0000;
   --item-hover-bg: #f5f5f5;
   --notice-bg:     #ffecec;
+  --color-primary-rgb: 255, 0, 0; /* RGB for focus shadow */
 }
 
-/* ---------- 移动端响应式覆盖 ---------- */
-@media (max-width: 900px) {
-    #videoArea, #videoContainer {
-        max-width: 100vw;
-    }
-}
-
-/* ---------- 移动端响应式覆盖 ---------- */
-/* 保留 max-width: 900px 的规则 */
-@media (max-width: 900px) {
-    #videoArea, #videoContainer {
-        max-width: 100vw; /* 在中等屏幕允许播放器更宽 */
-    }
-}
-
-/* 主要修改 768px 及以下的规则 */
-@media (max-width: 768px) {
-  html, body {
-    height: 100%;
-    overflow: auto; /* 允许 body 滚动，或者在 .main-flex 设置 */
-    margin: 0;
-    padding: 0;
-  }
-
-  /* --- .app-root 简单包裹 --- */
-  .app-root {
-    width: 100%;
-    min-height: 100vh; /* 确保至少撑满屏幕 */
-    box-sizing: border-box;
-  }
-
-  /* --- .main-flex 作为主要的垂直 flex 容器 --- */
-  .main-flex {
-    display: flex;
-    flex-direction: column; /* ★★★ 垂直排列 */
-    width: 100%;
-    height: auto; /* 高度由内容决定 */
-    min-height: 100vh; /* 至少撑满，允许滚动 */
-    overflow-x: hidden; /* 防止水平滚动 */
-    overflow-y: auto;   /* 如果内容超出，允许垂直滚动 */
-    gap: 15px; /* 各区域之间的间距 */
-    padding: 10px; /* 给整个移动端视图一些边距 */
-    box-sizing: border-box;
-  }
-
-  /* --- #main (包含播放器) 设置 order 为 1 (最前) --- */
-  #main {
-    order: 1; /* ★★★ 关键：显示在最前面 */
-    width: 100%; /* 撑满宽度 */
-    min-width: unset;
-    max-width: unset;
-    height: auto; /* 高度自适应 */
-    overflow: visible; /* 不需要内部滚动 */
-    background: transparent; /* 背景通常不需要 */
-    padding: 0; /* 移除桌面端的内边距 */
-    display: block; /* 改回块级 */
-    /* 移除之前的 flex 相关属性 */
-    /* align-items: center; */
-    /* justify-content: flex-start; */
-  }
-
-  /* --- #sidebar (包含列表和表单) 设置 order 为 2 --- */
-  #sidebar {
-    order: 2; /* ★★★ 关键：显示在 #main 之后 */
-    width: 100%; /* 撑满宽度 */
-    min-width: unset;
-    max-width: unset;
-    height: auto; /* 高度由内容决定 */
-    overflow: visible; /* 不需要独立滚动 */
-    background-color: transparent; /* 背景通常不需要 */
-    border-right: none; /* 移除边框 */
-    box-sizing: border-box;
-    /* ★★★ 使 sidebar 内部也成为 flex 容器以排序其子元素 ★★★ */
-    display: flex;
-    flex-direction: column;
-    gap: 15px; /* 内部元素间距 */
-    padding: 0; /* 移除桌面端的内边距 */
-  }
-
-  /* --- 调整 #sidebar 内元素的顺序 --- */
-  #channelArea {
-    order: 1; /* ★★★ 频道列表最先 (在 Sidebar 内部) */
-    width: 100%;
-    margin: 0; /* 重置外边距 */
-  }
-  #subscriptionArea {
-    order: 2; /* ★★★ 订阅源列表其次 */
-    width: 100%;
-     margin: 0;
-  }
-  #addSubscriptionArea {
-    order: 3; /* ★★★ 添加区域再次 */
-    width: 100%;
-     margin: 0;
-  }
-  #status {
-    order: 4; /* ★★★ 状态栏最后 (在 Sidebar 内部) */
-    width: 100%;
-    margin: 0; /* 重置外边距 */
-    margin-top: 5px; /* 可以稍微给点顶部间距 */
-  }
-
-  /* --- 播放器区域样式调整 --- */
-  #videoArea {
-    width: 100%;
-    max-width: 100%; /* 覆盖桌面端的 max-width */
-    margin: 0 0 15px 0; /* 底部留出间距 */
-    padding: 0; /* 通常不需要内边距 */
-    /* 保留之前的背景/阴影/圆角设置 */
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  }
-
-  /* 播放器标题可以保留 */
-  #videoArea > h3 {
-     padding: 10px 15px 0 15px; /* 给标题一些空间 */
-     margin-bottom: 5px;
-  }
-
-  /* #videoContainer 保持宽高比 */
-  #videoContainer {
-    width: 100%;
-    padding-top: 56.25%; /* 16:9 */
-    height: 0;
-    background-color: #000;
-    border-radius: 8px; /* ★★★ 应用所有圆角 ★★★ */
-    overflow: hidden;
-    position: relative;
-    box-shadow: none; /* 阴影在 #videoArea 上 */
-    max-width: 100%;
-  }
-
-  #videoPlayer {
-    position: absolute;
-    top: 0; left: 0; width: 100%; height: 100%;
-    border: none; display: block;
-    background: #000;
-  }
-
-  /* 调整列表区域的样式 */
-  #addSubscriptionArea, #subscriptionArea, #channelArea {
-    background-color: #fff;
-    padding: 15px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    width: 100%; /* 确保撑满 */
-    box-sizing: border-box;
-  }
-  #subscriptionList, #channelList {
-      max-height: 300px; /* 可以增加最大高度 */
-  }
-
-}
-
-/* 不再需要 max-width: 600px 的特定布局规则，768px 已处理 */
-/*
-@media (max-width: 600px) {
-    ...
-}
-*/
-
-/* 字体更柔和YouTube风 */
-body, input, select, button {
-  font-family: Roboto,Noto,Noto Sans SC,Arial,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
-}
-
-/* 5.3修复其它地方暗夜情况 */
-
-/* 夜间模式全局表单控件样式加强（input/select/textarea/button） */
-body.dark input,
-body.dark select,
-body.dark textarea {
-  background: #222 !important;
-  color: #eee !important;
-  border: 1px solid #333 !important;
-}
-
-body.dark input::placeholder,
-body.dark textarea::placeholder {
-  color: #888 !important;
-  opacity: 1;
-}
-
-body.dark button,
-body.dark input[type="button"],
-body.dark input[type="submit"] {
-  background: var(--color-btn, #444) !important;
-  color: #fff !important;
-  border: none;
-}
-
-body.dark select {
-  background: #222 !important;
-  color: #eee !important;
-  border: 1px solid #333 !important;
-}
-
-/* ------ 主题切换器（右上角） ------ */
-.theme-switcher { position: relative; }
-
-.theme-btn {
-  background: transparent;
-  border: none;
-  font-size: 22px;            /* 图标大小 */
-  cursor: pointer;
-  color: var(--color-text);   /* 文字颜色自动跟主题变 */
-  line-height: 1;
-}
-
-.theme-menu {
-  position: absolute;
-  right: 0;
-  top: calc(100% + 6px);      /* 挨着按钮下面 */
-  list-style: none;
+/* --- Base Layout --- */
+html, body {
+  height: 100%;
   margin: 0;
-  padding: 4px 0;
-  background: var(--color-bg-card);
-  border: 1px solid var(--color-border);
-  border-radius: 6px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-  z-index: 99;
-  min-width: 140px;
+  overflow: hidden; /* ★★★ 防止 body 滚动 (桌面端) */
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: Roboto, Noto, Noto Sans SC, Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
 }
 
-.theme-menu li {
+#root { /* React mount point */
   display: flex;
-  align-items: center;
-  gap: 4px;
-  padding: 6px 12px;
-  font-size: 14px;
-  cursor: pointer;
-  white-space: nowrap;
+  flex-direction: column;
+  height: 100vh;
+  width: 100%;
+  background: inherit;
+  color: inherit;
 }
 
-/* ---② 对勾占位 & 居中--- */
-.theme-menu li .check {          /* 新增 */
-  width: 1em;                    /* 让没勾的行也占 1 字宽 */
-  text-align: center;
+.app-root { /* Main application container rendered by React */
+  width: 100%;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden; /* Prevent this container from scrolling */
 }
 
-/* ---③ 当前模式高亮（蓝色/加粗）--- */
-.theme-menu li.active {          /* 新增 */
-  font-weight: 700;
-  color: var(--color-primary);
-}
-
-.theme-menu li:hover {
-  background: var(--color-selected-bg);
-  color: var(--color-primary);
-}
-
-/* ------ 顶部导航条 ------ */
+/* --- Header --- */
 .app-header {
   width: 100%;
   height: 48px;
   display: flex;
   align-items: center;
-  justify-content: space-between;  /* 左右贴边 */
+  justify-content: space-between;
   padding: 0 16px;
   box-sizing: border-box;
   background: var(--color-bg-card);
   border-bottom: 1px solid var(--color-border);
-  margin-bottom: 8px;  /* 和下面内容空一点 */
+  flex-shrink: 0; /* ★★★ Prevent header from shrinking */
 }
 
 .app-title {
   font-size: 1.3em;
   margin: 0;
   color: var(--color-primary);
+  font-weight: 500; /* Slightly bolder title */
 }
 
-/* === 所有输入框基础外观，覆盖浏览器默认 === */
-input[type="url"],
-input[type="search"],
-input[type="text"] {
-  background: var(--color-bg);
+/* --- Main Content Area (Flex Container) --- */
+.main-flex {
+  display: flex;
+  gap: 20px;
+  flex-grow: 1; /* ★★★ Fill remaining vertical space */
+  min-height: 0; /* ★★★ Crucial for flex-grow with potentially overflowing children */
+  padding: 15px; /* ★★★ Unified padding around sidebar and main */
+  box-sizing: border-box;
+  overflow: hidden; /* ★★★ Prevent this flex container from scrolling */
+}
+
+/* --- Sidebar --- */
+#sidebar {
+  width: 320px;
+  min-width: 220px;
+  max-width: 400px;
+  overflow-y: auto; /* ★★★ Allow internal scrolling */
+  background: var(--color-sidebar);
+  border-right: 1px solid var(--color-sidebar-border);
+  box-shadow: 2px 0 8px 0 rgba(32, 37, 83, .03);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  padding: 16px; /* Internal padding for sidebar content */
+  border-radius: 8px; /* Optional: Rounded corners for sidebar */
+}
+
+#sidebar h2 { /* Section titles in sidebar */
+  font-size: 1.15em; /* Slightly smaller */
+  color: var(--color-primary);
+  border: none;
+  padding: 0;
+  margin: 0 0 5px 0; /* Adjust margin */
+  letter-spacing: .5px;
+  font-weight: 500;
+}
+
+/* Sidebar Content Order (Desktop) */
+#channelArea      { order: 1; }
+#status           { order: 2; }
+#subscriptionArea { order: 3; }
+#addSubscriptionArea { order: 4; }
+
+/* --- Main Content Area (Right Column) --- */
+#main {
+  flex: 1 1 0; /* Grow and shrink */
+  min-width: 0; /* Prevent overflow issues */
+  background: var(--color-bg-card);
+  padding: 20px; /* ★★★ Internal padding */
+  position: relative; /* ★★★ Anchor for absolute positioning */
+  box-shadow: 0 0 20px 0 rgba(28, 88, 125, .04);
+  border-radius: 18px; /* Main area rounded corners */
+  overflow: hidden; /* Hide anything that might overflow from absolute children */
+}
+
+/* --- Video Area (Absolute Centered) --- */
+#videoArea {
+  /* ★★★ Calculate width considering #main's padding */
+  width: calc(100% - 40px); /* 100% of #main minus 2*20px padding */
+  max-width: 760px;        /* Max player width */
+  position: absolute;      /* ★★★ Absolute positioning */
+  top: 50%;                /* ★★★ Center vertically */
+  left: 50%;               /* ★★★ Center horizontally */
+  transform: translate(-50%, -50%); /* ★★★ Precise centering */
+
+  /* Card-like appearance for the player area itself */
+  background: var(--color-bg); /* Use main background or keep card color */
+  border-radius: 14px;
+  box-shadow: var(--color-shadow);
+  padding: 16px;           /* Padding inside the video area card */
+  box-sizing: border-box;
+}
+
+#videoArea > h3 { /* Optional title inside video area */
+  margin-top: 0;
+  margin-bottom: 10px;
+  color: var(--color-text-light);
+  font-weight: bold;
+  letter-spacing: .5px;
+  font-size: 1.1em;
+  padding-bottom: 5px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+#videoContainer { /* Aspect ratio container */
+  width: 100%;
+  padding-top: 56.25%; /* 16:9 */
+  height: 0;
+  background: #111; /* Dark background for player */
+  border-radius: 8px; /* Rounded corners for the player container */
+  overflow: hidden;
+  position: relative;
+}
+
+#videoPlayer { /* The actual iframe or video element */
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+  display: block;
+  background: #000; /* Fallback background */
+}
+
+/* --- Sidebar Cards & Lists --- */
+#addSubscriptionArea, #subscriptionArea, #channelArea {
+  background: var(--color-bg-card);
+  border-radius: 8px; /* Consistent rounded corners */
+  box-shadow: var(--color-shadow);
+  padding: 16px;
+  border: 1px solid var(--color-border); /* Add border to cards */
+}
+
+#subscriptionList, #channelList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  max-height: 200px; /* Adjust max height as needed */
+  overflow-y: auto;
+  border: 1px solid var(--color-border);
+  border-radius: 6px; /* Slightly smaller radius for lists inside cards */
+}
+
+#subscriptionList li, #channelList li {
+  padding: 10px 12px; /* Adjust padding */
+  cursor: pointer;
+  border-bottom: 1px solid var(--color-border);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: background 0.2s, color 0.2s, border-left-color 0.2s;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.95em; /* Slightly smaller list items */
+  border-left: 3px solid transparent; /* Placeholder for selected state */
+}
+#subscriptionList li span, #channelList li span {
+  flex-grow: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin-right: 6px;
+}
+#subscriptionList li:last-child, #channelList li:last-child {
+  border-bottom: none;
+}
+#subscriptionList li.selected, #channelList li.selected {
+  background: var(--color-selected-bg);
+  border-left-color: var(--color-selected-border);
+  color: var(--color-primary);
+  font-weight: 500;
+}
+#subscriptionList li:hover, #channelList li:hover {
+  background-color: var(--item-hover-bg);
+  color: var(--color-primary);
+}
+
+/* --- Forms & Buttons --- */
+input[type="url"], input[type="search"], input[type="text"], textarea, select {
+  background: var(--color-bg); /* Form background different from card */
   color: var(--color-text);
   border: 1px solid var(--color-border);
   border-radius: 6px;
   padding: 10px;
   font-size: 1em;
   box-sizing: border-box;
-  transition: border 0.2s, box-shadow 0.2s;
+  transition: border-color 0.2s, box-shadow 0.2s, background-color 0.2s;
+  width: 100%;
+}
+input[type="url"]:focus, input[type="search"]:focus, input[type="text"]:focus,
+textarea:focus, select:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 2px rgba(var(--color-primary-rgb), 0.2);
+  outline: none;
 }
 
-/* === 聚焦态：红色内边框 + 阴影；去掉蓝色外描边 === */
-input[type="url"]:focus,
-input[type="search"]:focus,
-input[type="text"]:focus {
-  border: 1.5px solid var(--color-primary);          /* 红边 */
-  box-shadow: 0 2px 8px 0 rgba(255, 0, 0, 0.06);     /* 红阴影 */
-  outline: none;                                     /* 去掉系统蓝圈 */
+button, input[type="button"], input[type="submit"] {
+  background: var(--color-btn);
+  color: #fff;
+  border-radius: 6px;
+  font-weight: 600;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  border: none;
+  transition: background 0.16s, box-shadow 0.2s;
+  cursor: pointer;
+  padding: 9px 15px; /* Consistent padding */
+  font-size: 0.95em;
+  text-align: center;
 }
+button:hover, input[type="button"]:hover, input[type="submit"]:hover {
+  background: var(--color-btn-hover);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+button:disabled, input[type="button"]:disabled, input[type="submit"]:disabled {
+  background: #ccc; /* More distinct disabled state */
+  color: #888;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* Specific button adjustments */
+#addSubscriptionArea button { /* Add Subscription button */
+  width: 100%;
+  margin-top: 5px;
+}
+#subscriptionList li button { /* Unsubscribe button */
+  margin-left: 10px;
+  background: #fca5a5; /* Lighter red */
+  color: #b91c1c; /* Darker red text */
+  font-size: 0.85em;
+  padding: 4px 8px;
+  border-radius: 5px;
+  font-weight: 500;
+  box-shadow: none;
+}
+#subscriptionList li button:hover {
+  background: #ef4444; /* Red-500 */
+  color: #fff;
+}
+
+/* --- Status/Notification Bar --- */
+#status {
+  padding: 10px 12px;
+  background: var(--notice-bg);
+  border-radius: 6px;
+  color: #b91c1c; /* Default to error-like color */
+  font-size: 0.9em;
+  line-height: 1.4;
+  border: 1px solid #fecaca; /* Default border */
+  min-height: unset;
+  max-width: 100%;
+  overflow-wrap: break-word;
+  box-sizing: border-box;
+  font-weight: 500;
+}
+#status.error { color: #7f1d1d; background: #fee2e2; border-color: #fecaca; }
+#status.success { color: #14532d; background: #dcfce7; border-color: #bbf7d0; }
+#status.loading { color: #1e40af; background: #dbeafe; border-color: #bfdbfe; font-style: italic; }
+#status.warning { color: #854d0e; background: #fef3c7; border-color: #fde68a; }
+
+/* ===============================
+   Dark Theme
+   =============================== */
+body.dark, .dark {
+  --color-bg:       #111827; /* Dark Blue Gray */
+  --color-bg-card:  #1f2937; /* Darker Blue Gray */
+  --color-border:   #374151; /* Gray */
+  --color-text:     #f3f4f6; /* Light Gray */
+  --color-text-light: #9ca3af; /* Medium Gray */
+  --color-primary:  #f87171; /* Light Red */
+  --color-sidebar:  #1f2937; /* Match Card Background */
+  --color-sidebar-border: #374151;
+  --color-shadow:   0 4px 18px 0 rgba(0, 0, 0, 0.25);
+  --color-btn:      #f87171;
+  --color-btn-hover:#ef4444; /* Red 500 */
+  --color-selected-bg: #374151;
+  --color-selected-border: #f87171;
+  --item-hover-bg: #374151;
+  --notice-bg:     #3f3030; /* Darker red notice */
+  --color-primary-rgb: 248, 113, 113; /* RGB for Light Red */
+}
+
+/* Apply dark mode base */
+body.dark, .dark, body.dark #root {
+  background: var(--color-bg) !important;
+  color: var(--color-text) !important;
+}
+/* Dark mode component overrides */
+body.dark #main,
+body.dark #sidebar,
+body.dark #addSubscriptionArea,
+body.dark #subscriptionArea,
+body.dark #channelArea,
+body.dark #videoArea {
+  background: var(--color-bg-card);
+  color: var(--color-text);
+  box-shadow: var(--color-shadow);
+  border-color: var(--color-border);
+}
+body.dark #sidebar {
+  border-right-color: var(--color-sidebar-border);
+}
+body.dark h2, body.dark h3, body.dark #videoArea > h3 {
+  color: var(--color-text-light);
+  border-bottom-color: var(--color-border);
+}
+body.dark #videoContainer {
+  background: #000; /* Pure black for player background */
+}
+/* Dark mode forms & buttons */
+body.dark input, body.dark textarea, body.dark select {
+  background: #374151 !important; /* Dark form bg */
+  color: var(--color-text) !important;
+  border-color: #4b5563 !important; /* Slightly lighter border */
+}
+body.dark input::placeholder, body.dark textarea::placeholder {
+  color: #6b7280 !important;
+}
+body.dark input:focus, body.dark textarea:focus, body.dark select:focus {
+  background-color: #4b5563 !important;
+  border-color: var(--color-primary) !important;
+  box-shadow: 0 0 0 2px rgba(var(--color-primary-rgb), 0.3) !important;
+}
+body.dark button, body.dark input[type="button"], body.dark input[type="submit"] {
+  background: var(--color-btn) !important;
+  color: #111827 !important; /* Dark text on light red button */
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.3), 0 1px 2px 0 rgba(0, 0, 0, 0.2);
+}
+body.dark button:hover, body.dark input[type="button"]:hover, body.dark input[type="submit"]:hover {
+    background: var(--color-btn-hover) !important;
+    color: #fff !important; /* White text on darker red */
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+}
+body.dark button:disabled, body.dark input[type="button"]:disabled, body.dark input[type="submit"]:disabled {
+    background: #374151 !important;
+    color: #6b7280 !important;
+    box-shadow: none !important;
+}
+body.dark #subscriptionList li button {
+  background: #7f1d1d; /* Darker red */
+  color: #fecaca; /* Light red text */
+}
+body.dark #subscriptionList li button:hover {
+   background: #b91c1c;
+   color: #fee2e2;
+}
+/* Dark mode status */
+body.dark #status { border-color: transparent; } /* Remove border in dark */
+body.dark #status.error { color: #fda4af; background: #5f2020; }
+body.dark #status.success { color: #a7f3d0; background: #1e4632; }
+body.dark #status.loading { color: #bfdbfe; background: #2c3a6e; }
+body.dark #status.warning { color: #fde68a; background: #6e5223; }
+
+/* ===============================
+   System Preference Dark Mode
+   =============================== */
+@media (prefers-color-scheme: dark) {
+  /* Apply dark variables if no manual theme (.light/.dark) is set */
+  :root:not(.light):not(.dark) {
+    --color-bg:       #111827;
+    --color-bg-card:  #1f2937;
+    --color-border:   #374151;
+    --color-text:     #f3f4f6;
+    --color-text-light: #9ca3af;
+    --color-primary:  #f87171;
+    --color-sidebar:  #1f2937;
+    --color-sidebar-border: #374151;
+    --color-shadow:   0 4px 18px 0 rgba(0, 0, 0, 0.25);
+    --color-btn:      #f87171;
+    --color-btn-hover:#ef4444;
+    --color-selected-bg: #374151;
+    --color-selected-border: #f87171;
+    --item-hover-bg: #374151;
+    --notice-bg:     #3f3030;
+    --color-primary-rgb: 248, 113, 113;
+  }
+}
+
+/* ===============================
+   Mobile Responsive (max-width: 768px)
+   =============================== */
+@media (max-width: 768px) {
+  html, body {
+    height: auto;      /* Allow content height */
+    overflow: auto;    /* Allow body scrolling */
+  }
+
+  #root, .app-root {
+    height: auto;
+    min-height: 100vh;
+    display: block; /* Stack elements vertically */
+    overflow: visible;
+  }
+
+  .app-header {
+     /* Optional: Adjust header height or padding */
+  }
+
+  .main-flex {
+    flex-direction: column; /* Stack sidebar and main */
+    height: auto;
+    min-height: unset;
+    flex-grow: unset;
+    overflow: visible;
+    padding: 10px; /* Mobile padding */
+    gap: 15px;
+  }
+
+  #main {
+    order: 1; /* Player first */
+    width: 100%;
+    height: auto;
+    overflow: visible;
+    background: transparent; /* Remove card background */
+    padding: 0;
+    display: block;
+    position: static;   /* ★★★ Remove absolute positioning context */
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  #sidebar {
+    order: 2; /* Lists second */
+    width: 100%;
+    height: auto;
+    overflow: visible;   /* Disable internal scroll */
+    background: transparent; /* Remove sidebar background */
+    border-right: none;
+    padding: 0; /* Remove internal padding */
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  /* Mobile Sidebar Content Order (if different needed) */
+  /* Example: #status { order: 1; } ... */
+
+  #videoArea {
+    width: 100%;
+    max-width: 100%;
+    position: static;   /* ★★★ Disable absolute positioning */
+    transform: none;    /* ★★★ Disable transform */
+    background-color: var(--color-bg-card); /* Restore card background */
+    border-radius: 8px;
+    box-shadow: var(--color-shadow);
+    padding: 0; /* Remove internal padding for mobile player card */
+    margin-bottom: 15px; /* Space below player */
+  }
+
+  #videoArea > h3 { /* Mobile video title */
+     padding: 10px 15px 8px 15px; /* Adjust padding */
+     margin-bottom: 0;
+     border-bottom: 1px solid var(--color-border);
+     font-size: 1.05em;
+     background-color: rgba(0, 0, 0, 0.02); /* Subtle title background */
+     border-radius: 8px 8px 0 0; /* Match top corners */
+  }
+  body.dark #videoArea > h3 {
+      background-color: rgba(255, 255, 255, 0.03);
+  }
+
+  #videoContainer {
+    width: 100%;
+    padding-top: 56.25%;
+    height: 0;
+    background-color: #000; /* Black background */
+    border-radius: 0 0 8px 8px; /* Bottom corners match card */
+    overflow: hidden;
+    position: relative;
+  }
+
+  #addSubscriptionArea, #subscriptionArea, #channelArea {
+    background-color: var(--color-bg-card);
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: var(--color-shadow);
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid var(--color-border); /* Add border for mobile cards */
+  }
+  #subscriptionList, #channelList {
+      max-height: 250px; /* Adjust list height */
+  }
+}
+
+/* ===============================
+   Theme Switcher (Example Style)
+   =============================== */
+.theme-switcher { position: relative; }
+.theme-btn {
+  background: transparent; border: none; font-size: 20px; /* Adjust icon size */
+  cursor: pointer; color: var(--color-text-light); line-height: 1; padding: 6px;
+  border-radius: 50%; /* Circular button */
+  transition: background-color 0.2s, color 0.2s;
+}
+.theme-btn:hover {
+    background-color: var(--item-hover-bg);
+    color: var(--color-text);
+}
+.theme-menu {
+  position: absolute; right: 0; top: calc(100% + 8px);
+  list-style: none; margin: 0; padding: 6px 0;
+  background: var(--color-bg-card); border: 1px solid var(--color-border);
+  border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  z-index: 100; min-width: 150px; /* Slightly wider */
+}
+body.dark .theme-menu { box-shadow: 0 4px 12px rgba(0,0,0,0.3); }
+.theme-menu li {
+  display: flex; align-items: center; gap: 8px;
+  padding: 9px 14px; /* More padding */
+  font-size: 14px; cursor: pointer; white-space: nowrap;
+  transition: background-color 0.2s, color 0.2s;
+}
+.theme-menu li .check {
+  width: 1.2em; text-align: center; font-size: 0.9em; opacity: 0; transition: opacity 0.2s;
+  color: var(--color-primary);
+}
+.theme-menu li.active .check { opacity: 1; }
+.theme-menu li.active { font-weight: 500; color: var(--color-primary); }
+.theme-menu li:hover { background: var(--item-hover-bg); color: var(--color-primary); }
+
