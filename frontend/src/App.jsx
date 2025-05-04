@@ -601,7 +601,7 @@ const styles = {
         {/* 右侧小图标 */}
         <ThemeSwitcher />
       </header>
-      <SmallNote />
+    {  /* <SmallNote /> */}
       <div className="main-flex">
         {/* --- 左侧边栏 --- */}
         <div id="sidebar">
