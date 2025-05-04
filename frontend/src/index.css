@@ -457,7 +457,7 @@ body.light, .light {
     padding-top: 56.25%; /* 16:9 */
     height: 0;
     background-color: #000;
-    border-radius: 0 0 8px 8px; /* 底部圆角 */
+    border-radius: 8px; /* ★★★ 应用所有圆角 ★★★ */
     overflow: hidden;
     position: relative;
     box-shadow: none; /* 阴影在 #videoArea 上 */
