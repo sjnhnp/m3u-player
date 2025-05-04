@@ -337,6 +337,15 @@ body.light, .light {
         max-width: 100vw;
     }
 }
+
+/* ---------- 移动端响应式覆盖 ---------- */
+/* 保留 max-width: 900px 的规则 */
+@media (max-width: 900px) {
+    #videoArea, #videoContainer {
+        max-width: 100vw; /* 在中等屏幕允许播放器更宽 */
+    }
+}
+
 /* 主要修改 768px 及以下的规则 */
 @media (max-width: 768px) {
   html, body {
@@ -476,12 +485,11 @@ body.light, .light {
   }
 
 }
+
+/* 不再需要 max-width: 600px 的特定布局规则，768px 已处理 */
 /*
 @media (max-width: 600px) {
-    #videoArea, #videoContainer {
-        max-width: 100vw;
-        min-width: 0;
-    }
+    ...
 }
 */
 
