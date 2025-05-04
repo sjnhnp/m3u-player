@@ -1,12 +1,10 @@
 // frontend/src/App.jsx
-// --- 导入 React 核心库和钩子 ---
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-// --- 导入 HLS.js 库 ---
 import Hls from 'hls.js';
 
 // --- 导入子组件 ---
-import SubscriptionList from './components/SubscriptionList'; // 导入列表组件
-import AddSubscription from './components/AddSubscription';   // 导入添加组件
+import SubscriptionList from './components/SubscriptionList'; 
+import AddSubscription from './components/AddSubscription'; 
 import ThemeSwitcher from './components/ThemeSwitcher';
 
 // --- 常量定义 ---
@@ -22,7 +20,6 @@ function SmallNote() {
     </div>
   );
 }
-// ---- 到这里结束 ----
 
 // --- 主应用组件 App ---
 function App() {
