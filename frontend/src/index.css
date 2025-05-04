@@ -517,7 +517,7 @@ body.dark #status.warning { color: #fde68a; background: #6e5223; }
     padding-top: 56.25%;
     height: 0;
     background-color: #000; /* Black background */
-    border-radius: 0 0 8px 8px; /* Bottom corners match card */
+    border-radius: 8px; /* Bottom corners match card */
     overflow: hidden;
     position: relative;
   }
