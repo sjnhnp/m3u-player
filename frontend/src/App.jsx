@@ -314,66 +314,73 @@ function App() {
     }
   }, [fixedSubscriptions, userSubscriptions, mergedSubscriptions]); // 添加 mergedSubscriptions 依赖用于比较
 
-  // ★★★ Effect 3: 尝试自动加载上次订阅 (修正依赖项和逻辑) ★★★
+  // ★★★ Effect 3: 尝试自动加载上次订阅 (修正逻辑避免过早失败) ★★★
   useEffect(() => {
-    // 这个 Effect 只应该在 mergedSubscriptions 真正更新后运行
-    console.log("Effect 3 Triggered. State:", initialLoadStateRef.current, "Merged Subs Count:", mergedSubscriptions.length);
+    console.log(`Effect 3 Triggered. State: ${initialLoadStateRef.current}, Merged Subs: ${mergedSubscriptions.length}, Fixed Subs: ${fixedSubscriptions.length}`);
 
-    // 核心逻辑只在初始加载流程的 'pending' 状态下执行
+    // Only run the core logic if we are still in the initial pending state
     if (initialLoadStateRef.current === 'pending') {
-        // 必须确保 mergedSubscriptions 此时有内容才能进行判断
-        if (mergedSubscriptions.length > 0) {
-            const lastSubUrl = localStorage.getItem(LAST_SELECTED_SUB_URL_KEY);
-            console.log("Effect 3: [Pending State] Checking lastSubUrl:", lastSubUrl);
+      // Attempt auto-load only if we have some merged subscriptions already
+      if (mergedSubscriptions.length > 0) {
+        const lastSubUrl = localStorage.getItem(LAST_SELECTED_SUB_URL_KEY);
+        console.log("Effect 3: [Pending State] Checking lastSubUrl:", lastSubUrl);
 
-            if (lastSubUrl) {
-                const subscriptionExists = mergedSubscriptions.some(sub => sub.url === lastSubUrl);
-                console.log("Effect 3: [Pending State] Subscription exists in current merged list?", subscriptionExists);
+        if (lastSubUrl) {
+          const subscriptionExists = mergedSubscriptions.some(sub => sub.url === lastSubUrl);
+          console.log("Effect 3: [Pending State] Subscription exists in current merged list?", subscriptionExists);
 
-                if (subscriptionExists) {
-                    // 找到了有效的上次订阅 URL，并且它存在于当前加载的合并列表中
-                    console.log("Effect 3: [Pending State] Valid last subscription found. Calling fetchAndParseM3u.");
-                    initialLoadStateRef.current = 'subscription_loading'; // 进入加载状态
-                    fetchAndParseM3u(lastSubUrl, true); // **调用加载函数** (true 表示是初始加载)
-                } else {
-                    // localStorage 中有记录，但在当前合并列表中找不到
-                    // 这可能是列表还没完全加载完，或者这个订阅确实无效了
-                    // 谨慎起见，我们先假设它无效，并结束自动加载流程
-                    console.warn("Effect 3: [Pending State] lastSubUrl found but not in current merged list. Marking auto-load as complete (failed/invalid).");
-                    initialLoadStateRef.current = 'complete'; // 标记自动加载结束（失败）
-                    localStorage.removeItem(LAST_SELECTED_SUB_URL_KEY); // 清除无效的 key
-                    localStorage.removeItem(LAST_SELECTED_CHANNEL_URL_KEY); // 同时清除频道 key
-                    // 只有当状态中的选中 URL 和无效的存储 URL 一致时才清除状态
-                    if (selectedSubscriptionUrl === lastSubUrl) {
-                        setSelectedSubscriptionUrl(null);
-                        setSelectedChannelUrl(null);
-                    }
-                    // 设置提示信息，说明自动加载失败
-                    setStatus({ message: "上次选择的订阅源已失效", type: 'warning' });
-                }
+          if (subscriptionExists) {
+            // SUCCESS CASE: Found the URL in the current list
+            console.log("Effect 3: [Pending State] Valid last subscription found. Calling fetchAndParseM3u.");
+            initialLoadStateRef.current = 'subscription_loading'; // Move to next state
+            fetchAndParseM3u(lastSubUrl, true); // Call the load function
+          } else {
+            // URL in localStorage, but NOT in the current merged list.
+            // IS IT REALLY INVALID? Or is the list just incomplete?
+            // Only consider it *truly* invalid if the fixed subscriptions have already been loaded (or failed).
+            // We use fixedSubscriptions.length > 0 as a proxy for the fetch attempt being complete.
+            // AND userSubscriptions are loaded (which happens early).
+            const fixedSubsFetchAttempted = fixedSubscriptions.length > 0; // Or check a dedicated loading state if available
+            const userSubsLoaded = true; // Assumed loaded by this point
+
+            if (fixedSubsFetchAttempted && userSubsLoaded) {
+              // If both sources are loaded/attempted, and the URL is *still* not found, THEN it's likely invalid.
+              console.warn("Effect 3: [Pending State] lastSubUrl not found in merged list, AND fixed/user subs seem loaded. Marking as invalid.");
+              initialLoadStateRef.current = 'complete'; // Mark auto-load as complete (failed)
+              localStorage.removeItem(LAST_SELECTED_SUB_URL_KEY);
+              localStorage.removeItem(LAST_SELECTED_CHANNEL_URL_KEY);
+              // Clear the state only if it matches the invalid URL
+              if (selectedSubscriptionUrl === lastSubUrl) {
+                setSelectedSubscriptionUrl(null);
+                setSelectedChannelUrl(null);
+              }
+              setStatus({ message: "上次选择的订阅源已失效", type: 'warning' });
             } else {
-                // localStorage 中没有上次订阅的记录
-                console.log("Effect 3: [Pending State] No lastSubUrl found in localStorage. Marking auto-load as complete.");
-                initialLoadStateRef.current = 'complete'; // 标记自动加载结束（无记录）
-                // 设置初始提示信息（仅当状态还是初始的“加载中”）
-                 if (status.message === "应用加载中...") {
-                     setStatus({ message: "请选择一个订阅源", type: 'info' });
-                 }
+              // Fixed subs haven't loaded yet. The list might still update. Do nothing and wait.
+              console.log("Effect 3: [Pending State] lastSubUrl not found, but fixed subs not loaded yet. Waiting...");
             }
+          }
         } else {
-            // initialLoadStateRef 是 'pending'，但 mergedSubscriptions 还是空的
-            // 这很正常，发生在组件刚加载，列表数据还没来的及合并的时候
-            console.log("Effect 3: [Pending State] Merged list is empty, waiting for data...");
-            // 不做任何操作，等待 mergedSubscriptions 更新后再次触发此 Effect
+          // NO URL found in localStorage. Auto-load is not possible.
+          console.log("Effect 3: [Pending State] No lastSubUrl found in localStorage. Marking auto-load as complete.");
+          initialLoadStateRef.current = 'complete'; // Mark auto-load as complete (no record)
+          // Set initial message only if status hasn't been changed by errors etc.
+          if (status.message === "应用加载中...") {
+            setStatus({ message: mergedSubscriptions.length > 0 ? "请选择一个订阅源" : "无可用订阅源", type: 'info' });
+          }
         }
+      } else {
+        // Pending state, but merged list is still empty. Wait for Effect 2 to run.
+        console.log("Effect 3: [Pending State] Merged list is empty, waiting for data...");
+      }
     } else {
-        // initialLoadStateRef 不是 'pending' (已经是 loading, loaded, complete 等)
-        // 说明自动加载流程已经开始或结束，此 Effect 不再执行核心逻辑
-        console.log("Effect 3: [Not Pending State] Skipping auto-load logic.");
+      // Not in 'pending' state, skip the auto-load logic.
+      console.log("Effect 3: [Not Pending State] Skipping auto-load logic.");
     }
-  // ★★ 依赖项只保留 mergedSubscriptions ★★
-  // fetchAndParseM3u 通过 useCallback 保证引用稳定，不需要加入依赖，否则可能引起循环
-  }, [mergedSubscriptions]); // 当合并列表更新时触发检查
+    // ★★ Dependencies: Trigger when merged list or fixed list changes ★★
+    // We need fixedSubscriptions here to know when the fetch attempt is likely complete.
+  }, [mergedSubscriptions, fixedSubscriptions, fetchAndParseM3u, selectedSubscriptionUrl, status.message]); // Added dependencies
+
 
   // Effect 4: 尝试自动加载上次频道 (基于频道列表) - 保持不变
   useEffect(() => {
