@@ -492,8 +492,8 @@ body.light {
   }
 
   /* Mobile Sidebar Content Order */
-  #status           { order: 1; width: 100%; margin: 0; margin-top: 5px; }
-  #channelArea      { order: 2; width: 100%; margin: 0; }
+  #status           { order: 2; width: 100%; margin: 0; margin-top: 5px; }
+  #channelArea      { order: 1; width: 100%; margin: 0; }
   #subscriptionArea { order: 3; width: 100%; margin: 0; }
   #addSubscriptionArea { order: 4; width: 100%; margin: 0; }
 
@@ -527,7 +527,7 @@ body.light {
     padding-top: 56.25%;
     height: 0;
     background-color: #000;
-    border-radius: 0 0 8px 8px;
+    border-radius: 8px;
     overflow: hidden;
     position: relative;
   }
