@@ -23,126 +23,120 @@
 
 /* --- Base Layout - 基础布局 --- */
 html, body {
-  height: 100%; /* 使 html 和 body 能够撑满视口高度 */
-  margin: 0; /* 移除默认外边距 */
-  overflow: hidden; /* ★★★ 阻止 body 产生滚动条 (桌面端) */
-  background: var(--color-bg); /* 应用页面背景色 */
-  color: var(--color-text);    /* 应用默认文字颜色 */
-  font-family: Roboto, Noto, Noto Sans SC, Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif; /* 设置全局字体 */
+  height: 100%;
+  margin: 0;
+  overflow: hidden; /* ★★★ 防止 body 滚动 (桌面端) */
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: Roboto, Noto, Noto Sans SC, Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
 }
 
 #root { /* React 应用挂载点 */
-  display: flex; /* 使用 flex 布局 */
-  flex-direction: column; /* 使子元素垂直排列 (Header 在上, app-root 在下) */
-  height: 100vh; /* 强制 #root 占满整个视口高度 */
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
   width: 100%;
-  background: inherit; /* 继承 body 背景 */
-  color: inherit;      /* 继承 body 文字颜色 */
+  background: inherit;
+  color: inherit;
 }
 
 .app-root { /* React 渲染的主要应用容器 */
   width: 100%;
-  flex-grow: 1; /* ★★★ 占据 #root 中剩余的所有垂直空间 */
-  display: flex; /* 内部也使用 flex */
-  flex-direction: column; /* 使 Header 和 .main-flex 垂直排列 */
-  overflow: hidden; /* 防止此容器自身产生滚动条 */
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
 /* --- Header - 顶部导航栏 --- */
 .app-header {
   width: 100%;
-  height: 48px; /* 固定高度 */
+  height: 48px;
   display: flex;
-  align-items: center; /* 垂直居中内容 */
-  justify-content: space-between; /* 两端对齐 (Logo 左, 开关右) */
-  padding: 0 16px; /* 左右内边距 */
-  box-sizing: border-box; /* padding 不增加宽度 */
-  background: var(--color-bg-card); /* 使用卡片背景色 */
-  border-bottom: 1px solid var(--color-border); /* 底部边框 */
-  flex-shrink: 0; /* ★★★ 防止 Header 在空间不足时被压缩 */
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  box-sizing: border-box;
+  background: var(--color-bg-card);
+  border-bottom: 1px solid var(--color-border);
+  flex-shrink: 0;
 }
 
 .app-title { /* 应用标题样式 */
   font-size: 1.3em;
   margin: 0;
   color: var(--color-primary);
-  font-weight: 500; /* 稍粗的字体 */
+  font-weight: 500;
 }
 
 /* --- Main Content Area (Flex Container) - 主内容区容器 --- */
 .main-flex {
-  display: flex; /* 启用 flex 布局 (sidebar 左, main 右) */
-  gap: 20px; /* sidebar 和 main 之间的间距 */
-  flex-grow: 1; /* ★★★ 占据 .app-root 中 Header 下方的所有剩余垂直空间 */
-  min-height: 0; /* ★★★ 关键! 配合 flex-grow, 防止子元素溢出导致父容器无限增高 */
-  padding: 15px; /* ★★★ 在 sidebar 和 main 周围提供统一的内边距 */
+  display: flex;
+  gap: 20px;
+  flex-grow: 1;
+  min-height: 0;
+  padding: 15px;
   box-sizing: border-box;
-  overflow: hidden; /* ★★★ 防止此容器自身产生滚动条 */
+  overflow: hidden;
 }
 
 /* --- Sidebar - 左侧边栏 --- */
 #sidebar {
-  width: 320px; /* 固定宽度 */
-  min-width: 220px; /* 最小宽度 */
-  max-width: 400px; /* 最大宽度 */
-  /* height: 100vh; */ /* ★★★ 移除固定高度 */
-  overflow-y: auto; /* ★★★ 当内容超出时，允许 sidebar 内部垂直滚动 */
-  background: var(--color-sidebar); /* 侧边栏背景色 */
-  border-right: 1px solid var(--color-sidebar-border); /* 右侧边框 */
-  box-shadow: 2px 0 8px 0 rgba(32, 37, 83, .03); /* 右侧阴影 */
+  width: 320px;
+  min-width: 220px;
+  max-width: 400px;
+  overflow-y: auto;
+  background: var(--color-sidebar);
+  border-right: 1px solid var(--color-sidebar-border);
+  box-shadow: 2px 0 8px 0 rgba(32, 37, 83, .03);
   box-sizing: border-box;
-  display: flex; /* 内部元素使用 flex 布局 */
-  flex-direction: column; /* 垂直排列内部元素 */
-  gap: 15px; /* 内部元素的间距 */
-  padding: 16px; /* 侧边栏内部内容的内边距 */
-  border-radius: 8px; /* (可选) 给侧边栏加圆角 */
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  padding: 16px;
+  border-radius: 8px;
 }
 
-#sidebar h2 { /* 侧边栏内区域标题 (如 "频道列表") */
-  font-size: 1.15em; /* 字体稍小 */
-  color: var(--color-primary); /* 主题色 */
-  border: none; /* 移除旧的边框 */
+#sidebar h2 { /* 侧边栏内区域标题 */
+  font-size: 1.15em;
+  color: var(--color-primary);
+  border: none;
   padding: 0;
-  margin: 0 0 5px 0; /* 调整外边距 */
+  margin: 0 0 5px 0;
   letter-spacing: .5px;
   font-weight: 500;
 }
 
 /* Sidebar Content Order (Desktop) - 侧边栏内容排序 (桌面端) */
-#channelArea      { order: 1; } /* 频道列表 */
-#status           { order: 2; } /* 状态栏 */
-#subscriptionArea { order: 3; } /* 订阅列表 */
-#addSubscriptionArea { order: 4; } /* 添加订阅 */
+#channelArea      { order: 1; }
+#status           { order: 2; }
+#subscriptionArea { order: 3; }
+#addSubscriptionArea { order: 4; }
 
 /* --- Main Content Area (Right Column) - 右侧主内容区 --- */
 #main {
-  flex: 1 1 0; /* ★★★ 占据 .main-flex 中剩余的水平空间，允许缩放 */
-  min-width: 0; /* 防止内容溢出导致 flex item 不缩小 */
-  /* height: 100vh; */ /* ★★★ 移除固定高度 */
-  background: var(--color-bg-card); /* 卡片背景色 */
-  padding: 20px; /* ★★★ 内部内容区域的内边距 */
-  position: relative; /* ★★★ 关键! 使其成为内部绝对定位元素的定位基准 */
-  box-shadow: 0 0 20px 0 rgba(28, 88, 125, .04); /* 外部阴影 */
-  border-radius: 18px; /* 主区域圆角 */
-  overflow: hidden; /* ★★★ 隐藏可能从绝对定位子元素溢出的部分 */
-  /* display: flex; ... */ /* ★★★ 移除旧的 flex 居中相关属性 */
+  flex: 1 1 0;
+  min-width: 0;
+  background: var(--color-bg-card);
+  padding: 20px;
+  position: relative;
+  box-shadow: 0 0 20px 0 rgba(28, 88, 125, .04);
+  border-radius: 18px;
+  overflow: hidden;
 }
 
 /* --- Video Area (Absolute Centered) - 播放器区域 (绝对定位居中) --- */
 #videoArea {
-  /* ★★★ 宽度计算考虑 #main 的内边距 (左右各20px) */
   width: calc(100% - 40px);
-  max-width: 760px;        /* 播放器最大宽度限制 */
-  position: absolute;      /* ★★★ 设置为绝对定位 */
-  top: 50%;                /* ★★★ 垂直定位到父容器(#main)的 50% 处 */
-  left: 50%;               /* ★★★ 水平定位到父容器(#main)的 50% 处 */
-  transform: translate(-50%, -50%); /* ★★★ 将自身向左/上移动自身宽高的一半，实现精确居中 */
-
-  /* 播放器区域本身的卡片样式 */
-  background: var(--color-bg); /* 背景色，可根据需要调整 */
-  border-radius: 14px; /* 圆角 */
-  box-shadow: var(--color-shadow); /* 阴影 */
-  padding: 16px;           /* 播放器卡片内部的内边距 */
+  max-width: 760px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: var(--color-bg);
+  border-radius: 14px;
+  box-shadow: var(--color-shadow);
+  padding: 16px;
   box-sizing: border-box;
 }
 
@@ -158,83 +152,83 @@ html, body {
 }
 
 #videoContainer { /* 保持播放器宽高比 (16:9) 的容器 */
-  width: 100%; /* 撑满 #videoArea 的内边距区域 */
-  padding-top: 56.25%; /* 16:9 (9 / 16 * 100%) */
-  height: 0; /* 高度由 padding-top 撑开 */
-  background: #111; /* 播放器区域的深色背景 */
-  border-radius: 8px; /* 播放器容器圆角 */
-  overflow: hidden; /* 隐藏超出部分的 iframe */
-  position: relative; /* 作为内部 #videoPlayer 的定位基准 */
+  width: 100%;
+  padding-top: 56.25%; /* 16:9 */
+  height: 0;
+  background: #111;
+  border-radius: 8px;
+  overflow: hidden;
+  position: relative;
 }
 
 #videoPlayer { /* 实际的 iframe 或 video 元素 */
-  position: absolute; /* 绝对定位，填充 #videoContainer */
+  position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  border: none; /* 移除 iframe 边框 */
-  display: block; /* 避免下方空白 */
-  background: #000; /* iframe 加载时的背景色 */
+  border: none;
+  display: block;
+  background: #000;
 }
 
 /* --- Sidebar Cards & Lists - 侧边栏卡片和列表 --- */
 #addSubscriptionArea, #subscriptionArea, #channelArea {
-  background: var(--color-bg-card); /* 卡片背景 */
-  border-radius: 8px; /* 卡片圆角 */
-  box-shadow: var(--color-shadow); /* 卡片阴影 */
-  padding: 16px; /* 卡片内边距 */
-  border: 1px solid var(--color-border); /* (可选) 给卡片添加边框 */
+  background: var(--color-bg-card);
+  border-radius: 8px;
+  box-shadow: var(--color-shadow);
+  padding: 16px;
+  border: 1px solid var(--color-border);
 }
 
 #subscriptionList, #channelList { /* 列表容器 */
-  list-style: none; /* 移除默认列表样式 */
+  list-style: none;
   padding: 0;
   margin: 0;
-  max-height: 200px; /* 列表最大高度，可调整 */
-  overflow-y: auto; /* 超出高度时内部滚动 */
-  border: 1px solid var(--color-border); /* 列表边框 */
-  border-radius: 6px; /* 列表圆角 */
+  max-height: 200px;
+  overflow-y: auto;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
 }
 
 #subscriptionList li, #channelList li { /* 列表项 */
-  padding: 10px 12px; /* 列表项内边距 */
-  cursor: pointer; /* 鼠标手型 */
-  border-bottom: 1px solid var(--color-border); /* 分隔线 */
-  white-space: nowrap; /* 不换行 */
-  overflow: hidden; /* 隐藏超出内容 */
-  text-overflow: ellipsis; /* 超出显示省略号 */
-  transition: background 0.2s, color 0.2s, border-left-color 0.2s; /* 过渡效果 */
-  display: flex; /* 使用 flex 布局 (文本左, 按钮右) */
+  padding: 10px 12px;
+  cursor: pointer;
+  border-bottom: 1px solid var(--color-border);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: background 0.2s, color 0.2s, border-left-color 0.2s;
+  display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 0.95em; /* 列表项字体大小 */
-  border-left: 3px solid transparent; /* 选中状态的左边框占位 */
+  font-size: 0.95em;
+  border-left: 3px solid transparent;
 }
 #subscriptionList li span, #channelList li span { /* 列表项文本 */
-  flex-grow: 1; /* 占据剩余空间 */
+  flex-grow: 1;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  margin-right: 6px; /* 与按钮的间距 */
+  margin-right: 6px;
 }
 #subscriptionList li:last-child, #channelList li:last-child {
-  border-bottom: none; /* 最后一项无下边框 */
+  border-bottom: none;
 }
 #subscriptionList li.selected, #channelList li.selected { /* 选中状态 */
-  background: var(--color-selected-bg); /* 选中背景色 */
-  border-left-color: var(--color-selected-border); /* 选中左边框颜色 */
-  color: var(--color-primary); /* 选中文字颜色 */
-  font-weight: 500; /* 字体稍粗 */
+  background: var(--color-selected-bg);
+  border-left-color: var(--color-selected-border);
+  color: var(--color-primary);
+  font-weight: 500;
 }
 #subscriptionList li:hover, #channelList li:hover { /* 悬停状态 */
-  background-color: var(--item-hover-bg); /* 悬停背景色 */
-  color: var(--color-primary); /* 悬停文字颜色 */
+  background-color: var(--item-hover-bg);
+  color: var(--color-primary);
 }
 
 /* --- Forms & Buttons - 表单与按钮 --- */
 input[type="url"], input[type="search"], input[type="text"], textarea, select { /* 通用输入控件样式 */
-  background: var(--color-bg); /* 输入框背景，区别于卡片背景 */
+  background: var(--color-bg);
   color: var(--color-text);
   border: 1px solid var(--color-border);
   border-radius: 6px;
@@ -242,106 +236,105 @@ input[type="url"], input[type="search"], input[type="text"], textarea, select { 
   font-size: 1em;
   box-sizing: border-box;
   transition: border-color 0.2s, box-shadow 0.2s, background-color 0.2s;
-  width: 100%; /* 默认宽度 100% */
+  width: 100%;
 }
 input[type="url"]:focus, input[type="search"]:focus, input[type="text"]:focus,
 textarea:focus, select:focus { /* 输入控件聚焦状态 */
-  border-color: var(--color-primary); /* 边框变主题色 */
-  box-shadow: 0 0 0 2px rgba(var(--color-primary-rgb), 0.2); /* 外发光效果 */
-  outline: none; /* 移除默认外轮廓 */
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 2px rgba(var(--color-primary-rgb), 0.2);
+  outline: none;
 }
 
 button, input[type="button"], input[type="submit"] { /* 通用按钮样式 */
-  background: var(--color-btn); /* 按钮背景色 */
-  color: #fff; /* 文字白色 */
+  background: var(--color-btn);
+  color: #fff;
   border-radius: 6px;
-  font-weight: 600; /* 字体加粗 */
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06); /* 按钮阴影 */
+  font-weight: 600;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
   border: none;
   transition: background 0.16s, box-shadow 0.2s;
   cursor: pointer;
-  padding: 9px 15px; /* 按钮内边距 */
-  font-size: 0.95em; /* 字体大小 */
+  padding: 9px 15px;
+  font-size: 0.95em;
   text-align: center;
 }
 button:hover, input[type="button"]:hover, input[type="submit"]:hover { /* 按钮悬停状态 */
-  background: var(--color-btn-hover); /* 悬停背景色 */
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); /* 悬停阴影 */
+  background: var(--color-btn-hover);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 button:disabled, input[type="button"]:disabled, input[type="submit"]:disabled { /* 按钮禁用状态 */
-  background: #ccc; /* 灰色背景 */
-  color: #888; /* 灰色文字 */
-  cursor: not-allowed; /* 禁止鼠标样式 */
-  box-shadow: none; /* 移除阴影 */
+  background: #ccc;
+  color: #888;
+  cursor: not-allowed;
+  box-shadow: none;
 }
 
 /* Specific button adjustments - 特定按钮调整 */
 #addSubscriptionArea button { /* 添加订阅按钮 */
-  width: 100%; /* 撑满宽度 */
-  margin-top: 5px; /* 与上方输入框间距 */
+  width: 100%;
+  margin-top: 5px;
 }
 #subscriptionList li button { /* 取消订阅按钮 */
-  margin-left: 10px; /* 与左侧文本间距 */
-  background: #fca5a5; /* 浅红色背景 */
-  color: #b91c1c; /* 深红色文字 */
-  font-size: 0.85em; /* 稍小字体 */
-  padding: 4px 8px; /* 稍小内边距 */
+  margin-left: 10px;
+  background: #fca5a5;
+  color: #b91c1c;
+  font-size: 0.85em;
+  padding: 4px 8px;
   border-radius: 5px;
   font-weight: 500;
-  box-shadow: none; /* 移除阴影 */
+  box-shadow: none;
 }
 #subscriptionList li button:hover { /* 取消订阅按钮悬停 */
-  background: #ef4444; /* 较深红色背景 */
-  color: #fff; /* 白色文字 */
+  background: #ef4444;
+  color: #fff;
 }
 
 /* --- Status/Notification Bar - 状态/通知栏 --- */
 #status {
   padding: 10px 12px;
-  background: var(--notice-bg); /* 默认通知背景 */
+  background: var(--notice-bg);
   border-radius: 6px;
-  color: #b91c1c; /* 默认文字颜色 (偏红) */
+  color: #b91c1c;
   font-size: 0.9em;
   line-height: 1.4;
-  border: 1px solid #fecaca; /* 默认边框 (偏红) */
+  border: 1px solid #fecaca;
   min-height: unset;
   max-width: 100%;
-  overflow-wrap: break-word; /* 长单词/URL 自动换行 */
+  overflow-wrap: break-word;
   box-sizing: border-box;
-  font-weight: 500; /* 字体稍粗 */
+  font-weight: 500;
 }
-#status.error   { color: #7f1d1d; background: #fee2e2; border-color: #fecaca; } /* 错误状态 */
-#status.success { color: #14532d; background: #dcfce7; border-color: #bbf7d0; } /* 成功状态 */
-#status.loading { color: #1e40af; background: #dbeafe; border-color: #bfdbfe; font-style: italic; } /* 加载状态 */
-#status.warning { color: #854d0e; background: #fef3c7; border-color: #fde68a; } /* 警告状态 */
+#status.error   { color: #7f1d1d; background: #fee2e2; border-color: #fecaca; }
+#status.success { color: #14532d; background: #dcfce7; border-color: #bbf7d0; }
+#status.loading { color: #1e40af; background: #dbeafe; border-color: #bfdbfe; font-style: italic; }
+#status.warning { color: #854d0e; background: #fef3c7; border-color: #fde68a; }
 
 /* ===============================
-   Dark Theme - 暗色主题
+   Dark Theme - 暗色主题 (由 body.dark 控制)
    =============================== */
-body.dark, .dark { /* 当 body 或其祖先元素有 .dark 类时生效 */
-  /* --- Dark Theme Variables --- */
-  --color-bg:       #111827; /* 深蓝灰色背景 */
-  --color-bg-card:  #1f2937; /* 较深的蓝灰色卡片背景 */
-  --color-border:   #374151; /* 灰色边框 */
-  --color-text:     #f3f4f6; /* 浅灰色文字 */
-  --color-text-light: #9ca3af; /* 中灰色次要文字 */
-  --color-primary:  #f87171; /* 亮红色主题色 */
-  --color-sidebar:  #1f2937; /* 侧边栏背景同卡片 */
-  --color-sidebar-border: #374151; /* 侧边栏边框 */
-  --color-shadow:   0 4px 18px 0 rgba(0, 0, 0, 0.25); /* 更深的阴影 */
-  --color-btn:      #f87171; /* 按钮背景同主题色 */
-  --color-btn-hover:#ef4444; /* 按钮悬停色 */
-  --color-selected-bg: #374151; /* 选中项背景 */
-  --color-selected-border: #f87171; /* 选中项边框 */
-  --item-hover-bg: #374151; /* 悬停项背景 */
-  --notice-bg:     #3f3030; /* 深红色通知背景 */
-  --color-primary-rgb: 248, 113, 113; /* 暗色主题色的 RGB */
+body.dark {
+  --color-bg:       #111827; /* Dark Blue Gray */
+  --color-bg-card:  #1f2937; /* Darker Blue Gray */
+  --color-border:   #374151; /* Gray */
+  --color-text:     #f3f4f6; /* Light Gray */
+  --color-text-light: #9ca3af; /* Medium Gray */
+  --color-primary:  #f87171; /* Light Red */
+  --color-sidebar:  #1f2937; /* Match Card Background */
+  --color-sidebar-border: #374151;
+  --color-shadow:   0 4px 18px 0 rgba(0, 0, 0, 0.25);
+  --color-btn:      #f87171;
+  --color-btn-hover:#ef4444; /* Red 500 */
+  --color-selected-bg: #374151;
+  --color-selected-border: #f87171;
+  --item-hover-bg: #374151;
+  --notice-bg:     #3f3030; /* Darker red notice */
+  --color-primary-rgb: 248, 113, 113; /* RGB for Light Red */
 }
 
 /* Apply dark mode base - 应用暗色模式基础 */
-body.dark, .dark, body.dark #root {
-  background: var(--color-bg) !important; /* 强制应用背景色 */
-  color: var(--color-text) !important; /* 强制应用文字颜色 */
+body.dark, body.dark #root { /* 只使用 body.dark */
+  background: var(--color-bg) !important;
+  color: var(--color-text) !important;
 }
 /* Dark mode component overrides - 暗色模式组件样式覆盖 */
 body.dark #main,
@@ -349,194 +342,196 @@ body.dark #sidebar,
 body.dark #addSubscriptionArea,
 body.dark #subscriptionArea,
 body.dark #channelArea,
-body.dark #videoArea { /* 主要区域和卡片 */
+body.dark #videoArea {
   background: var(--color-bg-card);
   color: var(--color-text);
   box-shadow: var(--color-shadow);
   border-color: var(--color-border);
 }
-body.dark #sidebar { /* 侧边栏特定边框 */
+body.dark #sidebar {
   border-right-color: var(--color-sidebar-border);
 }
-body.dark h2, body.dark h3, body.dark #videoArea > h3 { /* 标题 */
+body.dark h2, body.dark h3, body.dark #videoArea > h3 {
   color: var(--color-text-light);
   border-bottom-color: var(--color-border);
 }
-body.dark #videoContainer { /* 播放器容器背景 */
-  background: #000; /* 纯黑 */
+body.dark #videoContainer {
+  background: #000;
 }
-/* Dark mode forms & buttons - 暗色模式表单与按钮 */
+/* Dark mode forms & buttons */
 body.dark input, body.dark textarea, body.dark select {
-  background: #374151 !important; /* 深色表单背景 */
+  background: #374151 !important;
   color: var(--color-text) !important;
-  border-color: #4b5563 !important; /* 稍亮的边框 */
+  border-color: #4b5563 !important;
 }
 body.dark input::placeholder, body.dark textarea::placeholder {
-  color: #6b7280 !important; /* 占位符颜色 */
+  color: #6b7280 !important;
 }
-body.dark input:focus, body.dark textarea:focus, body.dark select:focus { /* 聚焦状态 */
-  background-color: #4b5563 !important; /* 聚焦背景稍亮 */
-  border-color: var(--color-primary) !important; /* 主题色边框 */
-  box-shadow: 0 0 0 2px rgba(var(--color-primary-rgb), 0.3) !important; /* 聚焦阴影 */
+body.dark input:focus, body.dark textarea:focus, body.dark select:focus {
+  background-color: #4b5563 !important;
+  border-color: var(--color-primary) !important;
+  box-shadow: 0 0 0 2px rgba(var(--color-primary-rgb), 0.3) !important;
 }
-body.dark button, body.dark input[type="button"], body.dark input[type="submit"] { /* 按钮 */
-  background: var(--color-btn) !important; /* 主题色背景 */
-  color: #111827 !important; /* 深色文字，形成对比 */
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.3), 0 1px 2px 0 rgba(0, 0, 0, 0.2); /* 暗色阴影 */
+body.dark button, body.dark input[type="button"], body.dark input[type="submit"] {
+  background: var(--color-btn) !important;
+  color: #111827 !important;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.3), 0 1px 2px 0 rgba(0, 0, 0, 0.2);
 }
-body.dark button:hover, body.dark input[type="button"]:hover, body.dark input[type="submit"]:hover { /* 按钮悬停 */
-    background: var(--color-btn-hover) !important; /* 悬停背景 */
-    color: #fff !important; /* 白色文字 */
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2); /* 悬停阴影 */
+body.dark button:hover, body.dark input[type="button"]:hover, body.dark input[type="submit"]:hover {
+    background: var(--color-btn-hover) !important;
+    color: #fff !important;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
 }
-body.dark button:disabled, body.dark input[type="button"]:disabled, body.dark input[type="submit"]:disabled { /* 按钮禁用 */
-    background: #374151 !important; /* 深灰色背景 */
-    color: #6b7280 !important; /* 灰色文字 */
-    box-shadow: none !important; /* 无阴影 */
+body.dark button:disabled, body.dark input[type="button"]:disabled, body.dark input[type="submit"]:disabled {
+    background: #374151 !important;
+    color: #6b7280 !important;
+    box-shadow: none !important;
 }
-body.dark #subscriptionList li button { /* 取消订阅按钮 */
-  background: #7f1d1d; /* 深红色背景 */
-  color: #fecaca; /* 浅红色文字 */
+body.dark #subscriptionList li button {
+  background: #7f1d1d;
+  color: #fecaca;
 }
-body.dark #subscriptionList li button:hover { /* 取消订阅悬停 */
+body.dark #subscriptionList li button:hover {
    background: #b91c1c;
    color: #fee2e2;
 }
-/* Dark mode status - 暗色模式状态栏 */
-body.dark #status { border-color: transparent; } /* 移除边框，更简洁 */
+/* Dark mode status */
+body.dark #status { border-color: transparent; }
 body.dark #status.error   { color: #fda4af; background: #5f2020; }
 body.dark #status.success { color: #a7f3d0; background: #1e4632; }
 body.dark #status.loading { color: #bfdbfe; background: #2c3a6e; }
 body.dark #status.warning { color: #fde68a; background: #6e5223; }
 
 /* ===============================
-   System Preference Dark Mode - 跟随系统暗色模式
+   System Preference Dark Mode - 跟随系统暗色模式 (已移除)
    =============================== */
-@media (prefers-color-scheme: dark) {
-  /* 仅在用户系统设置为暗色，且没有手动通过 .light/.dark 类强制设置主题时，应用暗色变量 */
-  :root:not(.light):not(.dark) {
-    --color-bg:       #111827;
-    --color-bg-card:  #1f2937;
-    --color-border:   #374151;
-    --color-text:     #f3f4f6;
-    --color-text-light: #9ca3af;
-    --color-primary:  #f87171;
-    --color-sidebar:  #1f2937;
-    --color-sidebar-border: #374151;
-    --color-shadow:   0 4px 18px 0 rgba(0, 0, 0, 0.25);
-    --color-btn:      #f87171;
-    --color-btn-hover:#ef4444;
-    --color-selected-bg: #374151;
-    --color-selected-border: #f87171;
-    --item-hover-bg: #374151;
-    --notice-bg:     #3f3030;
-    --color-primary-rgb: 248, 113, 113;
-  }
+/* @media (prefers-color-scheme: dark) { ... } 代码块已被删除 */
+
+
+/* ===============================
+   Light Theme (Force via body.light) - 强制白天模式
+   =============================== */
+/* 保留此部分用于明确的 body.light 控制 */
+body.light {
+  --color-bg:       #f8f9fa;
+  --color-bg-card:  #fff;
+  --color-border:   #e5e7eb;
+  --color-text:     #202124;
+  --color-text-light: #757575;
+  --color-primary:  #ff0000;
+  --color-sidebar:  #f3f5f7;
+  --color-sidebar-border: #eee;
+  --color-shadow:   0 2px 12px 0 rgba(32, 37, 83, 0.04);
+  --color-btn:      #ff0000;
+  --color-btn-hover:#e52d27;
+  --color-selected-bg: #fff3f0;
+  --color-selected-border: #ff0000;
+  --item-hover-bg: #f5f5f5;
+  --notice-bg:     #ffecec;
+  --color-primary-rgb: 255, 0, 0;
 }
-/* ★★★ 注意: 你仍然需要 JS 来检测系统偏好并给 body 添加 .dark 类，
-   或者在没有 JS 的情况下，上面的 CSS 会自动应用暗色，但无法被手动切换覆盖。
-   推荐使用 JS 控制 body 的 class。 */
+/* 注意：当 JS 应用 body.light 时，这些变量会覆盖 :root 中的默认值。
+   如果 :root 已经是想要的白天模式，理论上可以不定义 body.light 的变量，
+   因为 JS 移除 .dark 类后 :root 就会生效。但保留它更明确。*/
+
 
 /* ===============================
    Mobile Responsive (max-width: 768px) - 移动端响应式布局
    =============================== */
 @media (max-width: 768px) {
   html, body {
-    height: auto;      /* ★★★ 允许内容决定页面高度 */
-    overflow: auto;    /* ★★★ 允许 body 滚动 */
+    height: auto;
+    overflow: auto;
   }
 
-  #root, .app-root { /* 根容器在移动端 */
-    height: auto; /* 高度自适应 */
-    min-height: 100vh; /* 至少撑满屏幕，内容多时可滚动 */
-    display: block; /* 恢复默认块级布局，使内部元素自然堆叠 */
-    overflow: visible; /* 允许内容溢出 */
+  #root, .app-root {
+    height: auto;
+    min-height: 100vh;
+    display: block;
+    overflow: visible;
   }
 
-  .app-header { /* 顶部导航栏在移动端 */
-     /* 可以根据需要调整高度或内边距 */
+  .app-header {
+     /* Optional: Adjust header height or padding */
   }
 
-  .main-flex { /* 主内容容器在移动端 */
-    flex-direction: column; /* ★★★ 使 sidebar 和 main 垂直堆叠 */
-    height: auto; /* 高度自适应 */
-    min-height: unset; /* 移除桌面端限制 */
-    flex-grow: unset; /* 移除桌面端限制 */
-    overflow: visible; /* 允许内容溢出 */
-    padding: 10px; /* 移动端整体内边距 */
-    gap: 15px; /* 堆叠元素间距 */
+  .main-flex {
+    flex-direction: column;
+    height: auto;
+    min-height: unset;
+    flex-grow: unset;
+    overflow: visible;
+    padding: 10px;
+    gap: 15px;
   }
 
-  #main { /* 右侧主内容区在移动端 */
-    order: 1;           /* ★★★ 将播放器所在区域显示在最前面 */
-    width: 100%; /* 宽度撑满 */
-    height: auto; /* 高度自适应 */
-    overflow: visible; /* 允许内容溢出 */
-    background: transparent; /* 移除桌面端卡片背景 */
-    padding: 0; /* 移除桌面端内边距 */
-    display: block; /* 恢复块级 */
-    position: static;   /* ★★★ 重置定位，使其按文档流排列 */
-    border-radius: 0; /* 移除圆角 */
-    box-shadow: none; /* 移除阴影 */
+  #main {
+    order: 1;
+    width: 100%;
+    height: auto;
+    overflow: visible;
+    background: transparent;
+    padding: 0;
+    display: block;
+    position: static;
+    border-radius: 0;
+    box-shadow: none;
   }
 
-  #sidebar { /* 左侧边栏在移动端 */
-    order: 2;            /* ★★★ 显示在播放器之后 */
-    width: 100%; /* 宽度撑满 */
-    height: auto; /* 高度自适应 */
-    overflow: visible;   /* ★★★ 禁用内部滚动，页面整体滚动 */
-    background: transparent; /* 移除桌面端背景 */
-    border-right: none; /* 移除右边框 */
-    padding: 0; /* 移除内部内边距 */
-    border-radius: 0; /* 移除圆角 */
-    box-shadow: none; /* 移除阴影 */
+  #sidebar {
+    order: 2;
+    width: 100%;
+    height: auto;
+    overflow: visible;
+    background: transparent;
+    border-right: none;
+    padding: 0;
+    border-radius: 0;
+    box-shadow: none;
     /* display: flex; flex-direction: column; gap: 15px; */ /* 保持 flex 以控制内部顺序 */
   }
 
-  /* Mobile Sidebar Content Order - 移动端侧边栏内容排序 */
-  /* (与旧代码保持一致) */
-  #status           { order: 2; width: 100%; margin: 0; margin-top: 5px; }
-  #channelArea      { order: 1; width: 100%; margin: 0; }
+  /* Mobile Sidebar Content Order */
+  #status           { order: 1; width: 100%; margin: 0; margin-top: 5px; }
+  #channelArea      { order: 2; width: 100%; margin: 0; }
   #subscriptionArea { order: 3; width: 100%; margin: 0; }
   #addSubscriptionArea { order: 4; width: 100%; margin: 0; }
 
-
-  #videoArea { /* 播放器区域在移动端 */
+  #videoArea {
     width: 100%;
     max-width: 100%;
-    position: static;   /* ★★★ 重置定位 */
-    transform: none;    /* ★★★ 重置 transform */
-    background-color: var(--color-bg-card); /* 恢复卡片背景 */
-    border-radius: 8px; /* 圆角 */
-    box-shadow: var(--color-shadow); /* 阴影 */
-    padding: 0; /* ★★★ 移除内边距，让标题和容器占满 */
-    margin-bottom: 15px; /* 与下方内容间距 */
+    position: static;
+    transform: none;
+    background-color: var(--color-bg-card);
+    border-radius: 8px;
+    box-shadow: var(--color-shadow);
+    padding: 0;
+    margin-bottom: 15px;
     box-sizing: border-box;
   }
 
-  #videoArea > h3 { /* 移动端播放器标题 */
-     padding: 10px 15px 8px 15px; /* 内边距 */
-     margin-bottom: 0; /* 移除下方外边距 */
-     border-bottom: 1px solid var(--color-border); /* 下边框 */
+  #videoArea > h3 {
+     padding: 10px 15px 8px 15px;
+     margin-bottom: 0;
+     border-bottom: 1px solid var(--color-border);
      font-size: 1.05em;
-     background-color: rgba(0, 0, 0, 0.02); /* 浅色标题背景 */
-     border-radius: 8px 8px 0 0; /* 顶部圆角与卡片匹配 */
+     background-color: rgba(0, 0, 0, 0.02);
+     border-radius: 8px 8px 0 0;
   }
-  body.dark #videoArea > h3 { /* 暗色模式标题背景 */
+  body.dark #videoArea > h3 { /* 确认这里也用了 body.dark */
       background-color: rgba(255, 255, 255, 0.03);
   }
 
-  #videoContainer { /* 移动端播放器容器 */
+  #videoContainer {
     width: 100%;
-    padding-top: 56.25%; /* 16:9 */
+    padding-top: 56.25%;
     height: 0;
-    background-color: #000; /* 黑色背景 */
-    border-radius: 0 0 8px 8px; /* ★★★ 底部圆角与卡片匹配 (如果标题有背景和顶部圆角) */
+    background-color: #000;
+    border-radius: 0 0 8px 8px;
     overflow: hidden;
     position: relative;
   }
 
-  /* 移动端侧边栏内的卡片 */
   #addSubscriptionArea, #subscriptionArea, #channelArea {
     background-color: var(--color-bg-card);
     padding: 15px;
@@ -544,48 +539,47 @@ body.dark #status.warning { color: #fde68a; background: #6e5223; }
     box-shadow: var(--color-shadow);
     width: 100%;
     box-sizing: border-box;
-    border: 1px solid var(--color-border); /* 添加边框 */
+    border: 1px solid var(--color-border);
   }
-  #subscriptionList, #channelList { /* 移动端列表 */
-      max-height: 250px; /* 调整最大高度 */
+  #subscriptionList, #channelList {
+      max-height: 250px;
   }
 }
 
 /* ===============================
    Theme Switcher - 主题切换器样式
    =============================== */
-.theme-switcher { position: relative; } /* 作为菜单定位的基准 */
-.theme-btn { /* 切换按钮 */
-  background: transparent; border: none; font-size: 20px; /* 图标大小 */
-  cursor: pointer; color: var(--color-text-light); /* 默认次要文字颜色 */
-  line-height: 1; padding: 6px; /* 内边距增加点击区域 */
-  border-radius: 50%; /* 圆形按钮 */
-  transition: background-color 0.2s, color 0.2s; /* 过渡效果 */
+.theme-switcher { position: relative; }
+.theme-btn {
+  background: transparent; border: none; font-size: 20px;
+  cursor: pointer; color: var(--color-text-light);
+  line-height: 1; padding: 6px;
+  border-radius: 50%;
+  transition: background-color 0.2s, color 0.2s;
 }
-.theme-btn:hover { /* 按钮悬停 */
-    background-color: var(--item-hover-bg); /* 悬停背景 */
-    color: var(--color-text); /* 悬停文字颜色 */
+.theme-btn:hover {
+    background-color: var(--item-hover-bg);
+    color: var(--color-text);
 }
-.theme-menu { /* 下拉菜单 */
-  position: absolute; right: 0; top: calc(100% + 8px); /* 定位在按钮下方 */
-  list-style: none; margin: 0; padding: 6px 0; /* 菜单内边距 */
-  background: var(--color-bg-card); border: 1px solid var(--color-border); /* 菜单背景和边框 */
-  border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); /* 圆角和阴影 */
-  z-index: 100; /* 确保在顶层 */
-  min-width: 150px; /* 最小宽度 */
+.theme-menu {
+  position: absolute; right: 0; top: calc(100% + 8px);
+  list-style: none; margin: 0; padding: 6px 0;
+  background: var(--color-bg-card); border: 1px solid var(--color-border);
+  border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  z-index: 100; min-width: 150px;
 }
-body.dark .theme-menu { box-shadow: 0 4px 12px rgba(0,0,0,0.3); } /* 暗色模式阴影 */
-.theme-menu li { /* 菜单项 */
-  display: flex; align-items: center; gap: 8px; /* 图标和文字间距 */
-  padding: 9px 14px; /* 菜单项内边距 */
+body.dark .theme-menu { box-shadow: 0 4px 12px rgba(0,0,0,0.3); } /* 确认这里也用了 body.dark */
+.theme-menu li {
+  display: flex; align-items: center; gap: 8px;
+  padding: 9px 14px;
   font-size: 14px; cursor: pointer; white-space: nowrap;
   transition: background-color 0.2s, color 0.2s;
 }
-.theme-menu li .check { /* 选中标记 (对勾) */
-  width: 1.2em; text-align: center; font-size: 0.9em; opacity: 0; /* 默认隐藏 */
+.theme-menu li .check {
+  width: 1.2em; text-align: center; font-size: 0.9em; opacity: 0;
   transition: opacity 0.2s;
-  color: var(--color-primary); /* 对勾颜色 */
+  color: var(--color-primary);
 }
-.theme-menu li.active .check { opacity: 1; } /* 选中时显示对勾 */
-.theme-menu li.active { font-weight: 500; color: var(--color-primary); } /* 选中文本样式 */
-.theme-menu li:hover { background: var(--item-hover-bg); color: var(--color-primary); } /* 悬停样式 */
+.theme-menu li.active .check { opacity: 1; }
+.theme-menu li.active { font-weight: 500; color: var(--color-primary); }
+.theme-menu li:hover { background: var(--item-hover-bg); color: var(--color-primary); }
