@@ -363,12 +363,12 @@ body.dark #videoContainer {
 }
 /* Dark mode forms & buttons */
 body.dark input, body.dark textarea, body.dark select {
-  background: #374151 !important; /* Dark form bg */
-  color: var(--color-text) !important;
-  border-color: #4b5563 !important; /* Slightly lighter border */
+  background: #374151; /* Dark form bg */
+  color: var(--color-text);
+  border-color: #4b5563; /* Slightly lighter border */
 }
 body.dark input::placeholder, body.dark textarea::placeholder {
-  color: #6b7280 !important;
+  color: #6b7280;
 }
 body.dark input:focus, body.dark textarea:focus, body.dark select:focus {
   background-color: #4b5563 !important;
@@ -376,13 +376,13 @@ body.dark input:focus, body.dark textarea:focus, body.dark select:focus {
   box-shadow: 0 0 0 2px rgba(var(--color-primary-rgb), 0.3) !important;
 }
 body.dark button, body.dark input[type="button"], body.dark input[type="submit"] {
-  background: var(--color-btn) !important;
-  color: #111827 !important; /* Dark text on light red button */
+  background: var(--color-btn);
+  color: #111827; /* Dark text on light red button */
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.3), 0 1px 2px 0 rgba(0, 0, 0, 0.2);
 }
 body.dark button:hover, body.dark input[type="button"]:hover, body.dark input[type="submit"]:hover {
-    background: var(--color-btn-hover) !important;
-    color: #fff !important; /* White text on darker red */
+    background: var(--color-btn-hover);
+    color: #fff; /* White text on darker red */
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
 }
 body.dark button:disabled, body.dark input[type="button"]:disabled, body.dark input[type="submit"]:disabled {
@@ -411,22 +411,22 @@ body.dark #status.warning { color: #fde68a; background: #6e5223; }
 @media (prefers-color-scheme: dark) {
   /* Apply dark variables if no manual theme (.light/.dark) is set */
   :root:not(.light):not(.dark) {
-    --color-bg:       #111827;
-    --color-bg-card:  #1f2937;
-    --color-border:   #374151;
-    --color-text:     #f3f4f6;
-    --color-text-light: #9ca3af;
-    --color-primary:  #f87171;
-    --color-sidebar:  #1f2937;
-    --color-sidebar-border: #374151;
-    --color-shadow:   0 4px 18px 0 rgba(0, 0, 0, 0.25);
-    --color-btn:      #f87171;
-    --color-btn-hover:#ef4444;
-    --color-selected-bg: #374151;
-    --color-selected-border: #f87171;
-    --item-hover-bg: #374151;
-    --notice-bg:     #3f3030;
-    --color-primary-rgb: 248, 113, 113;
+     --color-bg:       #111827;
+     --color-bg-card:  #1f2937;
+     --color-border:   #374151;
+     --color-text:     #f3f4f6;
+     --color-text-light: #9ca3af;
+     --color-primary:  #f87171;
+     --color-sidebar:  #1f2937;
+     --color-sidebar-border: #374151;
+     --color-shadow:   0 4px 18px 0 rgba(0, 0, 0, 0.25);
+     --color-btn:      #f87171;
+     --color-btn-hover:#ef4444;
+     --color-selected-bg: #374151;
+     --color-selected-border: #f87171;
+     --item-hover-bg: #374151;
+     --notice-bg:     #3f3030;
+     --color-primary-rgb: 248, 113, 113;
   }
 }
 
