@@ -7,4 +7,6 @@
   - 左边sidebar滚动条不影响右边播放器（垂直居中）
   - sidebar桌面顺序：频道列表、通知栏、订阅列表、自定义添加订阅
   - 移动端顺序：播放器、频道列表、通知栏、订阅列表、自定义添加订阅
-    
+- 两个版本：
+  - 完全部署在cloudflare pages+ cf workers（后端）
+  - cloudflare pages+vps作为后端
