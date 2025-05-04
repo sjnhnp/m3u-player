@@ -403,22 +403,22 @@ body.light, .light {
 
   /* --- 调整 #sidebar 内元素的顺序 --- */
   #channelArea {
-    order: 2; /* ★★★ 频道列表最先 (在 Sidebar 内部) */
+    order: 1; /* ★★★ 频道列表最先 (在 Sidebar 内部) */
     width: 100%;
     margin: 0; /* 重置外边距 */
   }
   #subscriptionArea {
-    order: 3; /* ★★★ 订阅源列表其次 */
+    order: 2; /* ★★★ 订阅源列表其次 */
     width: 100%;
      margin: 0;
   }
   #addSubscriptionArea {
-    order: 4; /* ★★★ 添加区域再次 */
+    order: 3; /* ★★★ 添加区域再次 */
     width: 100%;
      margin: 0;
   }
   #status {
-    order: 1; /* ★★★ 状态栏最后 (在 Sidebar 内部) */
+    order: 4; /* ★★★ 状态栏最后 (在 Sidebar 内部) */
     width: 100%;
     margin: 0; /* 重置外边距 */
     margin-top: 5px; /* 可以稍微给点顶部间距 */
