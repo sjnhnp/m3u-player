@@ -23,7 +23,7 @@ export default function ThemeMenu({ mode, onChange }) {
 
   return (
     <ul className="theme-menu">
-      <MenuItem value="auto">自动（跟随系统）</MenuItem>
+       {/* <MenuItem value="auto">自动（跟随系统）</MenuItem> */}
       <MenuItem value="light">白天</MenuItem>
       <MenuItem value="dark">夜晚</MenuItem>
     </ul>
