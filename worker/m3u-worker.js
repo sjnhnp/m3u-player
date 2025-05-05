@@ -15,7 +15,7 @@ const corsHeaders = {
   const fixedSubscriptions = [
     {
       name: "1.外语电视",
-      url: "https://raw.githubusercontent.com/YueChan/Live/refs/heads/main/Global.m3u"
+      url: "https://raw.githubusercontent.com/sjnhnp/adblock/refs/heads/main/filtered_global_attributes_removed.m3u"
     },
     {
       name: "2.国语电视",
