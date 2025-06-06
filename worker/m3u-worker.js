@@ -96,7 +96,7 @@ const corsHeaders = {
   
   // --- 代理处理函数 handleProxyRequest (保持不变) ---
   async function handleProxyRequest(request, env) {
-      // ... (你之前的 handleProxyRequest 函数代码，包括超时、重写逻辑，原封不动放这里) ...
+      
       const requestUrl = new URL(request.url);
       const targetUrlEncoded = requestUrl.searchParams.get('url');
   
@@ -130,7 +130,10 @@ const corsHeaders = {
               console.log(`Passing Range header: ${rangeHeader}`);
           }
           // proxyRequestHeaders.set('User-Agent', 'MyM3UPlayerProxy/1.0');
-  
+          // Add a plausible Referer and User-Agent to bypass hotlink protection
+        proxyRequestHeaders.set('Referer', new URL(targetUrl).origin);
+        proxyRequestHeaders.set('User-Agent', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36');
+        // --- END OF MODIFICATION ---
           const originResponse = await fetch(targetUrl, {
                method: request.method,
                headers: proxyRequestHeaders,
@@ -256,4 +259,3 @@ const corsHeaders = {
   async function handleAddSubscription(request, env) { ... }
   async function handleDeleteSubscription(id, env) { ... }
   */
-  
