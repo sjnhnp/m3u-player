@@ -29,7 +29,7 @@
 - pages 的VITE_API_BASE_URL 需要修改成，vps的反代地址+'/api'。
 - vps 需要的文件范例，都在分支/vps
 
-2、修改/添加订阅连接固定 
+3、修改/添加订阅连接固定 
 - 打开 worker/m3u-worker.js，在 `const fixedSubscriptions = [ `，添加如下格式 m3u8订阅地址
 ```
     {
