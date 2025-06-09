@@ -10,3 +10,18 @@
 - 两个版本：
   - 完全部署在cloudflare pages+ cf workers（后端）
   - cloudflare pages+vps作为后端
+
+##### 部署方法
+1、前端 cf pages+ 后端 cf workers
+- 新建cf workers，然后把后端worker/m3u-worker.js的代码全部复制粘贴，发布即可。拿到后端地址
+- 新建cloudflare pages，连接github fork了的这个项目，
+  - building configuration
+    - Framework preset：none
+    - Build command：npm ci && npm run build
+    - Build output directory：frontend/dist
+  - 环境变量 Variables and Secrets
+    - type：text
+    - Variable name：VITE_API_BASE_URL
+    - Value：填入cf workers的后端地址+'+api', 比如拿到的后端地址是 https://yours.workers.dev，那么这里就需要填入https://yours.workers.dev/api
+   
+2、修改/添加订阅连接固定
